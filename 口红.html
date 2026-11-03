@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>口红编年史 · 可画版 — Old World Series Vol.03</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=VT323&family=Manrope:wght@400;600;800&family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Long+Cang&family=ZCOOL+KuaiLe&family=ZCOOL+QingKe+HuangYou&family=Limelight&family=Josefin+Sans:wght@300;400;600&family=Archivo+Black&family=Oswald:wght@300;500&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--paper:#F7F2EC;--ink:#1B1710;--accent:#C0392B;--line:rgba(27,23,16,.16);--serif:'Cormorant Garamond','Noto Serif SC',serif}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:'Noto Serif SC',serif;overflow-x:hidden}
+::selection{background:var(--accent);color:#fff}
+
+/* ============ HERO ============ */
+.hero{min-height:100vh;background:#140D0B;color:#F5F1E8;display:flex;flex-direction:column;justify-content:center;position:relative;padding:84px 7vw 130px}
+.hero-term{position:absolute;top:30px;left:7vw;font-family:'VT323',monospace;color:#E8A0B4;font-size:19px;line-height:1.55;letter-spacing:.5px;opacity:.9;min-height:110px;text-shadow:0 0 6px rgba(232,160,180,.3)}
+.caret{display:inline-block;width:10px;height:15px;background:#E8A0B4;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.eyebrow{font-size:12px;letter-spacing:.42em;color:var(--accent);text-transform:uppercase;margin-bottom:24px;font-family:'Manrope',sans-serif;font-weight:600}
+.hero h1{font-family:'Ma Shan Zheng','Noto Serif SC',serif;font-weight:900;font-size:clamp(54px,10.5vw,140px);line-height:1.1;opacity:0;transform:translateY(26px);transition:all 1.2s cubic-bezier(.2,.7,.2,1)}
+.hero.on h1{opacity:1;transform:none}
+.hero-sub{font-family:var(--serif);font-style:italic;font-size:clamp(15px,2vw,21px);color:rgba(245,241,232,.55);margin-top:14px;letter-spacing:.18em;opacity:0;transition:opacity 1.2s .35s}
+.hero.on .hero-sub{opacity:1}
+.hero-lead{max-width:540px;margin-top:30px;font-size:15.5px;line-height:2;color:rgba(245,241,232,.78);opacity:0;transition:opacity 1.2s .6s}
+.hero.on .hero-lead{opacity:1}
+.hero-lead b{color:#E8A0B4;font-weight:700}
+.hero-ltp{position:absolute;right:8vw;top:16%;cursor:pointer;filter:drop-shadow(0 18px 30px rgba(0,0,0,.5))}
+/* 首屏手稿纸 —— 立刻可以画 */
+.hero-paper{position:relative;margin-top:52px;max-width:620px}
+.hero-paper canvas{display:block;width:100%;height:170px;background:linear-gradient(180deg,#FDFBF7,#F1EADC);border-radius:6px;cursor:none;touch-action:none;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.hero-paper .plbl{position:absolute;top:8px;left:14px;font-family:'Manrope',sans-serif;font-size:9px;letter-spacing:.3em;color:rgba(27,23,16,.4);text-transform:uppercase;pointer-events:none}
+.hero-brush{position:absolute;width:30px;height:74px;pointer-events:none;display:none;filter:drop-shadow(0 4px 6px rgba(0,0,0,.3));transition:transform .06s}
+.hero-paper:hover .hero-brush{display:block}
+.hero-brush.pressing{transform:rotate(-38deg) translateY(6px)!important}
+.tl{position:absolute;bottom:46px;left:7vw;right:7vw;height:2px;background:rgba(245,241,232,.22)}
+.tl-dot{position:absolute;top:50%;width:9px;height:9px;border-radius:50%;background:#140D0B;border:1.5px solid rgba(245,241,232,.6);transform:translate(-50%,-50%);cursor:pointer;transition:all .25s}
+.tl-dot:hover,.tl-dot.act{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 5px rgba(192,57,43,.25)}
+.tl-dot::after{content:attr(data-label);position:absolute;bottom:16px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:10.5px;font-family:'Manrope',sans-serif;letter-spacing:.12em;color:rgba(245,241,232,.75);opacity:0;transition:opacity .2s;pointer-events:none}
+.tl-dot:hover::after{opacity:1}
+.tl-cap{position:absolute;top:14px;font-size:11px;letter-spacing:.3em;color:rgba(245,241,232,.4);font-family:'Manrope',sans-serif}
+.scroll-hint{position:absolute;bottom:-2px;left:7vw;font-size:11px;letter-spacing:.34em;color:rgba(245,241,232,.45);font-family:'Manrope',sans-serif}
+.scroll-hint::after{content:"";display:block;width:1.5px;height:44px;background:linear-gradient(var(--accent),transparent);margin:10px 0 0 44%;animation:drop 2s ease-in-out infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}55%{transform:scaleY(1)}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ============ 章节条 / 导航 ============ */
+.chapter{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;justify-content:space-between;align-items:center;padding:11px 7vw;background:rgba(247,242,236,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--ink);transform:translateY(-100%);transition:transform .45s cubic-bezier(.2,.8,.2,1);font-family:'Manrope',sans-serif}
+.chapter.on{transform:none}
+#chLeft{font-size:12px;letter-spacing:.22em;font-weight:800}
+#chLeft em{font-style:normal;color:var(--accent);margin-right:10px;font-family:var(--serif);font-size:15px}
+#chRight{font-size:11px;letter-spacing:.3em;color:rgba(27,23,16,.55)}
+.dots{position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:80;display:flex;flex-direction:column;gap:9px}
+.dots a{width:8px;height:8px;border-radius:50%;background:rgba(27,23,16,.25);display:block;transition:all .25s;position:relative}
+.dots a:hover{background:var(--ink)}
+.dots a.act{background:var(--accent);box-shadow:0 0 0 4px rgba(192,57,43,.18)}
+.dots a::after{content:attr(data-label);position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:10px;font-family:'Manrope',sans-serif;letter-spacing:.14em;background:#1B1710;color:#F5F1E8;padding:3px 8px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s}
+.dots a:hover::after{opacity:1}
+
+/* ============ 展台（每站换装） ============ */
+.booth{padding:100px 7vw;border-top:1px solid var(--line);display:grid;grid-template-columns:330px 1fr;gap:60px;align-items:start;opacity:0;transform:translateY(46px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1);color:var(--ink)}
+.booth.visible{opacity:1;transform:none}
+.booth.rev .meta{order:2}.booth.rev .stage{order:1}
+.booth-no{font-family:'Manrope',sans-serif;font-size:11px;letter-spacing:.4em;color:var(--accent);font-weight:700;margin-bottom:6px}
+.booth-year{font-family:var(--serif);font-style:italic;font-weight:700;font-size:clamp(46px,6vw,80px);line-height:1;color:transparent;-webkit-text-stroke:1.5px currentColor;opacity:.42;transition:all .5s}
+.booth:hover .booth-year{opacity:.9}
+.booth-title{font-weight:900;font-size:27px;margin:18px 0 4px;line-height:1.35}
+.booth-title .en{display:block;font-style:italic;font-weight:500;font-size:14px;letter-spacing:.05em;margin-top:4px;opacity:.55}
+.booth-desc{font-size:15px;line-height:2.05;margin-top:14px;max-width:330px}
+.swatch{display:flex;align-items:center;gap:10px;margin-top:20px;font-family:'Manrope',sans-serif;font-size:11px;letter-spacing:.16em;opacity:.7}
+.swatch i{width:22px;height:22px;border-radius:50%;box-shadow:inset 0 2px 4px rgba(0,0,0,.25),0 1px 2px rgba(0,0,0,.2);flex:none}
+.stage{display:flex;flex-direction:column;align-items:center}
+.cap{margin-top:12px;font-family:'Manrope',sans-serif;font-size:11px;letter-spacing:.14em;opacity:.55;text-align:center}
+.cap b{color:var(--accent);font-weight:700;margin-right:8px}
+.acts{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;justify-content:center}
+.abtn{display:inline-flex;align-items:center;gap:8px;font-family:'Manrope',sans-serif;font-weight:600;font-size:12px;letter-spacing:.12em;cursor:pointer;padding:8px 18px;border:1px solid currentColor;background:transparent;color:inherit;transition:all .2s;border-radius:2px}
+.abtn:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.abtn:active{transform:translateY(1px)}
+.pt{font-size:12px;opacity:.65;font-family:'Manrope',sans-serif;margin-top:8px;text-align:center}
+
+/* ---- 试色卡（画布） ---- */
+.paintcard{position:relative;width:100%;max-width:400px;margin-top:16px}
+.paintcard canvas{display:block;width:100%;height:180px;border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,.18);touch-action:none;cursor:not-allowed}
+.paintcard.open canvas{cursor:none}
+.paintcard .plbl{position:absolute;top:8px;left:12px;font-family:'Manrope',sans-serif;font-size:9px;letter-spacing:.3em;text-transform:uppercase;opacity:.4;pointer-events:none}
+.paintcard .pnote{position:absolute;bottom:8px;right:12px;font-family:'Manrope',sans-serif;font-size:10px;letter-spacing:.1em;opacity:0;transition:opacity .3s;pointer-events:none;color:#8E2434}
+.paintcard.needopen .pnote{opacity:1}
+/* 追随指针的迷你口红笔刷 */
+.brushLip{position:absolute;width:26px;height:64px;pointer-events:none;display:none;filter:drop-shadow(0 4px 6px rgba(0,0,0,.3));transition:transform .07s linear;z-index:3}
+.paintcard.open:hover .brushLip{display:block}
+.brushLip.pressing{transform:rotate(-36deg) translateY(5px)!important}
+.brushLip .bb{position:absolute;bottom:24px;left:50%;width:13px;height:22px;transform:translateX(-50%);border-radius:2px 2px 3px 3px;background-image:linear-gradient(90deg,rgba(255,255,255,.35),transparent 30%,rgba(0,0,0,.15) 85%)}
+.brushLip .tt{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:16px;height:28px;border-radius:3px 3px 6px 6px;background:linear-gradient(90deg,#333,#888 40%,#ccc 50%,#555)}
+
+/* ============ 口红本体（挤出式，不会发射） ============ */
+.ltp{position:relative;width:140px;height:250px;margin:10px auto;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+.bt{position:absolute;left:50%;bottom:92px;width:34px;height:70px;border-radius:2px 2px 4px 4px;transform:translateX(-50%) scaleY(0);transform-origin:bottom center;transition:transform .7s cubic-bezier(.33,.15,.25,1);background-image:linear-gradient(90deg,rgba(255,255,255,.38),rgba(255,255,255,0) 28%,rgba(0,0,0,.18) 86%)}
+.ltp.up .bt{transform:translateX(-50%) scaleY(1);background-image:linear-gradient(90deg,rgba(255,255,255,.38),rgba(255,255,255,0) 28%,rgba(0,0,0,.18) 86%),radial-gradient(ellipse at 50% 0,rgba(255,255,255,.45),transparent 60%)}
+.tb{position:absolute;left:50%;bottom:0;width:46px;height:102px;border-radius:5px 5px 9px 9px}
+.rg{position:absolute;left:50%;transform:translateX(-50%);bottom:86px;width:50px;height:22px;border-radius:6px;box-shadow:inset 1px 1px 0 rgba(255,255,255,.4);background:repeating-linear-gradient(90deg,rgba(0,0,0,.16) 0 3px,rgba(255,255,255,.14) 3px 6px)}
+.ltp.spin .rg{animation:rgSpin .65s ease}
+@keyframes rgSpin{to{transform:translateX(-50%) rotate(360deg)}}
+.hint-b{position:absolute;left:50%;top:-4px;transform:translateX(-50%);font-family:'Manrope',sans-serif;font-size:10px;letter-spacing:.24em;opacity:.45;white-space:nowrap;transition:opacity .3s}
+.ltp.up .hint-b{opacity:0}
+
+/* ---- 各年代口红造型 ---- */
+.lp-anc .bowl{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:128px;height:64px;border-radius:14px 14px 64px 64px/14px 14px 70px 70px;background:linear-gradient(180deg,#cfc5b4,#a89a86 70%,#8a7c68);box-shadow:inset 0 4px 8px rgba(0,0,0,.25)}
+.lp-anc .paste{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:84px;height:26px;border-radius:50%;background:radial-gradient(ellipse at 40% 35%,#a23346,#7c1f30 70%);box-shadow:inset 0 2px 5px rgba(0,0,0,.4)}
+.lp-anc .stick{position:absolute;bottom:44px;left:50%;width:10px;height:130px;border-radius:5px;background:linear-gradient(90deg,#9a7a58,#6b4e32 55%,#584026);transform:translateX(-50%) translateX(26px) rotate(-24deg);transform-origin:bottom center;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.lp-anc .stick::after{content:"";position:absolute;bottom:-4px;left:-1px;width:12px;height:20px;border-radius:6px;background:#8a6a4a;transition:background .5s .2s}
+.lp-anc.up .stick{transform:translateX(-50%) translateX(14px) rotate(-8deg)}
+.lp-anc.up .stick::after{background:radial-gradient(circle at 40% 35%,#b24056,#8E2434)}
+.lp-tang .pstack{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);width:120px;height:150px}
+.lp-tang .pp{position:absolute;inset:0;border-radius:4px;background:linear-gradient(160deg,#f8ede8,#efdccf);box-shadow:0 2px 6px rgba(0,0,0,.18);transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.lp-tang .pp::after{content:"❀";position:absolute;top:16px;left:50%;transform:translateX(-50%);color:#C3272B;font-size:22px;opacity:.85}
+.lp-tang .pp::before{content:"";position:absolute;top:56px;left:50%;transform:translateX(-50%);width:34px;height:20px;background:#C3272B;border-radius:10px 10px 14px 14px;opacity:.85}
+.lp-tang .pp:nth-child(2){transform:rotate(3deg) translateY(6px)}
+.lp-tang .pp:nth-child(3){transform:rotate(-3deg) translateY(12px)}
+.lp-tang.up .pp:nth-child(1){transform:rotate(-18deg) translateY(-6px)}
+.lp-tang.up .pp:nth-child(2){transform:rotate(9deg) translateY(2px)}
+.lp-tang.up .pp:nth-child(3){transform:rotate(3deg) translateY(9px)}
+.lp-1884 .rod{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);width:30px;height:170px;border-radius:8px;background:linear-gradient(90deg,#7c2c3c,#a85061 35%,#c88 52%,#a85061 70%,#6b2432)}
+.lp-1884 .wrap{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);width:64px;height:120px;transform-origin:50% 100%;background:linear-gradient(90deg,#e8e0d0,#f6f2e8 40%,#ddd4c2);border-radius:6px;box-shadow:0 3px 8px rgba(0,0,0,.22);transition:transform .6s cubic-bezier(.2,.7,.2,1);backface-visibility:hidden}
+.lp-1884 .wrap::before{content:"G·1884";position:absolute;top:8px;left:0;right:0;text-align:center;font-family:'Manrope',sans-serif;font-size:8px;letter-spacing:.2em;color:rgba(80,60,40,.6)}
+.lp-1884.up .wrap{transform:translateX(-50%) rotateX(-100deg)}
+.lp-levy .tb{background:linear-gradient(90deg,#6a6a72,#c8c8d0 30%,#f0f0f4 44%,#c8c8d0 62%,#585860)}
+.lp-levy .bt{bottom:96px}
+.lp-levy .lever{position:absolute;bottom:40px;left:50%;width:74px;height:14px;margin-left:8px;border-radius:4px;background:linear-gradient(180deg,#d8d8de,#8a8a92);box-shadow:0 2px 4px rgba(0,0,0,.35);transition:transform .55s cubic-bezier(.3,.6,.3,1.2)}
+.lp-levy .lever::after{content:"";position:absolute;right:-10px;top:-2px;width:18px;height:18px;border-radius:4px;background:radial-gradient(circle at 35% 30%,#f4f4f8,#9a9aa4)}
+.lp-levy .plaque{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);width:30px;height:16px;background:radial-gradient(#c8c8d0,#8a8a92);border-radius:3px;z-index:1}
+.lp-levy .bt{z-index:0}
+.lp-levy.up .lever{transform:translateY(-34px)}
+.lp-1923 .tb{background:linear-gradient(90deg,#7a5c3a,#d4b06a 32%,#f4e0a0 46%,#d4b06a 64%,#6a4c2e)}
+.lp-1923 .rg{background:repeating-linear-gradient(90deg,rgba(80,60,20,.2) 0 3px,rgba(255,240,190,.2) 3px 6px)}
+.lp-deco .tb{background:linear-gradient(90deg,#8a6a1e,#e8c84a 30%,#fdf0a0 46%,#e8c84a 64%,#7a5a16)}
+.lp-deco .tb::after{content:"";position:absolute;inset:8px 6px;background:repeating-linear-gradient(180deg,transparent 0 6px,rgba(90,64,10,.35) 6px 8px);border-radius:3px}
+.lp-deco .sk{position:absolute;bottom:100px;left:50%;transform:translateX(-50%);width:52px;height:10px;background:linear-gradient(90deg,#7a5a16,#f4e0a0,#7a5a16);border-radius:2px}
+.lp-50s .tb{background:linear-gradient(90deg,#1a1a1e,#585864 30%,#8a8a96 46%,#585864 64%,#141418);border-radius:5px 5px 14px 14px}
+.lp-50s .gold{position:absolute;bottom:78px;left:50%;transform:translateX(-50%);width:46px;height:16px;background:linear-gradient(90deg,#7a5a16,#f0d060,#7a5a16);border-radius:3px 3px 0 0}
+.lp-50s .bt{bottom:92px;width:34px}
+.lp-60s .tb{width:30px;height:96px;background:linear-gradient(90deg,#d8d0c8,#fff 46%,#c8c0b8);border:1px solid rgba(0,0,0,.15);border-radius:4px 4px 8px 8px}
+.lp-60s .pinkline{position:absolute;bottom:60px;left:50%;transform:translateX(-50%);width:34px;height:8px;background:repeating-linear-gradient(90deg,#E8A0B4 0 4px,#fff 4px 8px)}
+.lp-60s .bt{bottom:94px;width:24px;height:54px}
+.lp-60s .rg{bottom:82px;width:32px;height:14px}
+.lp-70s .soft{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:56px;height:130px;border-radius:8px 8px 26px 26px/8px 8px 60px 60px;background:linear-gradient(90deg,#c05a2e,#E8794E 40%,#f8b08a 50%,#E8794E 62%,#a8481e);transition:transform .5s cubic-bezier(.3,.6,.3,1.4);box-shadow:inset 0 -6px 10px rgba(0,0,0,.2)}
+.lp-70s .nozzle{position:absolute;bottom:126px;left:50%;transform:translateX(-50%);width:16px;height:22px;border-radius:4px 4px 8px 8px;background:linear-gradient(90deg,#a8481e,#f8b08a 50%,#a8481e)}
+.lp-70s .glossblob{position:absolute;bottom:142px;left:50%;transform:translateX(-50%) translateY(8px);width:20px;height:14px;border-radius:50%;background:radial-gradient(ellipse at 35% 30%,#fff,#f8b08a 60%,#E8794E);opacity:0;transition:all .4s .1s;filter:blur(1px)}
+.lp-70s.up .soft{transform:translateX(-50%) scale(.94,.9)}
+.lp-70s.up .glossblob{opacity:1;transform:translateX(-50%) translateY(0)}
+.lp-80s .tb{background:linear-gradient(90deg,#000,#3a3a42 35%,#5a5a64 50%,#3a3a42 68%,#000)}
+.lp-80s .neon{position:absolute;bottom:88px;left:50%;transform:translateX(-50%);width:46px;height:8px;background:linear-gradient(90deg,#E8356F,#f8a0c0,#E8356F);box-shadow:0 0 10px rgba(232,53,111,.8);border-radius:2px}
+.lp-80s .bt{bottom:94px}
+.lp-90s .tb{width:38px;height:98px;background:linear-gradient(90deg,#c8b8a8,#eee4d8 46%,#c0b0a0);border-radius:5px 5px 8px 8px}
+.lp-90s .bt{bottom:96px;width:28px;height:58px}
+.lp-90s .mattetag{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);width:26px;height:44px;border:1px solid rgba(158,91,74,.6);border-radius:2px}
+.lp-2010 .vial{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:42px;height:108px;border-radius:6px 6px 16px 16px;background:linear-gradient(90deg,rgba(30,30,40,.85),rgba(90,90,110,.6) 45%,rgba(255,255,255,.25) 52%,rgba(60,60,80,.7) 60%,rgba(20,20,30,.85))}
+.lp-2010 .liquid{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:30px;height:78px;border-radius:4px 4px 10px 10px;background:linear-gradient(180deg,#c86080,#A42B54 70%,#7c1e3c)}
+.lp-2010 .wand{position:absolute;bottom:2px;left:50%;width:20px;height:196px;transform:translateX(-50%);transition:transform .55s cubic-bezier(.2,.7,.2,1)}
+.lp-2010 .wand .cap{position:absolute;bottom:74px;width:20px;height:64px;border-radius:5px;background:linear-gradient(90deg,#1a1a24,#4a4a5a 45%,#6a6a7c 52%,#2a2a36)}
+.lp-2010 .wand .stem{position:absolute;bottom:58px;left:50%;transform:translateX(-50%);width:6px;height:20px;background:#2a2a36}
+.lp-2010 .wand .doe{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);width:12px;height:26px;border-radius:6px 6px 10px 10px;background:linear-gradient(180deg,#d87090,#A42B54)}
+.lp-2010.up .wand{transform:translateX(-50%) translateY(-84px)}
+.lp-2020 .compact{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);width:150px;height:80px}
+.lp-2020 .base{position:absolute;inset:0;border-radius:16px;background:linear-gradient(180deg,#f4e0e4,#e8c0c8);box-shadow:0 6px 16px rgba(0,0,0,.2)}
+.lp-2020 .pad{position:absolute;left:12px;right:12px;bottom:10px;height:44px;border-radius:50%;background:radial-gradient(ellipse at 45% 38%,#f8a0a0,#F0716A 60%,#d85850);box-shadow:inset 0 3px 8px rgba(0,0,0,.2)}
+.lp-2020 .lid{position:absolute;left:0;right:0;top:0;height:34px;border-radius:16px 16px 6px 6px;background:linear-gradient(180deg,#fdf2f4,#f0ccd2);transform-origin:50% 100%;transition:transform .55s cubic-bezier(.2,.7,.2,1);box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.lp-2020 .lid::after{content:"◍";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#c898a0;font-size:13px}
+.lp-2020.up .lid{transform:rotate(-100deg)}
+.lp-2020 .finger{position:absolute;bottom:14px;right:8px;width:26px;height:50px;border-radius:8px 8px 14px 14px/8px 8px 22px 22px;background:linear-gradient(90deg,#e8b8a8,#f8d8c8 50%,#d8a898);transition:transform .5s .1s;box-shadow:0 3px 8px rgba(0,0,0,.25)}
+.lp-2020 .finger::after{content:"";position:absolute;top:0;left:0;right:0;height:22px;border-radius:8px 8px 0 0/8px 8px 0 0;background:#F0716A;opacity:0;transition:opacity .4s .3s}
+.lp-2020.up .finger{transform:translateY(-10px)}
+.lp-2020.up .finger::after{opacity:1}
+
+/* ============ 十三站的换装（底色 / 字体 / 字色） ============ */
+.era0{background:linear-gradient(180deg,#EFE6D0,#E7DABB)}
+.era0 .booth-title{font-family:'Ma Shan Zheng','Noto Serif SC',serif}
+.era0 .booth-year{font-family:'Cormorant Garamond',serif}
+.era1{background:linear-gradient(180deg,#F3EAD6,#EDDFC4)}
+.era1 .booth-title{font-family:'Ma Shan Zheng','Noto Serif SC',serif;font-size:34px}
+.era1 .booth-year{font-family:'Ma Shan Zheng',serif;-webkit-text-stroke:1px currentColor}
+.era1 .paintcard canvas{background:linear-gradient(180deg,#FAF4E4,#F0E6CC)}
+.era2{background:linear-gradient(180deg,#F1EADC,#EAE0C8)}
+.era2 .booth-title,.era3 .booth-title,.era4 .booth-title{font-family:'ZCOOL XiaoWei','Noto Serif SC',serif}
+.era2 .booth-year,.era3 .booth-year,.era4 .booth-year{font-family:'Cormorant Garamond',serif}
+.era3{background:linear-gradient(180deg,#E4E2DC,#D8D6CE)}
+.era4{background:linear-gradient(180deg,#EBDFC4,#E2D2AC)}
+.era5{background:linear-gradient(180deg,#E8D9A8,#DEC98A)}
+.era5 .booth-title{font-family:'ZCOOL XiaoWei','Noto Serif SC',serif;letter-spacing:.12em}
+.era5 .booth-title .en{font-family:'Limelight',cursive;font-style:normal}
+.era5 .booth-year{font-family:'Limelight',cursive;font-style:normal;-webkit-text-stroke:1px currentColor}
+.era5 .paintcard canvas{background:linear-gradient(180deg,#FBF3D8,#F2E6BC)}
+.era6{background:linear-gradient(180deg,#17131A,#241C26);color:#F2E8E4}
+.era6 .booth-title{font-family:'Long Cang','Noto Serif SC',serif;font-size:38px}
+.era6 .booth-year{font-family:'Cormorant Garamond',serif;opacity:.55}
+.era6 .cap b{color:#E8A0B4}
+.era6 .abtn:hover{background:#C41E3A;border-color:#C41E3A}
+.era6 .paintcard canvas{background:linear-gradient(180deg,#FDFBF7,#F1EADC)}
+.era6 .paintcard .plbl,.era6 .paintcard .pnote{color:#C41E3A}
+.era6 .swatch{color:#F2E8E4}
+.era7{background:linear-gradient(180deg,#F7E8EC,#F0D8E0)}
+.era7 .booth-title{font-family:'Josefin Sans','Noto Sans SC',sans-serif;font-weight:300;letter-spacing:.28em;font-size:23px}
+.era7 .booth-title .en{font-family:'Josefin Sans',sans-serif}
+.era7 .booth-year{font-family:'Josefin Sans',sans-serif;font-weight:300}
+.era7 .booth-desc{font-family:'Noto Sans SC',sans-serif;font-weight:300}
+.era8{background:linear-gradient(180deg,#F4DEC8,#EFCFB0)}
+.era8 .booth-title{font-family:'ZCOOL KuaiLe','Noto Serif SC',serif;font-size:30px}
+.era8 .booth-year{font-family:'ZCOOL KuaiLe',serif;-webkit-text-stroke:1px currentColor}
+.era8 .booth-desc{font-family:'ZCOOL KuaiLe',serif}
+.era9{background:linear-gradient(180deg,#12121A,#1E1E2C);color:#F0ECF4}
+.era9 .booth-title{font-family:'ZCOOL QingKe HuangYou','Noto Sans SC',sans-serif;letter-spacing:.06em;font-size:34px}
+.era9 .booth-year{font-family:'Archivo Black',sans-serif;font-style:normal;font-size:56px;-webkit-text-stroke:1.5px #E8356F;opacity:.8}
+.era9 .booth-title .en{font-family:'Archivo Black',sans-serif;font-style:normal;letter-spacing:.1em}
+.era9 .booth-desc{font-family:'Noto Sans SC',sans-serif}
+.era9 .cap b{color:#E8356F}
+.era9 .abtn:hover{background:#E8356F;border-color:#E8356F}
+.era9 .swatch{color:#F0ECF4}
+.era9 .paintcard canvas{background:linear-gradient(180deg,#FDFBF7,#F1EADC)}
+.era9 .paintcard .plbl,.era9 .paintcard .pnote{color:#E8356F}
+.era10{background:linear-gradient(180deg,#E2D8D0,#D6CAC0)}
+.era10 .booth-title{font-family:'Oswald','Noto Sans SC',sans-serif;font-weight:500;letter-spacing:.14em;font-size:25px}
+.era10 .booth-title .en{font-family:'Oswald',sans-serif;font-weight:300}
+.era10 .booth-year{font-family:'Oswald',sans-serif;font-weight:300}
+.era10 .booth-desc{font-family:'Noto Sans SC',sans-serif;font-weight:400}
+.era11{background:linear-gradient(180deg,#ECEEF2,#E0E4EC)}
+.era11 .booth-title{font-family:'Montserrat','Noto Sans SC',sans-serif;font-weight:600;font-size:23px}
+.era11 .booth-year{font-family:'Montserrat',sans-serif;font-weight:400}
+.era11 .booth-desc{font-family:'Noto Sans SC',sans-serif}
+.era12{background:linear-gradient(180deg,#F2ECF0,#EAE0E8)}
+.era12 .booth-title{font-family:'Manrope','Noto Sans SC',sans-serif;font-weight:800;font-size:22px}
+.era12 .booth-year{font-family:'Manrope',sans-serif;font-weight:600;font-style:normal}
+.era12 .booth-desc{font-family:'Noto Sans SC',sans-serif}
+
+/* ============ 尾声 / 页脚 ============ */
+.outro{background:#140D0B;color:#F5F1E8;padding:120px 7vw 90px;text-align:center}
+.outro h2{font-family:'Ma Shan Zheng','Noto Serif SC',serif;font-weight:900;font-size:clamp(30px,5vw,56px);line-height:1.6}
+.outro h2 span{color:#E8A0B4}
+.outro p{margin-top:26px;font-size:14px;line-height:2;color:rgba(245,241,232,.6);max-width:540px;margin-left:auto;margin-right:auto}
+.outro .keys{margin-top:32px;font-family:'Manrope',sans-serif;font-size:11px;letter-spacing:.25em;color:rgba(245,241,232,.4)}
+.outro .keys b{border:1px solid rgba(245,241,232,.35);padding:3px 9px;margin:0 3px;font-weight:600}
+.footer{background:#140D0B;color:rgba(245,241,232,.35);border-top:1px solid rgba(245,241,232,.15);padding:24px 7vw;display:flex;justify-content:space-between;font-family:'Manrope',sans-serif;font-size:10.5px;letter-spacing:.2em;flex-wrap:wrap;gap:10px}
+.top-btn{background:none;border:1px solid rgba(245,241,232,.35);color:#F5F1E8;font-family:'Manrope',sans-serif;font-size:10.5px;letter-spacing:.25em;padding:9px 22px;cursor:pointer;transition:all .25s}
+.top-btn:hover{background:var(--accent);border-color:var(--accent)}
+@media (max-width:1100px){.dots{display:none}.hero-ltp{right:4vw;top:10%}}
+@media (max-width:920px){
+  .booth{grid-template-columns:1fr;gap:30px;padding:80px 6vw}
+  .booth.rev .meta{order:0}
+  .booth-year{font-size:44px}
+  .booth-desc{max-width:none}
+  .tl{display:none}
+  .hero{padding-bottom:90px}
+  .hero-ltp{display:none}
+  .era9 .booth-year{font-size:40px}
+}
+/* ======== 对齐与拧开修复补丁（整体追加，勿删） ======== */
+/* 1. 给口红一个竖直透视，拧动才有 3D 感 */
+.ltp{perspective:700px}
+/* 2. ★核心：管身回到中轴（之前丢了 translateX(-50%)，这就是"膏体偏左、管身偏右 23px"的唯一原因） */
+.tb{transform:translateX(-50%)}
+/* 3. 拧开动画：旋环绕竖直轴拧两圈（不再是平面打转） */
+.ltp.spin .rg{animation:rgSpin .7s ease}
+@keyframes rgSpin{
+  0%  {transform:translateX(-50%) rotateY(0deg)}
+  100%{transform:translateX(-50%) rotateY(720deg)}
+}
+/* 4. 杠杆管：杠杆改短，挂在管身右侧（不再横穿管子像门把手） */
+.lp-levy .lever{left:50%;margin-left:8px;width:56px;transform:none}
+.lp-levy.up .lever{transform:translateY(-34px)}
+/* ======== 资料来源 + 个人创作声明（全系列通用） ======== */
+.srcs{margin-top:12px;padding-top:10px;border-top:1px solid rgba(0,0,0,.12);font-size:11px;line-height:1.85}
+.srcs-h{display:block;font-size:10px;letter-spacing:.2em;opacity:.55;margin-bottom:4px}
+.srcs-l a{color:#8a2f3c;text-decoration:underline;text-underline-offset:2px}
+.srcs-l span{opacity:.6}
+.srcnote{margin-top:6px;font-size:10px;opacity:.62;letter-spacing:.04em}
+</style>
+</head>
+<body>
+
+<section class="hero" id="hero">
+  <div class="hero-term" id="term"></div>
+  <div class="eyebrow">Old World Series · Vol. 03 · Drawable</div>
+  <h1>口红编年史</h1>
+  <p class="hero-sub">THIRTEEN ERAS, THIRTEEN BRUSHES · 3000 BC — 2026</p>
+  <p class="hero-lead">一卷会换装、会换字体、更<b>可以画</b>的编年史。十三支口红都用 CSS 亲手造出，每支拧开后就是那个年代的画笔——干涩的赭红、洇墨的唇纸、带高光的好莱坞正红、发光的荧光玫……下面这张纸，先画一笔？</p>
+  <div class="hero-ltp ltp lp-50s" id="heroLtp" title="点击拧开/合上">
+    <span class="hint-b">点击拧开</span>
+    <div class="bt" style="background-color:#C41E3A"></div>
+    <div class="gold"></div>
+    <div class="tb"></div>
+  </div>
+  <div class="hero-paper" id="heroPaper">
+    <canvas id="heroCv" width="620" height="170"></canvas>
+    <span class="plbl">手稿 · No.0 — 经典正红</span>
+    <div class="hero-brush" id="heroBrush"><div class="bb" style="background-color:#C41E3A"></div><div class="tt"></div></div>
+  </div>
+  <div class="tl" id="tl"><span class="tl-cap" style="left:0">3000 BC</span><span class="tl-cap" style="right:0">2026</span></div>
+  <div class="scroll-hint">向下滚动</div>
+</section>
+
+<div class="chapter" id="chapter">
+  <span id="chLeft"><em>3000 BC</em>贝碗与赭红</span>
+  <span id="chRight">No. 01 / 13</span>
+</div>
+
+<nav class="dots" id="dots"></nav>
+
+<main id="mains"></main>
+
+<section class="outro">
+  <h2>笔换了十三支，<br><span>你的手一直是同一只。</span></h2>
+  <p>从贝壳里的一抹赭红，到气垫上的一按水光——色号、字体、纸的质感都在变，唯独"想画一笔"的心思五千年没变。画完的试色卡可以存成图片带走。</p>
+  <p class="keys"><b>点击口红</b> 拧开变画笔 · <b>拖动</b> 上色 · <b>唇印 / 擦净 / 存图</b> 在试色卡下</p>
+</section>
+
+<footer class="footer">
+  <span>OLD WORLD SERIES · VOL.03 · LIPSTICKS · DRAWABLE EDITION</span>
+  <button class="top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">回到 3000 BC</button>
+</footer>
+
+<script>
+(function(){
+'use strict';
+function $(id){ return document.getElementById(id); }
+function on(el,ev,fn,opt){ if(el) el.addEventListener(ev,fn,opt); }
+function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+function shade(hex,f){ /* 变暗/变亮 */
+  var n=parseInt(hex.slice(1),16),r=(n>>16)&255,g=(n>>8)&255,b=n&255;
+  r=clamp(Math.round(r*f),0,255);g=clamp(Math.round(g*f),0,255);b=clamp(Math.round(b*f),0,255);
+  return 'rgb('+r+','+g+','+b+')';
+}
+
+/* ============ 音频 ============ */
+var AC=null,master=null;
+function aInit(){
+  try{
+    if(!AC){
+      var A=window.AudioContext||window.webkitAudioContext;
+      if(!A) return false;
+      AC=new A(); master=AC.createGain(); master.gain.value=.4; master.connect(AC.destination);
+    }
+    if(AC.state==='suspended') AC.resume();
+    return true;
+  }catch(e){ return false; }
+}
+function T(f,dur,type,g,slide){
+  if(!aInit()) return;
+  try{
+    var t=AC.currentTime,o=AC.createOscillator(),gn=AC.createGain();
+    o.type=type||'square'; o.frequency.setValueAtTime(Math.max(20,f),t);
+    if(slide){ try{o.frequency.exponentialRampToValueAtTime(Math.max(20,slide),t+dur*.8)}catch(e){} }
+    gn.gain.setValueAtTime(.0001,t);
+    try{gn.gain.exponentialRampToValueAtTime(g||.07,t+.01)}catch(e){}
+    try{gn.gain.exponentialRampToValueAtTime(.0001,t+dur)}catch(e){}
+    o.connect(gn); gn.connect(master); o.start(t); o.stop(t+dur+.05);
+  }catch(e){}
+}
+function sClick(){ T(1900,.03,'square',.05); T(700,.05,'triangle',.05); }
+function sSlam(){ T(360,.07,'square',.09,180); }
+function sPop(){ T(190,.16,'sine',.2,70); }
+
+/* ============ 各站资料来源：有网页必须可跳转，无网页注明书名 ============ */
+var WIKI='https://en.wikipedia.org/wiki/Lipstick';
+var JOELIN='https://joelin.cc/p/9652';
+function L(u,t){return '<a href="'+u+'" target="_blank" rel="noopener">'+t+'</a>';}
+var DEFAULT_SRC=L(WIKI,'Wikipedia · Lipstick')+' · <span>本段为年代文化归纳，非逐条考据</span>';
+var SOURCES={
+ anc:  L(WIKI,'Wikipedia · Lipstick（古代苏美尔 / 埃及）'),
+ tang: L('https://m.thepaper.cn/baijiahao_11495661','澎湃新闻 · 古代不止有抿一抿的胭脂纸')+
+       ' · <span>另参：高春明《中国服饰名物考》（纸质书，无链接）</span>',
+ g1884:L(JOELIN,'口红历史：从朱砂与牛髓，到旋转金属管与色号工业（1884 娇兰）'),
+ levy: L(JOELIN,'同上 · 1915 Maurice Levy 与 Scovill 金属滑管')+
+       ' · '+L('https://www.fashion-china.com.cn/beauty/makeup/20150324/10093.html','中国E时尚 · 世界第一款美妆（另说 1911 年欧洲已有金属管）'),
+ s1923:L(JOELIN,'同上 · 1923 James Bruce Mason Jr. 旋升管专利')
+};
+var PNOTE='个人创作 · 非官方史料 · 若有差错 / 疏漏 / 不同见解，欢迎指正 · 感谢支持';
+
+/* ============ 13 站数据 ============ */
+var DATA=[
+ {id:'anc',yr:'3000 BC',cls:'era0',css:'lp-anc',title:'贝碗与赭红',en:'Shell & Ochre',
+  desc:'赭石与朱砂研碎的暗红盛在贝壳里——最早的口红只是一只碗加一根木签。',
+  color:'#8E2434',brush:'grit',
+  html:'<div class="bowl"><div class="paste"></div></div><div class="stick"></div>',
+  tip:'点击木签蘸色 · 笔触干涩带颗粒（矿物颜料）'},
+ {id:'tang',yr:'唐代',cls:'era1',css:'lp-tang',title:'唇纸',en:'Lip Paper',
+  desc:'棉纸浸透红蓝花汁，晾干成片——抿唇即上色，笔触也洇得像宣纸。',
+  color:'#C3272B',brush:'ink',
+  html:'<div class="pstack"><div class="pp"></div><div class="pp"></div><div class="pp"></div></div>',
+  tip:'点击唇纸抽一张 · 笔触洇墨晕染（宣纸口脂）'},
+ {id:'g1884',yr:'1884',cls:'era2',css:'lp-1884',title:'纸裹唇棒',en:'The First Commercial Stick',
+  desc:'娇兰的第一支商品唇棒用丝纸裹着——膏体还不能转出，只能剥开纸，用手或刷子蘸抹。',
+  color:'#A63A4A',brush:'wax',
+  html:'<div class="rod"></div><div class="wrap"></div>',
+  tip:'点击包装纸揭开 · 笔触是半透的蜡感'},
+ {id:'levy',yr:'1915',cls:'era3',css:'lp-levy',title:'杠杆金属管',en:"Levy's Sliding Tube",
+  desc:'勒维给金属管装上小杠杆，唇棒第一次能自己站起来。',
+  color:'#B03A2E',brush:'wax',
+  html:'<div class="bt" style="background-color:#B03A2E"></div><div class="tb"></div><div class="plaque"></div><div class="lever"></div>',
+  tip:'点击杠杆推出 · 蜡感笔触，覆盖力更强'},
+ {id:'s1923',yr:'1923',cls:'era4',css:'lp-1923',title:'旋杆口红',en:'The Swivel Patent',
+  desc:'旋升管专利注册。指间这轻轻一拧，从此一拧一百年。',
+  color:'#C0392B',brush:'cream',
+  html:'<span class="hint-b">点击拧开</span><div class="bt" style="background-color:#C0392B"></div><div class="tb"></div><div class="rg"></div>',
+  tip:'点击旋转拧升 · 经典奶油膏笔触'},
+ {id:'deco',yr:'1930s',cls:'era5',css:'lp-deco',title:'Art Deco 金壳',en:'Gold Case',
+  desc:'大萧条年代口红反而装进刻线金壳——买不起华服，买得起体面。',
+  color:'#9E3B32',brush:'shimmer',
+  html:'<span class="hint-b">点击拧开</span><div class="bt" style="background-color:#9E3B32"></div><div class="sk"></div><div class="tb"></div>',
+  tip:'点击金壳拧出 · 笔触带金箔闪屑'},
+ {id:'y50s',yr:'1950s',cls:'era6',css:'lp-50s',title:'好莱坞正红',en:'Hollywood Red',
+  desc:'黑管金环，银幕史上最著名的一抹红——梦露把它画进了胶片。',
+  color:'#C41E3A',brush:'gloss',
+  html:'<span class="hint-b">点击拧开</span><div class="bt" style="background-color:#C41E3A"></div><div class="gold"></div><div class="tb"></div>',
+  tip:'点击黑管拧出 · 笔触湿润带高光'},
+ {id:'y60s',yr:'1960s',cls:'era7',css:'lp-60s',title:'纤细浅粉',en:'The Slim Pastel Era',
+  desc:'管身瘦身、色彩转淡——马卡龙浅粉与 Twiggy 的薄唇定义了伦敦。',
+  color:'#E8A0B4',brush:'sheer',
+  html:'<span class="hint-b">点击拧开</span><div class="bt" style="background-color:#E8A0B4"></div><div class="tb"></div><div class="pinkline"></div>',
+  tip:'点击细管拧出 · 笔触轻盈半透'},
+ {id:'y70s',yr:'1970s',cls:'era8',css:'lp-70s',title:'唇釉软管',en:'Lip Gloss, Squeeze It',
+  desc:'迪斯科的年代唇彩要靠挤——光泽代替轮廓，闪亮代替宣言。',
+  color:'#E8794E',brush:'wet',
+  html:'<div class="glossblob"></div><div class="nozzle"></div><div class="soft"></div>',
+  tip:'点击软管挤出一滴 · 笔触湿亮如釉'},
+ {id:'y80s',yr:'1980s',cls:'era9',css:'lp-80s',title:'霓虹黑管',en:'Neon & Bold',
+  desc:'乌黑管身配荧光玫红——与垫肩一起，大胆就是口号。',
+  color:'#E8356F',brush:'neon',
+  html:'<span class="hint-b">点击拧开</span><div class="bt" style="background-color:#E8356F"></div><div class="tb"></div><div class="neon"></div>',
+  tip:'点击黑管拧出 · 笔触自带霓虹辉光'},
+ {id:'y90s',yr:'1990s',cls:'era10',css:'lp-90s',title:'哑光砖棕',en:'The 90s Matte Brown',
+  desc:'更细的管、更哑的膏、更棕的号——垃圾摇滚把"没涂匀"变成态度。',
+  color:'#9E5B4A',brush:'matte',
+  html:'<span class="hint-b">点击拧开</span><div class="bt" style="background-color:#9E5B4A"></div><div class="tb"></div><div class="mattetag"></div>',
+  tip:'点击细管拧出 · 笔触哑光带颗粒'},
+ {id:'y2010',yr:'2010s',cls:'era11',css:'lp-2010',title:'液体鹿毛刷',en:'Liquid Matte Wand',
+  desc:'鹿毛刷头取代斜切膏体——上唇即成绒膜的液体哑光。',
+  color:'#A42B54',brush:'liquid',
+  html:'<div class="wand"><div class="doe"></div><div class="stem"></div><div class="cap"></div></div><div class="vial"><div class="liquid"></div></div>',
+  tip:'点击刷杆抽出 · 笔触浓色带深色描边'},
+ {id:'y2020',yr:'2020s',cls:'era12',css:'lp-2020',title:'气垫 tint',en:'Cushion Glow & Refill',
+  desc:'水光 tint 指尖轻按即上色；替换芯让口红学会"可持续"。',
+  color:'#F0716A',brush:'water',
+  html:'<div class="compact"><div class="base"></div><div class="pad"></div><div class="lid"></div></div><div class="finger"></div>',
+  tip:'点击粉盒掀盖蘸色 · 笔触如水彩晕开'}
+];
+
+/* ============ 笔刷引擎：13 种年代质感 ============ */
+function seg(ctx,x0,y0,x1,y1,d,w){
+  var col=d.color;
+  ctx.save();
+  ctx.lineCap='round'; ctx.lineJoin='round';
+  var mx=(x0+x1)/2,my=(y0+y1)/2;
+  switch(d.brush){
+    case 'grit': /* 干涩矿物颗粒 */
+      ctx.globalAlpha=.5; ctx.strokeStyle=col; ctx.lineWidth=w*.7;
+      ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);ctx.stroke();
+      ctx.fillStyle=col;
+      for(var i=0;i<5;i++){ ctx.globalAlpha=Math.random()*.4;
+        ctx.beginPath();ctx.arc(mx+(Math.random()-.5)*w*1.6,my+(Math.random()-.5)*w*1.6,Math.random()*1.6+.4,0,7);ctx.fill(); }
+      break;
+    case 'ink': /* 洇墨 */
+      ctx.globalAlpha=.15; ctx.strokeStyle=col; ctx.lineWidth=w*2.3;
+      ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);ctx.stroke();
+      ctx.globalAlpha=.8; ctx.lineWidth=w*.65;
+      ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);ctx.stroke();
+      break;
+    case 'wax': /* 蜡 */
+      ctx.globalAlpha=.82; ctx.strokeStyle=col; ctx.lineWidth=w;
+      ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);ctx.stroke();
+      break;
+    case 'cream': /* 奶油膏 */
+      ctx.globalAlpha=1; ctx.strokeStyle=col; ctx.lineWidth=w;
+      ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);ctx.stroke();
+      break;
+    case 'shimmer': /* 金箔闪屑 */
+      ctx.globalAlpha=.95; ctx.strokeStyle=col; ctx.lineWidth=w;
+      ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);ctx.stroke();
+      ctx.fillStyle='#F4E0A0';
+      for(var s=0;s<3;s++){ ctx.globalAlpha=Math.random()*.55;
+        ctx.fillRect(mx+(Math.random()-.5)*w*1.8,my+(Math.random()-.5)*w*1.8,1.4,1.4); }
+      break;
+    case 'gloss': /* 高光釉 */
+      ctx.globalAlpha=1; ctx.strokeStyle=col; ctx.lineWidth=w;
+      ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);ctx.stroke();
+      ctx.globalAlpha=.4; ctx.strokeStyle='rgba(255,255,255,.85)'; ctx.lineWidth=w*.26;
+      ctx.beginPath();ctx.moveTo(x0,y0-w*.3);ctx.lineTo(x1,y1-w*.3);ctx.stroke();
+      break;
+    case 'sheer': /* 轻透 */
+      ctx.globalAlpha=.3; ctx.strokeStyle=col; ctx.lineWidth=w*1.25;
+      ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);ctx.stroke();
+      break;
+    case 'wet': /* 湿釉 */
+      ctx.shadowColor=col; ctx.shadowBlur=5;
+      ctx.globalAlpha=.9; ctx.strokeStyle=col; ctx.lineWidth=w;
+      ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);ctx.stroke();
+      ctx.shadowBlur=0;
+      ctx.globalAlpha=.55; ctx.strokeStyle='rgba(255,255,255,.8)'; ctx.lineWidth=w*.3;
+      ctx.beginPath();ctx.moveTo(x0,y0-w*.32);ctx.lineTo(x1,y1-w*.32);ctx.stroke();
+      break;
+    case 'neon': /* 霓虹 */
+      ctx.shadowColor=col; ctx.shadowBlur=14;
+      ctx.globalAlpha=.85; ctx.strokeStyle=col; ctx.lineWidth=w*.9;
+      ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);ctx.stroke();
+      break;
+    case 'matte': /* 哑光颗粒 */
+      ctx.globalAlpha=1; ctx.strokeStyle=col; ctx.lineWidth=w;
+      ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);ctx.stroke();
+      ctx.fillStyle='rgba(30,15,10,.16)';
+      for(var m=0;m<4;m++){ ctx.globalAlpha=Math.random()*.5;
+        ctx.fillRect(mx+(Math.random()-.5)*w*1.5,my+(Math.random()-.5)*w*1.5,1,1); }
+      break;
+    case 'liquid': /* 液体哑光 · 深边 */
+      ctx.globalAlpha=.55; ctx.strokeStyle=shade(col,.55); ctx.lineWidth=w+2;
+      ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);ctx.stroke();
+      ctx.globalAlpha=1; ctx.strokeStyle=col; ctx.lineWidth=w;
+      ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);ctx.stroke();
+      break;
+    case 'water': /* 水彩 */
+      ctx.globalAlpha=.14; ctx.strokeStyle=col; ctx.lineWidth=w*1.6;
+      ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);ctx.stroke();
+      ctx.globalAlpha=.3; ctx.lineWidth=w*.55;
+      ctx.beginPath();ctx.moveTo(x0+1,y0+1);ctx.lineTo(x1+1,y1+1);ctx.stroke();
+      break;
+    default:
+      ctx.strokeStyle=col; ctx.lineWidth=w;
+      ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);ctx.stroke();
+  }
+  ctx.restore();
+}
+
+/* 唇印（画在 canvas 上） */
+var KISS=new Path2D('M2 20 Q10 5 20 12 L32 8 L44 12 Q54 5 62 20 Q52 34 32 38 Q12 34 2 20 Z');
+function stampKiss(ctx,d){
+  ctx.save();
+  var s=1+Math.random()*.5;
+  ctx.translate(40+Math.random()*(ctx.canvas.width-100),30+Math.random()*(ctx.canvas.height-70));
+  ctx.rotate((Math.random()-.5)*.5); ctx.scale(s,s);
+  ctx.globalAlpha=.8+Math.random()*.2;
+  ctx.fillStyle=d.color; ctx.fill(KISS);
+  ctx.restore();
+}
+
+/* ============ 组装展台 ============ */
+var mains=$('mains'),booths=[];
+DATA.forEach(function(d,i){
+  var sec=document.createElement('section');
+  sec.className='booth '+d.cls+(i%2?' rev':'');
+  sec.id='b'+(i+1);
+  sec.setAttribute('data-year',d.yr);
+  sec.setAttribute('data-name',d.title);
+  sec.innerHTML=
+   '<div class="meta">'+
+    '<div class="booth-no">No. '+('0'+(i+1)).slice(-2)+'</div>'+
+    '<div class="booth-year">'+d.yr+'</div>'+
+    '<h2 class="booth-title">'+d.title+'<span class="en">'+d.en+'</span></h2>'+
+    '<p class="booth-desc">'+d.desc+'</p>'+
+    '<div class="swatch"><i style="background:'+d.color+'"></i><span>年代色 '+d.color+' · 笔触 '+d.brush+'</span></div>'+
+    '<div class="srcs"><span class="srcs-h">资料来源</span>'+
+     '<div class="srcs-l">'+(SOURCES[d.id]||DEFAULT_SRC)+'</div>'+
+     '<div class="srcnote">'+PNOTE+'</div>'+
+    '</div>'+
+   '</div>'+
+   '<div class="stage">'+
+    '<div class="ltp '+d.css+'" id="lt'+d.id+'">'+d.html+'</div>'+
+    '<div class="paintcard" id="pc'+d.id+'">'+
+     '<canvas width="380" height="180"></canvas>'+
+     '<span class="plbl">试色卡 · '+d.yr+'</span>'+
+     '<span class="pnote">先拧开上方的口红 ↑</span>'+
+     '<div class="brushLip"><div class="bb" style="background-color:'+d.color+'"></div><div class="tt"></div></div>'+
+    '</div>'+
+    '<div class="acts">'+
+     '<button class="abtn" data-act="kiss" data-id="'+d.id+'">盖一枚唇印</button>'+
+     '<button class="abtn" data-act="clear" data-id="'+d.id+'">擦净</button>'+
+     '<button class="abtn" data-act="save" data-id="'+d.id+'">存图</button>'+
+    '</div>'+
+    '<p class="pt">'+d.tip+'</p>'+
+    '<p class="cap"><b>画法</b>拧开 → 在试色卡上按住拖动 · 速度越快笔越细</p>'+
+   '</div>';
+  mains.appendChild(sec);
+  booths.push(sec);
+  setupPaint(d,sec);
+});
+
+/* ============ 每站：口红开合 + 画布 ============ */
+function setupPaint(d,sec){
+  var ltp=sec.querySelector('.ltp'),
+      card=sec.querySelector('.paintcard'),
+      cv=card.querySelector('canvas'),
+      brush=card.querySelector('.brushLip'),
+      ctx=cv.getContext('2d');
+  var open=false,drawing=false,last=null,w=10;
+
+  on(ltp,'click',function(){
+    open=!open;
+    var wasUp=ltp.classList.contains('up');
+    ltp.classList.remove('spin');
+    if(d.css==='lp-1923'||d.css==='lp-50s'||d.css==='lp-60s'||d.css==='lp-deco'){
+      void ltp.offsetWidth; ltp.classList.add('spin');
+    }
+    if(open){ ltp.classList.add('up'); card.classList.add('open'); card.classList.remove('needopen'); sClick(); }
+    else{ ltp.classList.remove('up'); card.classList.remove('open'); sSlam(); }
+  });
+
+  function pt(e){
+    var r=cv.getBoundingClientRect();
+    return { x:(e.clientX-r.left)/r.width*cv.width, y:(e.clientY-r.top)/r.height*cv.height };
+  }
+  function moveBrush(e){
+    var r=card.getBoundingClientRect();
+    brush.style.left=(e.clientX-r.left-13)+'px';
+    brush.style.top=(e.clientY-r.top-58)+'px';
+    brush.style.transform='rotate(-24deg)';
+  }
+  on(cv,'pointermove',function(e){ moveBrush(e); if(drawing) paintTo(e); });
+  on(cv,'pointerenter',function(e){ moveBrush(e); });
+  on(cv,'pointerdown',function(e){
+    if(!open){ card.classList.add('needopen'); return; }
+    e.preventDefault();
+    drawing=true; last=pt(e); w=10;
+    brush.classList.add('pressing');
+    try{ cv.setPointerCapture(e.pointerId); }catch(err){}
+  });
+  on(window,'pointerup',function(){ drawing=false; brush.classList.remove('pressing'); });
+  function paintTo(e){
+    var p=pt(e);
+    var dist=Math.hypot(p.x-last.x,p.y-last.y);
+    var target=clamp(15-dist*.35,3.5,15);
+    w+=(target-w)*.35;
+    seg(ctx,last.x,last.y,p.x,p.y,d,w);
+    last=p;
+  }
+
+  card._ctx=ctx; card._data=d;
+}
+
+/* 三个按钮 */
+[].forEach.call(document.querySelectorAll('[data-act]'),function(btn){
+  on(btn,'click',function(){
+    var card=$('pc'+btn.getAttribute('data-id'));
+    if(!card) return;
+    var act=btn.getAttribute('data-act');
+    if(act==='kiss'){ stampKiss(card._ctx,card._data); sPop(); }
+    if(act==='clear'){
+      var ctx=card._ctx,fill=getComputedStyle(card.querySelector('canvas')).background;
+      ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height); sClick();
+    }
+    if(act==='save'){
+      try{
+        var a=document.createElement('a');
+        a.download='试色卡-'+card._data.yr+'.png';
+        a.href=card._ctx.canvas.toDataURL('image/png');
+        a.click();
+      }catch(e){}
+    }
+  });
+});
+
+/* ============ Hero：先画一笔 ============ */
+(function(){
+  var ltp=$('heroLtp'),paper=$('heroPaper'),cv=$('heroCv'),brush=$('heroBrush');
+  if(!cv) return;
+  var ctx=cv.getContext('2d');
+  var D={color:'#C41E3A',brush:'gloss'};
+  var drawing=false,last=null,w=10;
+  on(ltp,'click',function(){
+    var up=ltp.classList.toggle('up');
+    ltp.classList.remove('spin'); void ltp.offsetWidth;
+    if(up){ ltp.classList.add('spin'); sClick(); } else sSlam();
+  });
+  function pt(e){
+    var r=cv.getBoundingClientRect();
+    return { x:(e.clientX-r.left)/r.width*cv.width, y:(e.clientY-r.top)/r.height*cv.height };
+  }
+  on(cv,'pointermove',function(e){
+    var r=paper.getBoundingClientRect();
+    brush.style.left=(e.clientX-r.left-15)+'px';
+    brush.style.top=(e.clientY-r.top-66)+'px';
+    brush.style.transform='rotate(-24deg)';
+    if(drawing){
+      var p=pt(e),dist=Math.hypot(p.x-last.x,p.y-last.y);
+      var target=clamp(16-dist*.35,4,16); w+=(target-w)*.35;
+      seg(ctx,last.x,last.y,p.x,p.y,D,w); last=p;
+    }
+  });
+  on(cv,'pointerdown',function(e){
+    e.preventDefault(); drawing=true; last=pt(e); w=10;
+    brush.classList.add('pressing');
+    try{ cv.setPointerCapture(e.pointerId); }catch(err){}
+  });
+  on(window,'pointerup',function(){ drawing=false; brush.classList.remove('pressing'); });
+})();
+
+/* ============ 页面框架 ============ */
+var term=$('term');
+if(term){
+  var lines=['> load --history cosmetics/3000bc..2026','> 13 artifacts found','> loading 13 brushes + 13 typefaces ... done','> render --drawable'];
+  var li=0,ci=0,out='';
+  (function type(){
+    if(li>=lines.length){ term.innerHTML=out.replace(/\n$/,'')+'<br>&gt; <span class="caret"></span>'; return; }
+    out+=lines[li][ci]; ci++;
+    if(ci>=lines[li].length){ out+='\n'; li++; ci=0; setTimeout(type,260); }
+    else setTimeout(type,26);
+    term.innerHTML=out.replace(/\n/g,'<br>');
+  })();
+  setTimeout(function(){ var h=$('hero'); if(h) h.classList.add('on'); },1400);
+}
+var total=booths.length;
+var io=new IntersectionObserver(function(es){
+  es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+},{threshold:.1});
+booths.forEach(function(b){ io.observe(b); });
+var tl=$('tl'),dots=$('dots');
+var heroH=$('hero')?$('hero').offsetHeight:600;
+booths.forEach(function(b,i){
+  var d=document.createElement('span');
+  d.className='tl-dot'; d.style.left=((i+.5)/total*100)+'%';
+  d.setAttribute('data-label',b.dataset.year+' '+b.dataset.name);
+  on(d,'click',function(){ b.scrollIntoView({behavior:'smooth',block:'start'}); });
+  if(tl) tl.appendChild(d);
+  var a=document.createElement('a');
+  a.href='#'+b.id; a.setAttribute('data-label',b.dataset.year);
+  on(a,'click',function(ev){ ev.preventDefault(); b.scrollIntoView({behavior:'smooth'}); });
+  if(dots) dots.appendChild(a);
+});
+var tlDots=[].slice.call(document.querySelectorAll('.tl-dot'));
+var dotLinks=dots?[].slice.call(dots.children):[];
+var chapter=$('chapter'),chL=$('chLeft'),chR=$('chRight');
+var ticking=false;
+function onScroll(){
+  if(ticking) return; ticking=true;
+  requestAnimationFrame(function(){
+    ticking=false;
+    var y=window.scrollY,cur=-1;
+    booths.forEach(function(b,i){ if(b.getBoundingClientRect().top<=120) cur=i; });
+    if(chapter) chapter.classList.toggle('on',y>heroH-80);
+    if(cur>=0){
+      var b=booths[cur];
+      if(chL) chL.innerHTML='<em>'+b.dataset.year+'</em>'+b.dataset.name;
+      if(chR) chR.textContent='No. '+('0'+(cur+1)).slice(-2)+' / '+total;
+      dotLinks.forEach(function(a,i){ a.classList.toggle('act',i===cur); });
+      tlDots.forEach(function(d,i){ d.classList.toggle('act',i===cur); });
+    }
+  });
+}
+window.addEventListener('scroll',onScroll,{passive:true});
+onScroll();
+document.addEventListener('keydown',function(e){
+  if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight') return;
+  var cur=-1;
+  booths.forEach(function(b,i){ if(b.getBoundingClientRect().top<=120) cur=i; });
+  if(cur<0) return;
+  if(e.key==='ArrowRight'&&cur<total-1) booths[cur+1].scrollIntoView({behavior:'smooth'});
+  if(e.key==='ArrowLeft'&&cur>0) booths[cur-1].scrollIntoView({behavior:'smooth'});
+});
+})();
+</script>
+</body>
+</html>

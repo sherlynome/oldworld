@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>旧世界 · 藏品目录</title>
+<style>
+:root{
+  --room:#161311;
+  --room2:#221c17;
+  --bez:#3d362e;
+  --bez2:#5a4f40;
+  --crt:#0c0e0a;
+  --ph:#e8e3d2;
+  --ph-dim:rgba(232,227,210,.55);
+  --ph-faint:rgba(232,227,210,.32);
+  --copper:#c9a15a;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  background:radial-gradient(ellipse at 50% 18%,var(--room2),var(--room) 70%);
+  font-family:"Courier New","PingFang SC","Microsoft YaHei",monospace;
+  color:var(--ph);display:flex;align-items:center;justify-content:center;padding:10px;overflow:hidden;
+}
+.wrap{width:min(430px,98vw);position:relative}
+
+/* ---------- 顶部档案条 ---------- */
+.arch{display:flex;align-items:center;justify-content:space-between;
+  padding:6px 6px 12px;font-size:11px;letter-spacing:.28em;color:var(--ph-dim)}
+.arch b{color:var(--copper);font-weight:700}
+#sndBtn{background:none;border:1px solid rgba(232,227,210,.3);color:var(--ph-dim);
+  font:inherit;font-size:12px;letter-spacing:.1em;padding:4px 12px;cursor:pointer;border-radius:3px}
+
+/* ---------- CRT 机身 ---------- */
+.mac{background:linear-gradient(180deg,var(--bez2),var(--bez) 55%,#332d25);
+  border-radius:18px;padding:16px 14px 12px;
+  box-shadow:0 22px 50px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.14),inset 0 -2px 5px rgba(0,0,0,.5)}
+.brand{text-align:center;font-size:9.5px;letter-spacing:.42em;color:rgba(232,227,210,.4);margin-bottom:9px}
+.screen-frame{background:#1a1712;border-radius:12px;padding:9px;
+  box-shadow:inset 0 3px 8px rgba(0,0,0,.9),inset 0 -1px 2px rgba(255,255,255,.05)}
+.screen{position:relative;height:clamp(360px,60vh,548px);border-radius:8px;overflow:hidden;
+  background:var(--crt);display:flex;flex-direction:column;
+  box-shadow:inset 0 0 46px rgba(0,0,0,.85),0 0 0 1px #000}
+.screen::before{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;
+  background:radial-gradient(ellipse at 30% 22%,rgba(255,255,255,.08),transparent 42%)}
+.screen::after{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px)}
+.crt-on{animation:crtOn .8s ease}
+@keyframes crtOn{
+  0%{filter:brightness(0)}16%{filter:brightness(2.2) contrast(1.4)}
+  34%{filter:brightness(.4)}52%{filter:brightness(1.6)}100%{filter:brightness(1)}
+}
+.go{animation:goFlick .45s ease}
+@keyframes goFlick{0%{filter:brightness(1)}40%{filter:brightness(1.9) contrast(1.3)}100%{filter:brightness(0)}}
+
+/* ---------- 屏内：目录头 ---------- */
+.hdr{padding:14px 14px 10px;border-bottom:1px solid rgba(232,227,210,.14);flex:none;z-index:3}
+.h1{font-size:15px;letter-spacing:.28em;color:var(--ph);text-shadow:0 0 9px rgba(232,227,210,.4)}
+.h2{margin-top:6px;font-size:9.5px;letter-spacing:.2em;color:var(--ph-faint)}
+.h3{margin-top:5px;font-size:10.5px;letter-spacing:.1em;color:rgba(232,227,210,.42)}
+.stat{display:flex;gap:14px;margin-top:9px;font-size:10px;letter-spacing:.14em;color:var(--ph-faint)}
+.stat i{font-style:normal;color:var(--copper)}
+
+/* ---------- 排序 ---------- */
+.sort{display:flex;align-items:center;gap:8px;padding:8px 12px;flex:none;z-index:3;
+  border-bottom:1px solid rgba(232,227,210,.1)}
+.sort button{background:none;border:1px solid rgba(232,227,210,.22);color:var(--ph-faint);
+  font:inherit;font-size:10px;letter-spacing:.16em;padding:4px 9px;border-radius:2px;cursor:pointer;transition:.2s}
+.sort button.on{color:var(--crt);background:var(--ph);border-color:var(--ph)}
+.sort .note{margin-left:auto;font-size:9px;letter-spacing:.1em;color:rgba(232,227,210,.3)}
+
+/* ---------- 目录列表 ---------- */
+.list{flex:1;overflow-y:auto;overflow-x:hidden;padding:2px 0 4px;z-index:3;
+  -webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:rgba(232,227,210,.25) transparent}
+.list::-webkit-scrollbar{width:4px}
+.list::-webkit-scrollbar-thumb{background:rgba(232,227,210,.22);border-radius:2px}
+.row{display:flex;gap:10px;width:100%;text-align:left;background:none;border:none;
+  border-bottom:1px solid rgba(232,227,210,.07);padding:9px 12px 10px;font:inherit;
+  color:var(--ph-faint);cursor:pointer;transition:background .18s,color .18s;position:relative}
+.row:hover,.row.sel{background:rgba(232,227,210,.045)}
+.row .no{width:20px;flex:none;font-size:11px;letter-spacing:.04em;color:inherit;padding-top:1px}
+.row .mid{flex:1;min-width:0}
+.row .nm{font-size:13.5px;letter-spacing:.05em;color:rgba(232,227,210,.62);display:block}
+.row .nm em{font-style:normal;font-size:9.5px;letter-spacing:.12em;color:rgba(232,227,210,.3);margin-left:6px}
+.row .spec{display:block;font-size:9.5px;letter-spacing:.1em;color:rgba(232,227,210,.26);margin-top:3px}
+.row .q{display:block;font-size:10.5px;line-height:1.6;letter-spacing:.04em;
+  color:rgba(232,227,210,.34);margin-top:4px}
+.row .rt{flex:none;text-align:right;padding-top:1px}
+.row .yr{display:block;font-size:10.5px;letter-spacing:.06em;color:rgba(232,227,210,.38)}
+.row .tag{display:inline-block;margin-top:5px;font-size:8.5px;letter-spacing:.14em;
+  padding:2px 6px;border:1px solid rgba(232,227,210,.18);color:rgba(232,227,210,.3);border-radius:2px;white-space:nowrap}
+
+/* 已开机的一条 */
+.row.ready{color:var(--ph)}
+.row.ready .nm{color:var(--ph);text-shadow:0 0 8px rgba(232,227,210,.35)}
+.row.ready .no{color:var(--copper)}
+.row.ready .q{color:rgba(232,227,210,.58)}
+.row.ready .yr{color:var(--copper)}
+.row.ready .tag{border-color:rgba(201,161,90,.6);color:var(--copper)}
+.row.ready::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--copper);
+  box-shadow:0 0 8px rgba(201,161,90,.8)}
+.row.ready .tag::before{content:"◉ ";font-size:7px}
+
+/* 封存条目点按后抖动 */
+.shake{animation:shk .34s ease}
+@keyframes shk{0%,100%{transform:translateX(0)}22%{transform:translateX(-4px)}55%{transform:translateX(4px)}80%{transform:translateX(-2px)}}
+
+/* 从角色页返回：定位并短暂标记刚看过的机器 */
+.row.back-hit{animation:backHit 2.2s ease}
+@keyframes backHit{
+  0%{background:rgba(201,161,90,.22);box-shadow:inset 0 0 0 1px rgba(201,161,90,.7)}
+  55%{background:rgba(201,161,90,.12);box-shadow:inset 0 0 0 1px rgba(201,161,90,.45)}
+  100%{background:transparent;box-shadow:none}
+}
+
+/* ---------- 屏内状态行 ---------- */
+.status{flex:none;border-top:1px solid rgba(232,227,210,.14);padding:8px 12px 9px;
+  font-size:10px;letter-spacing:.1em;color:rgba(232,227,210,.4);min-height:32px;z-index:3;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.status b{color:var(--copper);font-weight:400}
+.caret{display:inline-block;width:6px;height:10px;background:var(--ph);vertical-align:-1px;
+  margin-right:5px;animation:blink 1.1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* ---------- 机身下部 ---------- */
+.vent{height:12px;margin:10px 8px 0;
+  background:repeating-linear-gradient(90deg,rgba(0,0,0,.4) 0 4px,transparent 4px 10px);
+  border-radius:2px;opacity:.6}
+.under{display:flex;align-items:center;gap:10px;padding:6px 8px 2px}
+.plate{flex:1;font-size:8.5px;letter-spacing:.26em;color:rgba(232,227,210,.3)}
+.led{width:9px;height:9px;border-radius:50%;background:#e0512f;
+  box-shadow:0 0 7px rgba(224,81,47,.9);transition:.3s;animation:ledP 3.4s ease-in-out infinite}
+@keyframes ledP{0%,100%{opacity:1}50%{opacity:.55}}
+
+/* ---------- 页脚 ---------- */
+.foot{padding:11px 8px 2px;text-align:center;font-size:9.5px;letter-spacing:.26em;
+  color:rgba(232,227,210,.26);line-height:2}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="arch">
+    <span>旧世界系列 · <b>目录</b></span>
+    <button id="sndBtn" aria-label="声音开关">♪ 开</button>
+  </div>
+
+  <div class="mac">
+    <div class="brand">WORLD BEFORE NOW · ARCHIVE TERMINAL</div>
+    <div class="screen-frame">
+      <div class="screen crt-on" id="screen">
+        <div class="hdr">
+          <div class="h1">旧 世 界 · 藏 品 目 录</div>
+          <div class="h2">INDEX OF TEN MACHINES · 1946 — 1993</div>
+          <div class="h3">它们各自讲述自己的年代，不替对方说话。</div>
+          <div class="stat"><span>藏品 <i>10</i></span><span>已开机 <i>10</i></span><span>封存 <i>0</i></span></div>
+        </div>
+
+        <div class="sort">
+          <button data-sort="cur" class="on">策展顺序</button>
+          <button data-sort="year">年代顺序</button>
+          <span class="note" id="sortNote">编号非年代顺序</span>
+        </div>
+
+        <div class="list" id="list" role="list"></div>
+
+        <div class="status" id="status"><span class="caret"></span>轻触条目 · 已开机的可以进去听</div>
+      </div>
+    </div>
+    <div class="vent"></div>
+    <div class="under">
+      <div class="plate">MODEL WB-10 · 10 ENTRIES</div>
+      <div class="led" id="led"></div>
+    </div>
+  </div>
+
+  <div class="foot">十台机器 · 十段自述 · 每台一个交互点<br>客观历史陈述 · 数字均可考据</div>
+</div>
+
+<script>
+/* ================= 音效 ================= */
+var actx=null, soundOn=true;
+function AC(){
+  if(!soundOn) return null;
+  if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)();
+  if(actx.state==='suspended') actx.resume();
+  return actx;
+}
+function beep(f,d,type,vol,slide,delay){
+  var ac=AC(); if(!ac) return;
+  var t=ac.currentTime+(delay||0);
+  var o=ac.createOscillator(),g=ac.createGain();
+  o.type=type||'square';
+  o.frequency.setValueAtTime(f,t);
+  if(slide) o.frequency.exponentialRampToValueAtTime(slide,t+d);
+  g.gain.setValueAtTime(vol||.07,t);
+  g.gain.exponentialRampToValueAtTime(.0008,t+d);
+  o.connect(g);g.connect(ac.destination);
+  o.start(t);o.stop(t+d+.02);
+}
+
+/* ================= 藏品数据 ================= */
+/* ready: 已开机（可进入）；href: 角色页文件名 */
+var ITEMS=[
+  {no:'01',cn:'Apple I',en:'APPLE COMPUTER',year:1976,spec:'MOS 6502 · 1MHz · 约 200 台',
+   q:'「我不是那台改变世界的电脑。我是它的父亲。」',ready:true,href:'旧世界-01-AppleI.html'},
+  {no:'02',cn:'ENIAC',en:'PENNSYLVANIA',year:1946,spec:'17,468 只真空管 · 150kW',
+   q:'「我每做一道新题，都要被人重新接线好几天。」',ready:true,href:'旧世界-02-ENIAC.html'},
+  {no:'03',cn:'阿波罗制导计算机',en:'AGC · MIT',year:1966,spec:'2,048 字内存 · 36,864 字只读',
+   q:'「我的程序不是写出来的，是织女用针线编出来的。」',ready:true,href:'旧世界-03-AGC.html'},
+  {no:'04',cn:'Minitel',en:'FRANCE · PTT',year:1982,spec:'约 900 万台终端',
+   q:'「我免费，因为发终端比印黄页便宜。」',ready:true,href:'旧世界-04-Minitel.html'},
+  {no:'05',cn:'IBM 5150',en:'IBM · PROJECT CHESS',year:1981,spec:'Intel 8088 · $1,565 起',
+   q:'「我之后，人人桌上都有一块 IBM。」',ready:true,href:'旧世界-05-IBM5150.html'},
+  {no:'06',cn:'Commodore 64',en:'COMMODORE',year:1982,spec:'MOS 6510 · SID 音源',
+   q:'「吉尼斯说，我卖得最多。」',ready:true,href:'旧世界-06-C64.html'},
+  {no:'07',cn:'Macintosh',en:'APPLE COMPUTER',year:1984,spec:'128KB · $2,495',
+   q:'「我只有 128KB，装不下你们的怀疑。」',ready:true,href:'旧世界-07-Macintosh.html'},
+  {no:'08',cn:'Apple II',en:'APPLE COMPUTER',year:1977,spec:'4KB 起 · 全系列约 600 万台',
+   q:'「我父亲是实验品，我才是走进千家万户的。」',ready:true,href:'旧世界-08-AppleII.html'},
+  {no:'09',cn:'小霸王学习机',en:'中山 · 中国',year:1993,spec:'FC 兼容 · 单价 200–300 元',
+   q:'「他们用『学习』的名义把我买回家。」',ready:true,href:'旧世界-09-小霸王.html'},
+  {no:'10',cn:'Ceefax',en:'BBC · TELETEXT',year:1974,spec:'页码 100–899 · 服役 38 年',
+   q:'「38 年，我没有一张图片。」',ready:true,href:'旧世界-10-Ceefax.html'}
+];
+
+/* ================= 渲染 ================= */
+var listEl=document.getElementById('list'),
+    statusEl=document.getElementById('status'),
+    noteEl=document.getElementById('sortNote'),
+    screenEl=document.getElementById('screen'),
+    sndBtn=document.getElementById('sndBtn');
+var view='cur', selIdx=-1, statusTimer=null;
+
+function order(){
+  var arr=ITEMS.slice();
+  if(view==='year') arr.sort(function(a,b){return a.year-b.year;});
+  return arr;
+}
+function render(){
+  var arr=order(), html='';
+  for(var i=0;i<arr.length;i++){
+    var it=arr[i];
+    html+='<button class="row'+(it.ready?' ready':'')+'" data-no="'+it.no+'" role="listitem">'
+        +   '<span class="no">'+it.no+'</span>'
+        +   '<span class="mid">'
+        +     '<span class="nm">'+it.cn+'<em>'+it.en+'</em></span>'
+        +     '<span class="spec">'+it.spec+'</span>'
+        +     '<span class="q">'+it.q+'</span>'
+        +   '</span>'
+        +   '<span class="rt">'
+        +     '<span class="yr">'+it.year+'</span>'
+        +     '<span class="tag">'+(it.ready?'开机':'封存')+'</span>'
+        +   '</span>'
+        + '</button>';
+  }
+  listEl.innerHTML=html;
+  selIdx=-1;
+}
+function say(txt,hold){
+  clearTimeout(statusTimer);
+  statusEl.innerHTML='<span class="caret"></span>'+txt;
+  if(hold) statusTimer=setTimeout(function(){
+    statusEl.innerHTML='<span class="caret"></span>轻触条目 · 已开机的可以进去听';
+  },hold);
+}
+
+/* ================= 交互 ================= */
+listEl.addEventListener('click',function(e){
+  var row=e.target.closest('.row'); if(!row) return;
+  var no=row.getAttribute('data-no');
+  var it=null; for(var i=0;i<ITEMS.length;i++) if(ITEMS[i].no===no) it=ITEMS[i];
+  if(!it) return;
+
+  if(it.ready){
+    say('载入 <b>No.'+it.no+' '+it.cn+'</b> · 正在上电 …');
+    beep(660,.5,'sine',.08,180);
+    beep(110,.6,'sawtooth',.025,90);
+    screenEl.classList.add('go');
+    setTimeout(function(){ location.href=encodeURI(it.href); },520);
+    return;
+  }
+  /* 封存条目 */
+  row.classList.add('shake');
+  setTimeout(function(){row.classList.remove('shake');},360);
+  beep(140,.1,'square',.05);
+  say('No.'+it.no+' '+it.cn+' · '+it.year+' · <b>档案封存中</b>，尚未开机',2200);
+});
+
+/* 排序 */
+var sortBtns=document.querySelectorAll('.sort button');
+for(var i=0;i<sortBtns.length;i++){
+  sortBtns[i].addEventListener('click',function(){
+    if(this.classList.contains('on')) return;
+    for(var j=0;j<sortBtns.length;j++) sortBtns[j].classList.remove('on');
+    this.classList.add('on');
+    view=this.getAttribute('data-sort');
+    noteEl.textContent = view==='cur' ? '编号非年代顺序' : '按制造年份由早到晚';
+    beep(view==='cur'?740:920,.06,'square',.06);
+    render();
+    listEl.scrollTop=0;
+    say(view==='cur' ? '已按策展顺序排列' : '已按年代顺序排列（1946 → 1993）',1800);
+  });
+}
+
+/* 声音开关 */
+sndBtn.addEventListener('click',function(){
+  soundOn=!soundOn;
+  sndBtn.textContent=soundOn?'♪ 开':'♪ 关';
+  if(soundOn) beep(880,.05,'square',.06);
+});
+
+/* 键盘：上下选择 / 回车打开 */
+document.addEventListener('keydown',function(e){
+  var rows=listEl.querySelectorAll('.row');
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+    e.preventDefault();
+    if(!rows.length) return;
+    selIdx = e.key==='ArrowDown'
+      ? Math.min(selIdx+1, rows.length-1)
+      : Math.max(selIdx-1, 0);
+    for(var i=0;i<rows.length;i++) rows[i].classList.toggle('sel', i===selIdx);
+    rows[selIdx].scrollIntoView({block:'nearest'});
+    beep(1200,.02,'square',.02);
+  }else if(e.key==='Enter'&&selIdx>=0){
+    e.preventDefault(); rows[selIdx].click();
+  }
+});
+
+render();
+
+/* ---------- 从角色页返回：定位并标记刚看过的那台 ---------- */
+(function(){
+  var h=(location.hash||'').replace(/^#/,'');
+  if(!h) return;
+  var rows=listEl.querySelectorAll('.row'), tgt=null;
+  for(var i=0;i<rows.length;i++){ if(rows[i].getAttribute('data-no')===h){ tgt=rows[i]; break; } }
+  if(!tgt) return;
+  setTimeout(function(){
+    tgt.scrollIntoView({block:'center'});
+    tgt.classList.add('back-hit');
+    var it=null; for(var j=0;j<ITEMS.length;j++) if(ITEMS[j].no===h) it=ITEMS[j];
+    if(it) say('欢迎回来 · <b>No.'+it.no+' '+it.cn+'</b> 已归位',3000);
+    setTimeout(function(){ tgt.classList.remove('back-hit'); },2400);
+  },200);
+})();
+</script>
+</body>
+</html>

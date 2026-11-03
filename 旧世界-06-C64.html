@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>旧世界 No.06 · Commodore 64</title>
+<style>
+:root{
+  --room:#12100e; --room2:#1c1914; --bez:#b9ae8a; --bez2:#d9cfae;
+  --crt:#40318D; --ph:#b9b4ff; --ph-dim:rgba(185,180,255,.55); --glow:rgba(185,180,255,.3);
+  --copper:#e0c27a; --brand:rgba(70,58,36,.6); --ink:#b9b4ff;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  background:radial-gradient(ellipse at 50% 18%,var(--room2),var(--room) 70%);
+  font-family:"Courier New","PingFang SC","Microsoft YaHei",monospace;
+  color:var(--ph);display:flex;align-items:center;justify-content:center;padding:10px;overflow:hidden;
+}
+.wrap{width:min(430px,98vw);position:relative}
+.arch{display:flex;align-items:center;justify-content:space-between;
+  padding:6px 6px 12px;font-size:11px;letter-spacing:.28em;color:var(--ph-dim)}
+.arch b{color:var(--copper);font-weight:700}
+.arch-l{display:flex;align-items:center;gap:10px;min-width:0}
+.back{flex:none;display:inline-block;text-decoration:none;color:var(--ph-dim);
+  border:1px solid var(--glow);border-radius:3px;padding:3px 9px;
+  font-size:10px;letter-spacing:.14em;line-height:1.5;transition:all .2s}
+.back:hover{color:var(--ph);border-color:var(--copper);background:rgba(255,255,255,.06)}
+#sndBtn{background:none;border:1px solid var(--glow);color:var(--ph-dim);
+  font:inherit;font-size:12px;letter-spacing:.1em;padding:4px 12px;cursor:pointer;border-radius:3px}
+.mac{background:linear-gradient(180deg,var(--bez2),var(--bez) 55%,var(--bez));
+  border-radius:18px;padding:16px 14px 12px;
+  box-shadow:0 22px 50px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.14),inset 0 -2px 5px rgba(0,0,0,.5)}
+.brand{text-align:center;font-size:10px;letter-spacing:.5em;color:var(--brand);margin-bottom:9px}
+.screen-frame{background:#1a1712;border-radius:12px;padding:9px;
+  box-shadow:inset 0 3px 8px rgba(0,0,0,.9),inset 0 -1px 2px rgba(255,255,255,.05)}
+.screen{position:relative;height:342px;border-radius:8px;overflow:hidden;
+  background:var(--crt);
+  box-shadow:inset 0 0 46px rgba(0,0,0,.55),0 0 0 1px #000}
+.screen::before{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;
+  background:radial-gradient(ellipse at 30% 22%,rgba(255,255,255,.09),transparent 42%)}
+.screen::after{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px)}
+.crt-on{animation:crtOn .9s ease}
+@keyframes crtOn{0%{filter:brightness(0)}16%{filter:brightness(2.2) contrast(1.4)}34%{filter:brightness(.4)}52%{filter:brightness(1.6)}100%{filter:brightness(1)}}
+.crt-off{animation:crtOff .6s ease forwards}
+@keyframes crtOff{0%{transform:scaleY(1);filter:brightness(1)}55%{transform:scaleY(.035);filter:brightness(3)}100%{transform:scaleY(.035) scaleX(0);filter:brightness(0)}}
+.idle,.talk{position:absolute;inset:0;padding:18px 16px;display:flex;flex-direction:column;z-index:3}
+.idle{align-items:center;justify-content:center;gap:14px;text-align:center}
+.idle .mark{font-size:12px;letter-spacing:.3em;color:var(--ph-dim)}
+.idle .big{font-size:29px;font-weight:700;letter-spacing:.1em;color:var(--ph);text-shadow:0 0 14px var(--glow)}
+.idle .en{font-size:11px;letter-spacing:.26em;color:var(--ph-dim)}
+.pwr{margin-top:14px;background:none;border:1.5px solid var(--glow);color:var(--ph);
+  font:inherit;font-size:14px;letter-spacing:.28em;padding:11px 30px;cursor:pointer;border-radius:4px;
+  text-shadow:0 0 8px var(--glow);transition:all .2s}
+.pwr:hover{background:var(--glow);box-shadow:0 0 18px var(--glow)}
+.idle .hint{font-size:10px;letter-spacing:.2em;color:var(--ph-dim)}
+.talk{justify-content:flex-start;overflow:hidden;cursor:pointer}
+#lines{flex:1;overflow:hidden;font-size:14.5px;line-height:1.95;letter-spacing:.06em;
+  color:var(--ph);text-shadow:0 0 7px var(--glow);white-space:pre-wrap}
+#lines .done{color:var(--ph-dim);text-shadow:none}
+.cursor{display:inline-block;width:9px;height:16px;background:var(--ph);
+  vertical-align:-2px;margin-left:2px;animation:blink 1s steps(1) infinite;box-shadow:0 0 8px var(--glow)}
+@keyframes blink{50%{opacity:0}}
+.tap{padding-top:8px;font-size:10px;letter-spacing:.24em;color:var(--ph-dim);text-align:center}
+.case{position:absolute;inset:0;z-index:4;display:none;flex-direction:column;
+  align-items:center;justify-content:center;padding:14px 16px 12px}
+.case.on{display:flex;animation:fade 1.6s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.spot{position:absolute;top:-40px;left:50%;transform:translateX(-50%);
+  width:340px;height:250px;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 0%,rgba(232,227,210,.2),transparent 68%)}
+.wall{font-size:10px;letter-spacing:.5em;color:var(--ph-dim);margin-bottom:14px}
+.vitrine{position:relative;width:100%;max-width:330px;height:216px;
+  background:linear-gradient(180deg,#171b16,#101310);
+  border:1px solid rgba(232,227,210,.22);border-radius:6px;overflow:hidden;
+  box-shadow:0 14px 34px rgba(0,0,0,.7)}
+.vitrine::after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;
+  background:linear-gradient(112deg,transparent 30%,rgba(232,227,210,.13) 42%,rgba(232,227,210,.03) 50%,transparent 58%)}
+.plaque{margin-top:14px;text-align:center;font-size:11px;line-height:1.9;letter-spacing:.18em;color:var(--ph-dim)}
+.plaque b{color:var(--copper);font-size:12px}
+.again{margin-top:12px;background:none;border:1px solid var(--glow);color:var(--ph-dim);
+  font:inherit;font-size:11px;letter-spacing:.3em;padding:8px 26px;cursor:pointer;border-radius:3px}
+.again:hover{color:var(--ph);border-color:var(--glow)}
+.case-btns{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px}
+.case-btns .again{margin-top:0;padding:8px 18px;text-decoration:none;display:inline-block;line-height:1.5}
+.case-btns .home-a{border-color:var(--copper);color:var(--copper)}
+.case-btns .home-a:hover{background:rgba(255,255,255,.07);color:var(--ph)}
+.vent{height:12px;margin:10px 8px 0;
+  background:repeating-linear-gradient(90deg,rgba(0,0,0,.4) 0 4px,transparent 4px 10px);
+  border-radius:2px;opacity:.6}
+.under{display:flex;align-items:center;gap:10px;padding:6px 8px 2px}
+.slot{flex:1;height:9px;border-radius:5px;background:#2b261f;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.8),0 1px 0 rgba(255,255,255,.08)}
+.led{width:9px;height:9px;border-radius:50%;background:#e0512f;
+  box-shadow:0 0 7px rgba(224,81,47,.9);transition:.3s}
+.led.off{background:#4a413a;box-shadow:none}
+.foot{padding:11px 8px 2px;text-align:center;font-size:9.5px;letter-spacing:.3em;
+  color:var(--ph-dim);line-height:2}
+.bootfx{position:absolute;inset:0;z-index:5;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+.bootfx.on{display:flex}
+.gate{position:absolute;inset:0;z-index:5;display:none;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;background:rgba(8,8,6,.62);text-align:center}
+.gate.on{display:flex}
+.gate .gtitle{font-size:12px;letter-spacing:.3em;color:var(--ph)}
+.gate .gsub{font-size:10px;letter-spacing:.2em;color:var(--ph-dim)}
+.ready{position:absolute;top:14px;left:18px;right:18px;z-index:2;font-family:'Courier New',monospace;
+  font-size:11px;letter-spacing:.06em;color:#b9b4ff;text-shadow:0 0 5px rgba(185,180,255,.5);line-height:1.7}
+.talk{padding-top:66px}
+.piano{display:flex;gap:8px}
+.pk{width:58px;height:96px;background:#efe9d8;border-radius:0 0 6px 6px;cursor:pointer;
+  box-shadow:0 4px 0 #8a815f,inset 0 -8px 0 rgba(0,0,0,.08);color:#5a5140;font-size:11px;font-weight:700;
+  display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;font-family:'Manrope','Courier New',monospace}
+.pk:active{transform:translateY(3px);box-shadow:0 1px 0 #8a815f}
+.sidchip{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:84px;height:38px;background:#101408;border-radius:3px;display:flex;align-items:center;justify-content:center;color:#e0c27a;font-size:12px;letter-spacing:.24em;font-weight:700;box-shadow:inset 0 0 0 1px rgba(224,194,122,.55)}
+.sidchip::before,.sidchip::after{content:"";position:absolute;left:10px;right:10px;height:5px;background:repeating-linear-gradient(90deg,#e0c27a 0 3px,transparent 3px 7px)}
+.sidchip::before{top:-6px}.sidchip::after{bottom:-6px}
+/* ===== C64 · 电视 + 面包盒键盘 ===== */
+.dev{display:flex;flex-direction:column;gap:9px}
+.tv{position:relative;background:linear-gradient(180deg,#4a4640,#302d28);border:2px solid #211f1b;border-radius:12px;padding:9px 9px 7px;box-shadow:0 14px 30px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.1)}
+.tv-bay{background:#171510;border:3px solid #1d1a15;border-radius:10px;padding:7px;box-shadow:inset 0 4px 14px rgba(0,0,0,.8)}
+.screen-frame{background:transparent;padding:0;box-shadow:none;border-radius:0}
+.screen{border-radius:6px}
+.tv-ctl{display:flex;align-items:center;gap:10px;padding:8px 3px 0}
+.tv-ctl i{width:15px;height:15px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#8a8377,#3d3a33);box-shadow:0 1px 2px rgba(0,0,0,.6)}
+.tv-ctl span{font-size:8px;letter-spacing:.16em;color:rgba(185,180,255,.5)}
+.tv-ctl .led{margin-left:auto;width:9px;height:9px}
+.breadbin{position:relative;background:linear-gradient(180deg,#d9cfae,#b9ae8a 60%,#a89d79);border:2px solid #948a6c;border-radius:6px 6px 4px 4px;padding:9px 10px 8px;box-shadow:0 12px 26px rgba(0,0,0,.5),inset 0 2px 0 rgba(255,255,255,.55)}
+.bb-hd{display:flex;justify-content:space-between;align-items:center;font-size:9px;letter-spacing:.18em;color:#5a5140;padding-bottom:7px}
+.bb-hd b{font-size:12px}
+.bb-bars{display:flex;height:7px;width:52px;border-radius:1px;overflow:hidden}
+.bb-bars i{flex:1}
+.bb-bars i:nth-child(1){background:#61BB46}.bb-bars i:nth-child(2){background:#FDB827}.bb-bars i:nth-child(3){background:#F5821F}.bb-bars i:nth-child(4){background:#E03A3E}.bb-bars i:nth-child(5){background:#963D97}.bb-bars i:nth-child(6){background:#009DDC}
+.bb-kbd{background:#c8bd9c;border-radius:3px;padding:7px;box-shadow:inset 0 1px 3px rgba(0,0,0,.25)}
+.bb-kbd .krow{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;margin-bottom:3px}
+.bb-kbd .krow:last-child{margin-bottom:0}
+.bb-kbd .krow i{height:13px;border-radius:2px;background:linear-gradient(180deg,#e6dcc0,#bdb294);box-shadow:0 1.5px 0 #8a815f,inset 0 1px 0 rgba(255,255,255,.5)}
+.bb-ft{font-size:7.5px;letter-spacing:.15em;color:#5a5140;padding:7px 2px 0}
+.srcs{margin-top:14px;text-align:center;font-size:9.5px;letter-spacing:.04em;color:rgba(232,227,210,.45);line-height:1.95}
+.srcs-h{color:var(--copper);margin-bottom:5px;letter-spacing:.24em}
+.srcs-l a{color:rgba(185,140,255,.72);text-decoration:none}
+.srcs-l a:hover{text-decoration:underline}
+.srcs-l span{color:rgba(232,227,210,.45)}
+.pnote{margin-top:9px;padding:0 8px;color:rgba(232,227,210,.6);font-size:9px;letter-spacing:.05em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="arch">
+    <span class="arch-l"><a class="back go-home" id="home" href="旧世界-00-目录.html">◀ 目录</a><span>旧世界系列 · <b>No.06</b></span></span>
+    <button id="sndBtn" aria-label="声音开关">♪ 开</button>
+  </div>
+  <div class="dev">
+  <div class="tv">
+    <div class="tv-bay"><div class="screen-frame">
+      <div class="screen" id="screen">
+        <div class="idle" id="idle">
+          <div class="mark">— 卖得最多的那台 —</div>
+          <div class="big">Commodore 64</div>
+          <div class="en">64KB RAM · SID 声音芯片</div>
+          <button class="pwr" id="pwr">◉ 开 机</button>
+          <div class="hint">按下电源 · 弹一下 SID</div>
+        </div>
+        <div class="talk" id="talk" style="display:none">
+          <div id="lines"></div>
+          <div class="tap">轻触屏幕 加速讲述</div>
+        </div>
+        <div class="case" id="case">
+          <div class="spot"></div>
+          <div class="wall">请 勿 触 摸 玻 璃</div>
+          <div class="vitrine">
+<div style="position:absolute;inset:14px;background:#0d120c;border:1px solid rgba(224,194,122,.4);border-radius:4px;overflow:hidden">
+  <div class="sidchip">SID 6581</div>
+  <span style="position:absolute;right:12px;bottom:8px;color:#e0c27a;font-size:10px;letter-spacing:.2em">SOUND INTERFACE DEVICE</span>
+</div>
+          </div>
+          <div class="plaque"><b>COMMODORE 64 · 1982</b><br>吉尼斯认证最畅销单型号<br>约 1,250 – 1,700 万台 · 1994 年随公司停产</div>
+          <div class="srcs">
+            <div class="srcs-h">资料来源</div>
+            <div class="srcs-l"><a href="https://www.guinnessworldrecords.com" target="_blank" rel="noopener">Guinness World Records</a> · <a href="https://americanhistory.si.edu" target="_blank" rel="noopener">Smithsonian 美国历史博物馆</a> · <a href="https://computerhistory.org" target="_blank" rel="noopener">Computer History Museum</a> · <span>rip.so（C64 资料）</span></div>
+            <div class="pnote">个人创作 · 非官方史料 · 若有差错 / 疏漏 / 不同见解，欢迎指正 · 感谢支持</div>
+          </div>
+          <div class="case-btns">
+            <button class="again" id="again">重播自述</button>
+            <a class="again home-a go-home" href="旧世界-00-目录.html">回目录 ▸</a>
+          </div>
+        </div>
+        <div class="bootfx" id="bootfx"></div>
+<div class="gate" id="gate">
+  <div class="gtitle">SID 合成键盘</div>
+  <div class="gsub">弹三个键 · 听听养活一个流派的芯片</div>
+  <div class="piano">
+    <button class="pk" data-f="262">C</button><button class="pk" data-f="330">E</button>
+    <button class="pk" data-f="392">G</button><button class="pk" data-f="523">C↑</button>
+  </div>
+</div>
+      </div>
+    </div></div>
+    <div class="tv-ctl"><i></i><i></i><span>TV / RF MODULATOR</span><div class="led" id="led"></div></div>
+  </div>
+  <div class="breadbin">
+    <div class="bb-hd"><span>commodore</span><div class="bb-bars"><i></i><i></i><i></i><i></i><i></i><i></i></div><b>C64</b></div>
+    <div class="bb-kbd"><div class="krow"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="krow"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="krow"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="krow"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="bb-ft">COMMODORE 64 · MOS 6510 · 1982 · 64 KB RAM · SID 6581</div>
+  </div>
+</div>
+  <div class="foot">WORLD BEFORE NOW · 客观历史陈述 · 数字均可考据<br>线稿与音效皆由浏览器实时合成</div>
+</div>
+<script>
+/* ================= 音效引擎 ================= */
+var actx=null, soundOn=true;
+function AC(){
+  if(!soundOn) return null;
+  if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)();
+  if(actx.state==='suspended') actx.resume();
+  return actx;
+}
+function beep(freq,dur,type,vol,slideTo,delay){
+  var ac=AC(); if(!ac) return;
+  var t=ac.currentTime+(delay||0);
+  var o=ac.createOscillator(),g=ac.createGain();
+  o.type=type||'square';
+  o.frequency.setValueAtTime(freq,t);
+  if(slideTo) o.frequency.exponentialRampToValueAtTime(slideTo,t+dur);
+  g.gain.setValueAtTime(vol||.1,t);
+  g.gain.exponentialRampToValueAtTime(.0008,t+dur);
+  o.connect(g);g.connect(ac.destination);
+  o.start(t);o.stop(t+dur+.02);
+}
+/* Tone 规则：陈述句单哔 / 数字与关键信息双哔 / 结尾长哔渐弱 */
+var TF={"f": 900, "type": "square", "fl": 420};
+var BEEP={
+  '1':function(){beep(TF.f,.07,TF.type,.08);},
+  '2':function(){beep(TF.f*1.12,.06,TF.type,.09);beep(TF.f*1.12,.06,TF.type,.09,null,.11);},
+  'long':function(){beep(TF.fl,1.5,TF.ltype||'sine',.1,140);}
+};
+function bootBeep(){beep(523,.22,'square',.08);beep(659,.22,'square',.08,null,.2);beep(784,.3,'square',.08,null,.4);}
+
+/* ================= 台词（数字口径见资料库 V1.1「核实状态」） ================= */
+var LINES=[
+ {
+  "t": "你好。",
+  "b": "1"
+ },
+ {
+  "t": "我是 Commodore 64。1982 年发布，名字来自我体内的 64K 内存。",
+  "b": "2"
+ },
+ {
+  "t": "我被写进吉尼斯纪录：史上最畅销的单一电脑型号，大约 1,250 万到 1,700 万台。",
+  "b": "2"
+ },
+ {
+  "t": "我比 Apple II 便宜，比 IBM PC 便宜，还带着一颗会唱歌的 SID 芯片。",
+  "b": "2",
+  "g": true
+ },
+ {
+  "t": "十二年间，我和我的兄弟们占满了一代人的客厅地毯。接上电视，我就是游戏机。",
+  "b": "1"
+ },
+ {
+  "t": "车库里的音乐人用我的 SID 养出了一整个电子音乐流派。",
+  "b": "1"
+ },
+ {
+  "t": "1994 年 4 月，我和公司一起破产。",
+  "b": "2"
+ },
+ {
+  "t": "但直到今天，还有人翻出我，为我写歌。",
+  "b": "long"
+ }
+];
+
+/* ================= 状态机 ================= */
+var $=function(id){return document.getElementById(id);};
+var screen=$('screen'),idle=$('idle'),talk=$('talk'),caseEl=$('case'),
+    linesEl=$('lines'),led=$('led'),sndBtn=$('sndBtn');
+var running=false,typing=false,skip=false,timer=null,lineIdx=0,spoken=false;
+/* ENIAC 灯排闪烁（仅当存在 #lamprow） */
+(function(){var l=$('lamprow');if(!l)return;setInterval(function(){
+  if(!running||spoken)return;var ks=l.children;
+  for(var i=0;i<3;i++){var k=ks[Math.floor(Math.random()*ks.length)];k.classList.toggle('on',Math.random()>.5);}
+},120);})();
+function typeLine(i){
+  if(i>=LINES.length){finish();return;}
+  lineIdx=i;
+  var L=LINES[i];
+  var prev=document.createElement('div');
+  prev.className='done';
+  prev.textContent=LINES[i-1]?LINES[i-1].t:'';
+  if(i>0){linesEl.textContent='';linesEl.appendChild(prev);}
+  else linesEl.textContent='';
+  var cur=document.createElement('div');
+  var span=document.createElement('span');
+  var cursor=document.createElement('span');cursor.className='cursor';
+  cur.appendChild(span);cur.appendChild(cursor);
+  linesEl.appendChild(cur);
+  typing=true;skip=false;
+  var n=0;
+  (function step(){
+    if(skip){span.textContent=L.t;typing=false;afterLine(L);return;}
+    if(n>=L.t.length){typing=false;afterLine(L);return;}
+    span.textContent=L.t.slice(0,++n);
+    if(n%9===0&&Math.random()<.5) beep(1500+Math.random()*300,.02,'square',.018);
+    timer=setTimeout(step,42);
+  })();
+}
+function afterLine(L){
+  setTimeout(function(){
+    if(L.g&&typeof showGate==='function'){showGate(L);return;}
+    if(L.b&&BEEP[L.b])BEEP[L.b]();
+    setTimeout(function(){typeLine(lineIdx+1);},L.b==='long'?1400:620);
+  },160);
+}
+function skipLine(){ if(running&&typing){skip=true;} }
+function showGate(L){
+  var g=$('gate');
+  if(g){g.classList.add('on');if(typeof gateOpen==='function')gateOpen();}
+}
+function gateDone(){
+  var g=$('gate'); if(g)g.classList.remove('on');
+  var L=LINES[lineIdx];
+  if(L.b&&BEEP[L.b])BEEP[L.b]();
+  setTimeout(function(){typeLine(lineIdx+1);},L.b==='long'?1400:620);
+}
+function startTalk(){
+  idle.style.display='none';talk.style.display='flex';linesEl.textContent='';typeLine(0);
+}
+function finish(){
+  if(spoken)return;spoken=true;
+  setTimeout(function(){
+    screen.classList.add('crt-off');
+    beep(520,.5,'sine',.09,90);
+    setTimeout(function(){
+      talk.style.display='none';
+      screen.classList.remove('crt-off');
+      caseEl.classList.add('on');
+      led.classList.add('off');
+      screen.classList.add('crt-on');
+    },700);
+  },1300);
+}
+function power(){
+  if(running)return;running=true;
+  screen.classList.add('crt-on');
+  led.classList.remove('off');
+  bootBeep();
+  if(typeof powerExtra==='function'){powerExtra();return;}
+  setTimeout(startTalk,950);
+}
+function replay(){
+  spoken=false;running=false;
+  caseEl.classList.remove('on');
+  screen.classList.remove('crt-on','crt-off');
+  talk.style.display='none';
+  idle.style.display='flex';
+  linesEl.textContent='';
+  led.classList.remove('off');
+  beep(TF.f,.06,TF.type,.07);
+}
+$('pwr').addEventListener('click',function(e){e.stopPropagation();power();});
+talk.addEventListener('pointerdown',skipLine);
+$('again').addEventListener('click',function(e){e.stopPropagation();replay();});
+/* ===== 返回目录：顶栏常驻「◀ 目录」+ 收尾「回目录」+ Esc 快捷键 ===== */
+var CATALOG='旧世界-00-目录.html#06';
+Array.prototype.forEach.call(document.querySelectorAll('.go-home'),function(a){a.href=CATALOG;});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){location.href=CATALOG;}
+});
+sndBtn.addEventListener('click',function(e){
+  e.stopPropagation();soundOn=!soundOn;
+  sndBtn.textContent=soundOn?'♪ 开':'♪ 关';
+  if(soundOn)beep(TF.f,.05,TF.type,.06);
+});
+document.addEventListener('keydown',function(e){
+  if(e.target&&e.target.tagName==='A')return;
+  if(e.key===' '||e.key==='Enter'){e.preventDefault();skipLine();}
+});
+var pkN=0,pkHit={};
+function gateOpen(){pkN=0;pkHit={};}
+document.querySelectorAll('.pk').forEach(function(b){
+  b.addEventListener('click',function(){
+    if(!$('gate').classList.contains('on'))return;
+    var f=+b.dataset.f;
+    beep(f,.22,'square',.09);beep(f*2.01,.16,'square',.035);
+    if(!pkHit[b.dataset.f]){pkHit[b.dataset.f]=1;pkN++;}
+    if(pkN>=3){setTimeout(gateDone,600);}
+  });
+});
+</script>
+</body>
+</html>

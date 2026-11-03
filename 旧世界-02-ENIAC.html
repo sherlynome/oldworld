@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>旧世界 No.02 · ENIAC</title>
+<style>
+:root{
+  --room:#171310; --room2:#221b14; --bez:#3d3e43; --bez2:#55565c;
+  --crt:#0b0b0c; --ph:#ffb454; --ph-dim:rgba(255,180,84,.55); --glow:rgba(255,180,84,.35);
+  --copper:#d98e2b; --brand:rgba(255,180,84,.4); --ink:#ffb454;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  background:radial-gradient(ellipse at 50% 18%,var(--room2),var(--room) 70%);
+  font-family:"Courier New","PingFang SC","Microsoft YaHei",monospace;
+  color:var(--ph);display:flex;align-items:center;justify-content:center;padding:10px;overflow:hidden;
+}
+.wrap{width:min(430px,98vw);position:relative}
+.arch{display:flex;align-items:center;justify-content:space-between;
+  padding:6px 6px 12px;font-size:11px;letter-spacing:.28em;color:var(--ph-dim)}
+.arch b{color:var(--copper);font-weight:700}
+.arch-l{display:flex;align-items:center;gap:10px;min-width:0}
+.back{flex:none;display:inline-block;text-decoration:none;color:var(--ph-dim);
+  border:1px solid var(--glow);border-radius:3px;padding:3px 9px;
+  font-size:10px;letter-spacing:.14em;line-height:1.5;transition:all .2s}
+.back:hover{color:var(--ph);border-color:var(--copper);background:rgba(255,255,255,.06)}
+#sndBtn{background:none;border:1px solid var(--glow);color:var(--ph-dim);
+  font:inherit;font-size:12px;letter-spacing:.1em;padding:4px 12px;cursor:pointer;border-radius:3px}
+.mac{background:linear-gradient(180deg,var(--bez2),var(--bez) 55%,var(--bez));
+  border-radius:18px;padding:16px 14px 12px;
+  box-shadow:0 22px 50px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.14),inset 0 -2px 5px rgba(0,0,0,.5)}
+.brand{text-align:center;font-size:10px;letter-spacing:.5em;color:var(--brand);margin-bottom:9px}
+.screen-frame{background:#1a1712;border-radius:12px;padding:9px;
+  box-shadow:inset 0 3px 8px rgba(0,0,0,.9),inset 0 -1px 2px rgba(255,255,255,.05)}
+.screen{position:relative;height:342px;border-radius:8px;overflow:hidden;
+  background:var(--crt);
+  box-shadow:inset 0 0 46px rgba(0,0,0,.55),0 0 0 1px #000}
+.screen::before{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;
+  background:radial-gradient(ellipse at 30% 22%,rgba(255,255,255,.09),transparent 42%)}
+.screen::after{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px)}
+.crt-on{animation:crtOn .9s ease}
+@keyframes crtOn{0%{filter:brightness(0)}16%{filter:brightness(2.2) contrast(1.4)}34%{filter:brightness(.4)}52%{filter:brightness(1.6)}100%{filter:brightness(1)}}
+.crt-off{animation:crtOff .6s ease forwards}
+@keyframes crtOff{0%{transform:scaleY(1);filter:brightness(1)}55%{transform:scaleY(.035);filter:brightness(3)}100%{transform:scaleY(.035) scaleX(0);filter:brightness(0)}}
+.idle,.talk{position:absolute;inset:0;padding:18px 16px;display:flex;flex-direction:column;z-index:3}
+.idle{align-items:center;justify-content:center;gap:14px;text-align:center}
+.idle .mark{font-size:12px;letter-spacing:.3em;color:var(--ph-dim)}
+.idle .big{font-size:29px;font-weight:700;letter-spacing:.1em;color:var(--ph);text-shadow:0 0 14px var(--glow)}
+.idle .en{font-size:11px;letter-spacing:.26em;color:var(--ph-dim)}
+.pwr{margin-top:14px;background:none;border:1.5px solid var(--glow);color:var(--ph);
+  font:inherit;font-size:14px;letter-spacing:.28em;padding:11px 30px;cursor:pointer;border-radius:4px;
+  text-shadow:0 0 8px var(--glow);transition:all .2s}
+.pwr:hover{background:var(--glow);box-shadow:0 0 18px var(--glow)}
+.idle .hint{font-size:10px;letter-spacing:.2em;color:var(--ph-dim)}
+.talk{justify-content:flex-start;overflow:hidden;cursor:pointer}
+#lines{flex:1;overflow:hidden;font-size:14.5px;line-height:1.95;letter-spacing:.06em;
+  color:var(--ph);text-shadow:0 0 7px var(--glow);white-space:pre-wrap}
+#lines .done{color:var(--ph-dim);text-shadow:none}
+.cursor{display:inline-block;width:9px;height:16px;background:var(--ph);
+  vertical-align:-2px;margin-left:2px;animation:blink 1s steps(1) infinite;box-shadow:0 0 8px var(--glow)}
+@keyframes blink{50%{opacity:0}}
+.tap{padding-top:8px;font-size:10px;letter-spacing:.24em;color:var(--ph-dim);text-align:center}
+.case{position:absolute;inset:0;z-index:4;display:none;flex-direction:column;
+  align-items:center;justify-content:center;padding:14px 16px 12px}
+.case.on{display:flex;animation:fade 1.6s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.spot{position:absolute;top:-40px;left:50%;transform:translateX(-50%);
+  width:340px;height:250px;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 0%,rgba(232,227,210,.2),transparent 68%)}
+.wall{font-size:10px;letter-spacing:.5em;color:var(--ph-dim);margin-bottom:14px}
+.vitrine{position:relative;width:100%;max-width:330px;height:216px;
+  background:linear-gradient(180deg,#171b16,#101310);
+  border:1px solid rgba(232,227,210,.22);border-radius:6px;overflow:hidden;
+  box-shadow:0 14px 34px rgba(0,0,0,.7)}
+.vitrine::after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;
+  background:linear-gradient(112deg,transparent 30%,rgba(232,227,210,.13) 42%,rgba(232,227,210,.03) 50%,transparent 58%)}
+.plaque{margin-top:14px;text-align:center;font-size:11px;line-height:1.9;letter-spacing:.18em;color:var(--ph-dim)}
+.plaque b{color:var(--copper);font-size:12px}
+.again{margin-top:12px;background:none;border:1px solid var(--glow);color:var(--ph-dim);
+  font:inherit;font-size:11px;letter-spacing:.3em;padding:8px 26px;cursor:pointer;border-radius:3px}
+.again:hover{color:var(--ph);border-color:var(--glow)}
+.case-btns{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px}
+.case-btns .again{margin-top:0;padding:8px 18px;text-decoration:none;display:inline-block;line-height:1.5}
+.case-btns .home-a{border-color:var(--copper);color:var(--copper)}
+.case-btns .home-a:hover{background:rgba(255,255,255,.07);color:var(--ph)}
+.vent{height:12px;margin:10px 8px 0;
+  background:repeating-linear-gradient(90deg,rgba(0,0,0,.4) 0 4px,transparent 4px 10px);
+  border-radius:2px;opacity:.6}
+.under{display:flex;align-items:center;gap:10px;padding:6px 8px 2px}
+.slot{flex:1;height:9px;border-radius:5px;background:#2b261f;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.8),0 1px 0 rgba(255,255,255,.08)}
+.led{width:9px;height:9px;border-radius:50%;background:#e0512f;
+  box-shadow:0 0 7px rgba(224,81,47,.9);transition:.3s}
+.led.off{background:#4a413a;box-shadow:none}
+.foot{padding:11px 8px 2px;text-align:center;font-size:9.5px;letter-spacing:.3em;
+  color:var(--ph-dim);line-height:2}
+.bootfx{position:absolute;inset:0;z-index:5;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+.bootfx.on{display:flex}
+.gate{position:absolute;inset:0;z-index:5;display:none;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;background:rgba(8,8,6,.62);text-align:center}
+.gate.on{display:flex}
+.gate .gtitle{font-size:12px;letter-spacing:.3em;color:var(--ph)}
+.gate .gsub{font-size:10px;letter-spacing:.2em;color:var(--ph-dim)}
+.lamprow{display:grid;grid-template-columns:repeat(12,1fr);gap:7px;position:absolute;top:12px;left:16px;right:16px;z-index:2}
+.lamp{height:9px;border-radius:50%;background:#3a2f1c;box-shadow:inset 0 0 3px #000}
+.lamp.on{background:#ffb454;box-shadow:0 0 8px rgba(255,180,84,.85)}
+.talk{padding-top:56px}
+.patch{display:flex;align-items:center;justify-content:center;gap:0;width:100%;padding:0 26px}
+.sock{width:26px;height:26px;border-radius:50%;border:3px solid #d98e2b;background:#151210;box-shadow:0 0 10px rgba(217,142,43,.4)}
+.cord{flex:1;height:3px;background:linear-gradient(90deg,#3a2f24,#6b5433,#3a2f24);position:relative}
+.plug{width:34px;height:34px;border-radius:50%;border:3px solid #ffb454;background:#241d14;color:#ffb454;
+  font-family:inherit;font-size:11px;letter-spacing:.1em;cursor:pointer;transition:transform .5s ease,background .3s}
+.patch.plugged .plug{transform:translateX(0) scale(.001);opacity:0}
+.gate .cord.grow{flex:0 0 0}
+/* ===== ENIAC · 机柜面板 ===== */
+.dev{position:relative;background:linear-gradient(180deg,#5b5c62,#3c3d42 60%,#303135);
+ border:2px solid #232428;border-radius:5px;padding:9px 9px 7px;
+ box-shadow:0 22px 50px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.16),inset 0 -3px 8px rgba(0,0,0,.55)}
+.dev::before{content:"";position:absolute;inset:3px;border:1px solid rgba(0,0,0,.3);border-radius:3px;pointer-events:none}
+.rk-hd{display:flex;justify-content:space-between;gap:8px;font-size:8.5px;letter-spacing:.14em;color:rgba(255,180,84,.7);padding:1px 2px 7px;border-bottom:1px solid rgba(0,0,0,.5);margin-bottom:8px;white-space:nowrap;overflow:hidden}
+.lamprow{position:static!important;top:auto!important;left:auto!important;right:auto!important;z-index:auto!important;display:grid;grid-template-columns:repeat(12,1fr);gap:6px;margin:0 3px 8px}
+.lamp{height:10px;border-radius:2px}
+.rk-bay{background:#191a1d;border:2px solid #242529;border-radius:4px;padding:5px;box-shadow:inset 0 3px 10px rgba(0,0,0,.85)}
+.screen-frame{background:transparent;padding:0;box-shadow:none;border-radius:0}
+.screen{border-radius:2px;box-shadow:inset 0 0 46px rgba(0,0,0,.7),0 0 0 1px #000}
+.talk{padding-top:16px!important}
+.rk-tubes{display:grid;grid-template-columns:repeat(14,1fr);gap:4px;margin:9px 3px 7px}
+.rk-tubes i{height:20px;border-radius:3px 3px 1px 1px;background:linear-gradient(180deg,#6a6051,#2b2720);box-shadow:inset 0 2px 0 rgba(255,255,255,.12),0 1px 2px rgba(0,0,0,.6);position:relative}
+.rk-tubes i::after{content:"";position:absolute;left:50%;top:4px;transform:translateX(-50%);width:4px;height:9px;border-radius:2px;background:#ffb454;opacity:.5;box-shadow:0 0 5px rgba(255,180,84,.55)}
+.rk-sock{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin:0 3px}
+.rk-sock i{height:11px;border-radius:50%;background:#111;box-shadow:inset 0 2px 3px #000,0 0 0 1px rgba(255,180,84,.22)}
+.rk-ft{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 2px 0;font-size:8px;letter-spacing:.14em;color:rgba(255,180,84,.55)}
+.rk-ft .led{width:10px;height:10px;flex:0 0 10px;background:#ffb454;box-shadow:0 0 7px rgba(255,180,84,.9)}
+.srcs{margin-top:14px;text-align:center;font-size:9.5px;letter-spacing:.04em;color:rgba(232,227,210,.45);line-height:1.95}
+.srcs-h{color:var(--copper);margin-bottom:5px;letter-spacing:.24em}
+.srcs-l a{color:rgba(185,140,255,.72);text-decoration:none}
+.srcs-l a:hover{text-decoration:underline}
+.srcs-l span{color:rgba(232,227,210,.45)}
+.pnote{margin-top:9px;padding:0 8px;color:rgba(232,227,210,.6);font-size:9px;letter-spacing:.05em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="arch">
+    <span class="arch-l"><a class="back go-home" id="home" href="旧世界-00-目录.html">◀ 目录</a><span>旧世界系列 · <b>No.02</b></span></span>
+    <button id="sndBtn" aria-label="声音开关">♪ 开</button>
+  </div>
+  <div class="dev">
+  <div class="rk-hd"><span>ENIAC · UNIVERSITY OF PENNSYLVANIA · 1946</span><span>PANEL 01 / 40</span></div>
+  <div class="lamprow" id="lamprow"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="rk-bay"><div class="screen-frame">
+      <div class="screen" id="screen">
+        <div class="idle" id="idle">
+          <div class="mark">— 17,468 只真空管 · 150 千瓦 —</div>
+          <div class="big">ENIAC</div>
+          <div class="en">1946 · 5,000 次加法/秒 · 167 ㎡</div>
+          <button class="pwr" id="pwr">◉ 开 机</button>
+          <div class="hint">按下电源 · 拧亮真空管</div>
+        </div>
+        <div class="talk" id="talk" style="display:none">
+          <div id="lines"></div>
+          <div class="tap">轻触屏幕 加速讲述</div>
+        </div>
+        <div class="case" id="case">
+          <div class="spot"></div>
+          <div class="wall">请 勿 触 摸 玻 璃</div>
+          <div class="vitrine">
+<div style="position:absolute;inset:14px;background:#151210;border:1px solid rgba(217,142,43,.4);border-radius:4px;overflow:hidden">
+  <div style="position:absolute;top:14px;left:14px;right:14px;height:44px;background:#1d1815;border-radius:3px;display:flex;gap:8px;align-items:center;justify-content:center">
+    <i style="width:10px;height:10px;border-radius:50%;background:#ffb454;box-shadow:0 0 8px rgba(255,180,84,.8)"></i>
+    <i style="width:10px;height:10px;border-radius:50%;background:#5ADF5A;box-shadow:0 0 8px rgba(90,223,90,.8)"></i>
+    <i style="width:10px;height:10px;border-radius:50%;background:#3a2f1c"></i>
+    <i style="width:10px;height:10px;border-radius:50%;background:#ffb454;box-shadow:0 0 8px rgba(255,180,84,.8)"></i>
+    <i style="width:10px;height:10px;border-radius:50%;background:#3a2f1c"></i>
+  </div>
+  <svg style="position:absolute;inset:0" width="100%" height="100%" viewBox="0 0 300 130" preserveAspectRatio="none">
+    <path d="M30 74 C 60 74, 60 116, 96 116 L 262 116" stroke="#c9a15a" stroke-width="3" fill="none"/>
+    <path d="M30 92 C 70 92, 80 58, 120 58 L 262 58" stroke="#8a6a3a" stroke-width="3" fill="none"/>
+  </svg>
+  <i style="position:absolute;left:22px;top:68px;width:14px;height:14px;border-radius:50%;background:#151210;border:3px solid #d98e2b"></i>
+  <i style="position:absolute;left:22px;top:86px;width:14px;height:14px;border-radius:50%;background:#151210;border:3px solid #d98e2b"></i>
+  <span style="position:absolute;right:14px;bottom:10px;color:#ffb454;font-size:10px;letter-spacing:.2em">PATCH PANEL</span>
+</div>
+          </div>
+          <div class="plaque"><b>ENIAC · 1946</b><br>17,468 只真空管 · 150 千瓦 · 5,000 次加法/秒<br>现存面板分藏三处博物馆（含密歇根大学 4 块）</div>
+          <div class="srcs">
+            <div class="srcs-h">资料来源</div>
+            <div class="srcs-l"><span>University of Pennsylvania（ENIAC 揭幕地）</span> · <a href="https://umich.edu" target="_blank" rel="noopener">University of Michigan（现存 4 块面板）</a> · <a href="https://en.wikipedia.org/wiki/ENIAC" target="_blank" rel="noopener">Wikipedia: ENIAC</a> · <span>1pc.com（技术档案）</span> · <span>pcbstore（工程档案）</span></div>
+            <div class="pnote">个人创作 · 非官方史料 · 若有差错 / 疏漏 / 不同见解，欢迎指正 · 感谢支持</div>
+          </div>
+          <div class="case-btns">
+            <button class="again" id="again">重播自述</button>
+            <a class="again home-a go-home" href="旧世界-00-目录.html">回目录 ▸</a>
+          </div>
+        </div>
+        <div class="bootfx" id="bootfx"></div>
+<div class="gate" id="gate">
+  <div class="gtitle">没有软件 · 换一道题 就要重新接线</div>
+  <div class="gsub">把插头接进右边的插座，机器才能继续</div>
+  <div class="patch" id="patch">
+    <span class="sock"></span><span class="cord" id="cord"></span>
+    <button class="plug" id="plug">插</button>
+    <span class="cord grow"></span><span class="sock"></span>
+  </div>
+</div>
+      </div>
+    </div></div>
+  <div class="rk-tubes"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="rk-sock"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="rk-ft"><span>17,468 TUBES · 150 kW · 5,000 ADD/SEC</span><div class="led" id="led"></div></div>
+</div>
+  <div class="foot">WORLD BEFORE NOW · 客观历史陈述 · 数字均可考据<br>线稿与音效皆由浏览器实时合成</div>
+</div>
+<script>
+/* ================= 音效引擎 ================= */
+var actx=null, soundOn=true;
+function AC(){
+  if(!soundOn) return null;
+  if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)();
+  if(actx.state==='suspended') actx.resume();
+  return actx;
+}
+function beep(freq,dur,type,vol,slideTo,delay){
+  var ac=AC(); if(!ac) return;
+  var t=ac.currentTime+(delay||0);
+  var o=ac.createOscillator(),g=ac.createGain();
+  o.type=type||'square';
+  o.frequency.setValueAtTime(freq,t);
+  if(slideTo) o.frequency.exponentialRampToValueAtTime(slideTo,t+dur);
+  g.gain.setValueAtTime(vol||.1,t);
+  g.gain.exponentialRampToValueAtTime(.0008,t+dur);
+  o.connect(g);g.connect(ac.destination);
+  o.start(t);o.stop(t+dur+.02);
+}
+/* Tone 规则：陈述句单哔 / 数字与关键信息双哔 / 结尾长哔渐弱 */
+var TF={"f": 220, "type": "square", "fl": 120, "ltype": "sawtooth"};
+var BEEP={
+  '1':function(){beep(TF.f,.07,TF.type,.08);},
+  '2':function(){beep(TF.f*1.12,.06,TF.type,.09);beep(TF.f*1.12,.06,TF.type,.09,null,.11);},
+  'long':function(){beep(TF.fl,1.5,TF.ltype||'sine',.1,140);}
+};
+function bootBeep(){beep(80,1.1,'sawtooth',.06,55);beep(160,.5,'square',.05,120);beep(1200,.03,'square',.06,null,.15);beep(1200,.03,'square',.06,null,.4);}
+
+/* ================= 台词（数字口径见资料库 V1.1「核实状态」） ================= */
+var LINES=[
+ {
+  "t": "你好。",
+  "b": "1"
+ },
+ {
+  "t": "我是 ENIAC。1946 年 2 月，我在宾夕法尼亚大学公开揭幕。设计我的人，叫莫奇利和埃克特。",
+  "b": "2"
+ },
+ {
+  "t": "我体内有 17,468 只真空管、约 500 万个手工焊接点。我一顿饭吃掉 150 千瓦的电，每秒能做 5,000 次加法。",
+  "b": "2"
+ },
+ {
+  "t": "我没有软件。每做一道新题，工程师要给我重新接线、拨好开关——一接，就是好几天。",
+  "b": "2",
+  "g": true
+ },
+ {
+  "t": "总是有灯泡在坏。工程师提着一车备用真空管和手电筒，在我怀里找那一只。",
+  "b": "1"
+ },
+ {
+  "t": "我的第一个大任务与氢弹的计算有关。公开之后，最出名的活儿是打弹道表。",
+  "b": "1"
+ },
+ {
+  "t": "我占地约 167 平方米，用了约 40 块面板。后来，他们把我拆开。",
+  "b": "2"
+ },
+ {
+  "t": "今天，只剩几块面板，散落在三处博物馆的墙上。",
+  "b": "1"
+ },
+ {
+  "t": "我不是被编程的。我是被重造的——每一个新问题，都让我重生一次。",
+  "b": "long"
+ }
+];
+
+/* ================= 状态机 ================= */
+var $=function(id){return document.getElementById(id);};
+var screen=$('screen'),idle=$('idle'),talk=$('talk'),caseEl=$('case'),
+    linesEl=$('lines'),led=$('led'),sndBtn=$('sndBtn');
+var running=false,typing=false,skip=false,timer=null,lineIdx=0,spoken=false;
+/* ENIAC 灯排闪烁（仅当存在 #lamprow） */
+(function(){var l=$('lamprow');if(!l)return;setInterval(function(){
+  if(!running||spoken)return;var ks=l.children;
+  for(var i=0;i<3;i++){var k=ks[Math.floor(Math.random()*ks.length)];k.classList.toggle('on',Math.random()>.5);}
+},120);})();
+function typeLine(i){
+  if(i>=LINES.length){finish();return;}
+  lineIdx=i;
+  var L=LINES[i];
+  var prev=document.createElement('div');
+  prev.className='done';
+  prev.textContent=LINES[i-1]?LINES[i-1].t:'';
+  if(i>0){linesEl.textContent='';linesEl.appendChild(prev);}
+  else linesEl.textContent='';
+  var cur=document.createElement('div');
+  var span=document.createElement('span');
+  var cursor=document.createElement('span');cursor.className='cursor';
+  cur.appendChild(span);cur.appendChild(cursor);
+  linesEl.appendChild(cur);
+  typing=true;skip=false;
+  var n=0;
+  (function step(){
+    if(skip){span.textContent=L.t;typing=false;afterLine(L);return;}
+    if(n>=L.t.length){typing=false;afterLine(L);return;}
+    span.textContent=L.t.slice(0,++n);
+    if(n%9===0&&Math.random()<.5) beep(1500+Math.random()*300,.02,'square',.018);
+    timer=setTimeout(step,42);
+  })();
+}
+function afterLine(L){
+  setTimeout(function(){
+    if(L.g&&typeof showGate==='function'){showGate(L);return;}
+    if(L.b&&BEEP[L.b])BEEP[L.b]();
+    setTimeout(function(){typeLine(lineIdx+1);},L.b==='long'?1400:620);
+  },160);
+}
+function skipLine(){ if(running&&typing){skip=true;} }
+function showGate(L){
+  var g=$('gate');
+  if(g){g.classList.add('on');if(typeof gateOpen==='function')gateOpen();}
+}
+function gateDone(){
+  var g=$('gate'); if(g)g.classList.remove('on');
+  var L=LINES[lineIdx];
+  if(L.b&&BEEP[L.b])BEEP[L.b]();
+  setTimeout(function(){typeLine(lineIdx+1);},L.b==='long'?1400:620);
+}
+function startTalk(){
+  idle.style.display='none';talk.style.display='flex';linesEl.textContent='';typeLine(0);
+}
+function finish(){
+  if(spoken)return;spoken=true;
+  setTimeout(function(){
+    screen.classList.add('crt-off');
+    beep(520,.5,'sine',.09,90);
+    setTimeout(function(){
+      talk.style.display='none';
+      screen.classList.remove('crt-off');
+      caseEl.classList.add('on');
+      led.classList.add('off');
+      screen.classList.add('crt-on');
+    },700);
+  },1300);
+}
+function power(){
+  if(running)return;running=true;
+  screen.classList.add('crt-on');
+  led.classList.remove('off');
+  bootBeep();
+  if(typeof powerExtra==='function'){powerExtra();return;}
+  setTimeout(startTalk,950);
+}
+function replay(){
+  spoken=false;running=false;
+  caseEl.classList.remove('on');
+  screen.classList.remove('crt-on','crt-off');
+  talk.style.display='none';
+  idle.style.display='flex';
+  linesEl.textContent='';
+  led.classList.remove('off');
+  beep(TF.f,.06,TF.type,.07);
+}
+$('pwr').addEventListener('click',function(e){e.stopPropagation();power();});
+talk.addEventListener('pointerdown',skipLine);
+$('again').addEventListener('click',function(e){e.stopPropagation();replay();});
+/* ===== 返回目录：顶栏常驻「◀ 目录」+ 收尾「回目录」+ Esc 快捷键 ===== */
+var CATALOG='旧世界-00-目录.html#02';
+Array.prototype.forEach.call(document.querySelectorAll('.go-home'),function(a){a.href=CATALOG;});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){location.href=CATALOG;}
+});
+sndBtn.addEventListener('click',function(e){
+  e.stopPropagation();soundOn=!soundOn;
+  sndBtn.textContent=soundOn?'♪ 开':'♪ 关';
+  if(soundOn)beep(TF.f,.05,TF.type,.06);
+});
+document.addEventListener('keydown',function(e){
+  if(e.target&&e.target.tagName==='A')return;
+  if(e.key===' '||e.key==='Enter'){e.preventDefault();skipLine();}
+});
+$('plug').addEventListener('click',function(){
+  var p=$('patch'); if(p.classList.contains('plugged'))return;
+  p.classList.add('plugged');
+  beep(500,.3,'square',.08,900);
+  setTimeout(gateDone,700);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>旧世界 No.05 · IBM 5150</title>
+<style>
+:root{
+  --room:#15130e; --room2:#211e15; --bez:#b5ac92; --bez2:#d6cdb4;
+  --crt:#031a08; --ph:#7df29b; --ph-dim:rgba(125,242,155,.5); --glow:rgba(125,242,155,.32);
+  --copper:#8fae7a; --brand:rgba(70,62,44,.6); --ink:#7df29b;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  background:radial-gradient(ellipse at 50% 18%,var(--room2),var(--room) 70%);
+  font-family:"Courier New","PingFang SC","Microsoft YaHei",monospace;
+  color:var(--ph);display:flex;align-items:center;justify-content:center;padding:10px;overflow:hidden;
+}
+.wrap{width:min(430px,98vw);position:relative}
+.arch{display:flex;align-items:center;justify-content:space-between;
+  padding:6px 6px 12px;font-size:11px;letter-spacing:.28em;color:var(--ph-dim)}
+.arch b{color:var(--copper);font-weight:700}
+.arch-l{display:flex;align-items:center;gap:10px;min-width:0}
+.back{flex:none;display:inline-block;text-decoration:none;color:var(--ph-dim);
+  border:1px solid var(--glow);border-radius:3px;padding:3px 9px;
+  font-size:10px;letter-spacing:.14em;line-height:1.5;transition:all .2s}
+.back:hover{color:var(--ph);border-color:var(--copper);background:rgba(255,255,255,.06)}
+#sndBtn{background:none;border:1px solid var(--glow);color:var(--ph-dim);
+  font:inherit;font-size:12px;letter-spacing:.1em;padding:4px 12px;cursor:pointer;border-radius:3px}
+.mac{background:linear-gradient(180deg,var(--bez2),var(--bez) 55%,var(--bez));
+  border-radius:18px;padding:16px 14px 12px;
+  box-shadow:0 22px 50px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.14),inset 0 -2px 5px rgba(0,0,0,.5)}
+.brand{text-align:center;font-size:10px;letter-spacing:.5em;color:var(--brand);margin-bottom:9px}
+.screen-frame{background:#1a1712;border-radius:12px;padding:9px;
+  box-shadow:inset 0 3px 8px rgba(0,0,0,.9),inset 0 -1px 2px rgba(255,255,255,.05)}
+.screen{position:relative;height:342px;border-radius:8px;overflow:hidden;
+  background:var(--crt);
+  box-shadow:inset 0 0 46px rgba(0,0,0,.55),0 0 0 1px #000}
+.screen::before{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;
+  background:radial-gradient(ellipse at 30% 22%,rgba(255,255,255,.09),transparent 42%)}
+.screen::after{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px)}
+.crt-on{animation:crtOn .9s ease}
+@keyframes crtOn{0%{filter:brightness(0)}16%{filter:brightness(2.2) contrast(1.4)}34%{filter:brightness(.4)}52%{filter:brightness(1.6)}100%{filter:brightness(1)}}
+.crt-off{animation:crtOff .6s ease forwards}
+@keyframes crtOff{0%{transform:scaleY(1);filter:brightness(1)}55%{transform:scaleY(.035);filter:brightness(3)}100%{transform:scaleY(.035) scaleX(0);filter:brightness(0)}}
+.idle,.talk{position:absolute;inset:0;padding:18px 16px;display:flex;flex-direction:column;z-index:3}
+.idle{align-items:center;justify-content:center;gap:14px;text-align:center}
+.idle .mark{font-size:12px;letter-spacing:.3em;color:var(--ph-dim)}
+.idle .big{font-size:29px;font-weight:700;letter-spacing:.1em;color:var(--ph);text-shadow:0 0 14px var(--glow)}
+.idle .en{font-size:11px;letter-spacing:.26em;color:var(--ph-dim)}
+.pwr{margin-top:14px;background:none;border:1.5px solid var(--glow);color:var(--ph);
+  font:inherit;font-size:14px;letter-spacing:.28em;padding:11px 30px;cursor:pointer;border-radius:4px;
+  text-shadow:0 0 8px var(--glow);transition:all .2s}
+.pwr:hover{background:var(--glow);box-shadow:0 0 18px var(--glow)}
+.idle .hint{font-size:10px;letter-spacing:.2em;color:var(--ph-dim)}
+.talk{justify-content:flex-start;overflow:hidden;cursor:pointer}
+#lines{flex:1;overflow:hidden;font-size:14.5px;line-height:1.95;letter-spacing:.06em;
+  color:var(--ph);text-shadow:0 0 7px var(--glow);white-space:pre-wrap}
+#lines .done{color:var(--ph-dim);text-shadow:none}
+.cursor{display:inline-block;width:9px;height:16px;background:var(--ph);
+  vertical-align:-2px;margin-left:2px;animation:blink 1s steps(1) infinite;box-shadow:0 0 8px var(--glow)}
+@keyframes blink{50%{opacity:0}}
+.tap{padding-top:8px;font-size:10px;letter-spacing:.24em;color:var(--ph-dim);text-align:center}
+.case{position:absolute;inset:0;z-index:4;display:none;flex-direction:column;
+  align-items:center;justify-content:center;padding:14px 16px 12px}
+.case.on{display:flex;animation:fade 1.6s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.spot{position:absolute;top:-40px;left:50%;transform:translateX(-50%);
+  width:340px;height:250px;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 0%,rgba(232,227,210,.2),transparent 68%)}
+.wall{font-size:10px;letter-spacing:.5em;color:var(--ph-dim);margin-bottom:14px}
+.vitrine{position:relative;width:100%;max-width:330px;height:216px;
+  background:linear-gradient(180deg,#171b16,#101310);
+  border:1px solid rgba(232,227,210,.22);border-radius:6px;overflow:hidden;
+  box-shadow:0 14px 34px rgba(0,0,0,.7)}
+.vitrine::after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;
+  background:linear-gradient(112deg,transparent 30%,rgba(232,227,210,.13) 42%,rgba(232,227,210,.03) 50%,transparent 58%)}
+.plaque{margin-top:14px;text-align:center;font-size:11px;line-height:1.9;letter-spacing:.18em;color:var(--ph-dim)}
+.plaque b{color:var(--copper);font-size:12px}
+.again{margin-top:12px;background:none;border:1px solid var(--glow);color:var(--ph-dim);
+  font:inherit;font-size:11px;letter-spacing:.3em;padding:8px 26px;cursor:pointer;border-radius:3px}
+.again:hover{color:var(--ph);border-color:var(--glow)}
+.case-btns{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px}
+.case-btns .again{margin-top:0;padding:8px 18px;text-decoration:none;display:inline-block;line-height:1.5}
+.case-btns .home-a{border-color:var(--copper);color:var(--copper)}
+.case-btns .home-a:hover{background:rgba(255,255,255,.07);color:var(--ph)}
+.vent{height:12px;margin:10px 8px 0;
+  background:repeating-linear-gradient(90deg,rgba(0,0,0,.4) 0 4px,transparent 4px 10px);
+  border-radius:2px;opacity:.6}
+.under{display:flex;align-items:center;gap:10px;padding:6px 8px 2px}
+.slot{flex:1;height:9px;border-radius:5px;background:#2b261f;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.8),0 1px 0 rgba(255,255,255,.08)}
+.led{width:9px;height:9px;border-radius:50%;background:#e0512f;
+  box-shadow:0 0 7px rgba(224,81,47,.9);transition:.3s}
+.led.off{background:#4a413a;box-shadow:none}
+.foot{padding:11px 8px 2px;text-align:center;font-size:9.5px;letter-spacing:.3em;
+  color:var(--ph-dim);line-height:2}
+.bootfx{position:absolute;inset:0;z-index:5;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+.bootfx.on{display:flex}
+.gate{position:absolute;inset:0;z-index:5;display:none;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;background:rgba(8,8,6,.62);text-align:center}
+.gate.on{display:flex}
+.gate .gtitle{font-size:12px;letter-spacing:.3em;color:var(--ph)}
+.gate .gsub{font-size:10px;letter-spacing:.2em;color:var(--ph-dim)}
+.fdd{position:absolute;bottom:10px;left:16px;right:16px;z-index:2;display:flex;align-items:center;gap:8px}
+.fdd .fslot{flex:1;height:16px;background:rgba(0,0,0,.45);border-radius:2px;box-shadow:inset 0 2px 4px rgba(0,0,0,.6);position:relative}
+.fdd .fslot::after{content:"DISK 1 · DISK 2";position:absolute;right:6px;top:-14px;font-size:8px;letter-spacing:.2em;color:rgba(125,242,155,.45)}
+.talk{padding-bottom:42px}
+.mem{font-size:26px;font-weight:700;letter-spacing:.14em;color:#7df29b;text-shadow:0 0 10px rgba(125,242,155,.5)}
+.mlab{font-size:11px;letter-spacing:.3em;color:rgba(125,242,155,.5)}
+.disk{width:74px;height:74px;background:#1c1c20;border-radius:4px;position:relative;cursor:pointer;transition:transform .5s ease,opacity .4s;box-shadow:0 4px 10px rgba(0,0,0,.5)}
+.disk::before{content:"";position:absolute;top:0;left:0;width:26px;height:14px;background:#3a3a42;border-radius:0 0 0 6px}
+.disk::after{content:"";position:absolute;bottom:12px;left:50%;transform:translateX(-50%);width:30px;height:30px;border-radius:50%;background:#0d0d10;box-shadow:inset 0 0 0 3px #4a4a55}
+.disk.in{transform:translateX(-40vw) scale(.2);opacity:0}
+.dslot{width:150px;height:22px;background:#0a120c;border:2px solid rgba(125,242,155,.4);border-radius:3px}
+.pcb5150{position:absolute;inset:14px;background:#0d120c;border:1px solid rgba(143,174,122,.4);border-radius:4px;overflow:hidden}
+.pcb5150::before{content:"";position:absolute;inset:8px;opacity:.4;background:
+  repeating-linear-gradient(0deg,transparent 0 22px,rgba(143,174,122,.5) 22px 23px),
+  repeating-linear-gradient(90deg,transparent 0 26px,rgba(143,174,122,.35) 26px 27px)}
+.cpu5150{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:70px;height:32px;background:#101408;border-radius:3px;display:flex;align-items:center;justify-content:center;color:#8fae7a;font-size:10px;letter-spacing:.14em;font-weight:700;box-shadow:inset 0 0 0 1px rgba(143,174,122,.55)}
+/* ===== IBM 5150 · 卧式主机 + 5151 绿字监视器 ===== */
+.dev{display:flex;flex-direction:column;gap:9px}
+.mon{position:relative;background:linear-gradient(180deg,#d6cdb4,#b5ac92 60%,#a49b81);border:2px solid #8d8470;border-radius:10px 10px 7px 7px;padding:9px 9px 7px;box-shadow:0 14px 30px rgba(0,0,0,.55),inset 0 2px 0 rgba(255,255,255,.5)}
+.mon-hd{font-size:8px;letter-spacing:.16em;color:#4f4838;padding:0 2px 7px}
+.mon-bay{background:#241f16;border:3px solid #6f6650;border-radius:12px;padding:8px;box-shadow:inset 0 4px 14px rgba(0,0,0,.75)}
+.screen-frame{background:transparent;padding:0;box-shadow:none;border-radius:0}
+.screen{border-radius:8px}
+.mon-ctl{display:flex;align-items:center;gap:9px;padding:8px 3px 0}
+.mon-ctl i{width:16px;height:16px;border-radius:50%;background:linear-gradient(145deg,#9c9278,#6e6552);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 1px 2px rgba(0,0,0,.4)}
+.mon-ctl .led{margin-left:auto;width:9px;height:9px}
+.sys{position:relative;background:linear-gradient(180deg,#d6cdb4,#b5ac92 70%,#a49b81);border:2px solid #8d8470;border-radius:4px;padding:8px 10px 7px;box-shadow:0 12px 26px rgba(0,0,0,.5),inset 0 2px 0 rgba(255,255,255,.5)}
+.sys-hd{display:flex;justify-content:space-between;font-size:9px;letter-spacing:.18em;color:#4f4838;padding-bottom:7px;border-bottom:1px solid rgba(0,0,0,.18);margin-bottom:8px}
+.sys-hd b{font-size:12px;letter-spacing:.22em}
+.sys-face{display:flex;align-items:center;gap:8px}
+.fdd-unit{flex:1;height:30px;background:#b0a68c;border:1px solid #857c66;border-radius:2px;box-shadow:inset 0 2px 4px rgba(0,0,0,.35);position:relative}
+.fdd-unit::before{content:"";position:absolute;left:8px;right:8px;top:11px;height:5px;background:#1a1710;border-radius:2px;box-shadow:inset 0 1px 2px #000}
+.fdd-unit::after{content:"";position:absolute;right:9px;top:5px;width:6px;height:6px;border-radius:50%;background:#3a3a2e;box-shadow:0 0 0 1px rgba(0,0,0,.3)}
+.fdd-unit span{position:absolute;left:8px;bottom:3px;font-size:7px;letter-spacing:.1em;color:#4f4838}
+.sys-ft{font-size:7.5px;letter-spacing:.16em;color:rgba(79,72,56,.75);padding:7px 2px 0}
+.talk{padding-bottom:14px!important}
+.srcs{margin-top:14px;text-align:center;font-size:9.5px;letter-spacing:.04em;color:rgba(232,227,210,.45);line-height:1.95}
+.srcs-h{color:var(--copper);margin-bottom:5px;letter-spacing:.24em}
+.srcs-l a{color:rgba(185,140,255,.72);text-decoration:none}
+.srcs-l a:hover{text-decoration:underline}
+.srcs-l span{color:rgba(232,227,210,.45)}
+.pnote{margin-top:9px;padding:0 8px;color:rgba(232,227,210,.6);font-size:9px;letter-spacing:.05em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="arch">
+    <span class="arch-l"><a class="back go-home" id="home" href="旧世界-00-目录.html">◀ 目录</a><span>旧世界系列 · <b>No.05</b></span></span>
+    <button id="sndBtn" aria-label="声音开关">♪ 开</button>
+  </div>
+  <div class="dev">
+  <div class="mon">
+    <div class="mon-hd">IBM PERSONAL COMPUTER 5150 · IBM 5151 MONOCHROME DISPLAY</div>
+    <div class="mon-bay"><div class="screen-frame">
+      <div class="screen" id="screen">
+        <div class="idle" id="idle">
+          <div class="mark">— 蓝色巨人走下神坛 —</div>
+          <div class="big">IBM 5150</div>
+          <div class="en">INTEL 8088 · $1,565 起 · 1981</div>
+          <button class="pwr" id="pwr">◉ 开 机</button>
+          <div class="hint">按下电源 · 等自检数完</div>
+        </div>
+        <div class="talk" id="talk" style="display:none">
+          <div id="lines"></div>
+          <div class="tap">轻触屏幕 加速讲述</div>
+        </div>
+        <div class="case" id="case">
+          <div class="spot"></div>
+          <div class="wall">请 勿 触 摸 玻 璃</div>
+          <div class="vitrine">
+<div class="pcb5150"><div class="cpu5150">INTEL 8088</div>
+  <span style="position:absolute;right:12px;bottom:8px;color:#8fae7a;font-size:10px;letter-spacing:.2em">PROJECT CHESS</span>
+</div>
+          </div>
+          <div class="plaque"><b>IBM 5150 · 1981-08-12</b><br>$1,565 起 · 12 个月开发 · 首次进零售店<br>开放架构 · 兼容机产业的起点</div>
+          <div class="srcs">
+            <div class="srcs-h">资料来源</div>
+            <div class="srcs-l"><a href="https://www.ibm.com/history" target="_blank" rel="noopener">IBM History</a> · <span>Retro Classic Computers</span> · <a href="https://carleton.ca" target="_blank" rel="noopener">Carleton University（Estridge 档案）</a></div>
+            <div class="pnote">个人创作 · 非官方史料 · 若有差错 / 疏漏 / 不同见解，欢迎指正 · 感谢支持</div>
+          </div>
+          <div class="case-btns">
+            <button class="again" id="again">重播自述</button>
+            <a class="again home-a go-home" href="旧世界-00-目录.html">回目录 ▸</a>
+          </div>
+        </div>
+        <div class="bootfx" id="bootfx"></div>
+<div class="gate" id="gate">
+  <div class="gtitle">插入软盘</div>
+  <div class="gsub">我的程序和你的文件，都住在这种方片里</div>
+  <div class="dslot"></div>
+  <div class="disk" id="disk"></div>
+</div>
+      </div>
+    </div></div>
+    <div class="mon-ctl"><i></i><i></i><div class="led" id="led"></div></div>
+  </div>
+  <div class="sys">
+    <div class="sys-hd"><b>IBM</b><span>Personal Computer · 5150</span></div>
+    <div class="sys-face"><div class="fdd-unit"><span>A&gt;</span></div><div class="fdd-unit"><span>B&gt;</span></div></div>
+    <div class="sys-ft">PROJECT CHESS · 1981-08-12 · OPEN ARCHITECTURE</div>
+  </div>
+</div>
+  <div class="foot">WORLD BEFORE NOW · 客观历史陈述 · 数字均可考据<br>线稿与音效皆由浏览器实时合成</div>
+</div>
+<script>
+/* ================= 音效引擎 ================= */
+var actx=null, soundOn=true;
+function AC(){
+  if(!soundOn) return null;
+  if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)();
+  if(actx.state==='suspended') actx.resume();
+  return actx;
+}
+function beep(freq,dur,type,vol,slideTo,delay){
+  var ac=AC(); if(!ac) return;
+  var t=ac.currentTime+(delay||0);
+  var o=ac.createOscillator(),g=ac.createGain();
+  o.type=type||'square';
+  o.frequency.setValueAtTime(freq,t);
+  if(slideTo) o.frequency.exponentialRampToValueAtTime(slideTo,t+dur);
+  g.gain.setValueAtTime(vol||.1,t);
+  g.gain.exponentialRampToValueAtTime(.0008,t+dur);
+  o.connect(g);g.connect(ac.destination);
+  o.start(t);o.stop(t+dur+.02);
+}
+/* Tone 规则：陈述句单哔 / 数字与关键信息双哔 / 结尾长哔渐弱 */
+var TF={"f": 700, "type": "square", "fl": 340};
+var BEEP={
+  '1':function(){beep(TF.f,.07,TF.type,.08);},
+  '2':function(){beep(TF.f*1.12,.06,TF.type,.09);beep(TF.f*1.12,.06,TF.type,.09,null,.11);},
+  'long':function(){beep(TF.fl,1.5,TF.ltype||'sine',.1,140);}
+};
+function bootBeep(){beep(1000,.15,'square',.09);}
+
+/* ================= 台词（数字口径见资料库 V1.1「核实状态」） ================= */
+var LINES=[
+ {
+  "t": "你好。",
+  "b": "1"
+ },
+ {
+  "t": "我是 IBM 5150。1981 年 8 月 12 日，我在纽约华尔道夫酒店亮相。项目代号「国际象棋」，从立项到我出生，只用了 12 个月。",
+  "b": "2"
+ },
+ {
+  "t": "我起售 1,565 美元。我的心是英特尔的 8088，魂是微软的系统，身上还有一组后来全世界都照抄的开口。",
+  "b": "2"
+ },
+ {
+  "t": "我的程序装在软盘里。读盘之前，请先把它插进我。",
+  "b": "2",
+  "g": true
+ },
+ {
+  "t": "我第一次被摆进零售店——西尔斯和 ComputerLand 的货架上，蓝色巨人排起了队。",
+  "b": "1"
+ },
+ {
+  "t": "广告里替我说话的，是卓别林的流浪汉。第二年，《时代》周刊的年度人物，是一台机器。",
+  "b": "2"
+ },
+ {
+  "t": "在我之前，IBM 是一座穿西装的城。在我之后，人人桌上都有一块 IBM。",
+  "b": "long"
+ }
+];
+
+/* ================= 状态机 ================= */
+var $=function(id){return document.getElementById(id);};
+var screen=$('screen'),idle=$('idle'),talk=$('talk'),caseEl=$('case'),
+    linesEl=$('lines'),led=$('led'),sndBtn=$('sndBtn');
+var running=false,typing=false,skip=false,timer=null,lineIdx=0,spoken=false;
+/* ENIAC 灯排闪烁（仅当存在 #lamprow） */
+(function(){var l=$('lamprow');if(!l)return;setInterval(function(){
+  if(!running||spoken)return;var ks=l.children;
+  for(var i=0;i<3;i++){var k=ks[Math.floor(Math.random()*ks.length)];k.classList.toggle('on',Math.random()>.5);}
+},120);})();
+function typeLine(i){
+  if(i>=LINES.length){finish();return;}
+  lineIdx=i;
+  var L=LINES[i];
+  var prev=document.createElement('div');
+  prev.className='done';
+  prev.textContent=LINES[i-1]?LINES[i-1].t:'';
+  if(i>0){linesEl.textContent='';linesEl.appendChild(prev);}
+  else linesEl.textContent='';
+  var cur=document.createElement('div');
+  var span=document.createElement('span');
+  var cursor=document.createElement('span');cursor.className='cursor';
+  cur.appendChild(span);cur.appendChild(cursor);
+  linesEl.appendChild(cur);
+  typing=true;skip=false;
+  var n=0;
+  (function step(){
+    if(skip){span.textContent=L.t;typing=false;afterLine(L);return;}
+    if(n>=L.t.length){typing=false;afterLine(L);return;}
+    span.textContent=L.t.slice(0,++n);
+    if(n%9===0&&Math.random()<.5) beep(1500+Math.random()*300,.02,'square',.018);
+    timer=setTimeout(step,42);
+  })();
+}
+function afterLine(L){
+  setTimeout(function(){
+    if(L.g&&typeof showGate==='function'){showGate(L);return;}
+    if(L.b&&BEEP[L.b])BEEP[L.b]();
+    setTimeout(function(){typeLine(lineIdx+1);},L.b==='long'?1400:620);
+  },160);
+}
+function skipLine(){ if(running&&typing){skip=true;} }
+function showGate(L){
+  var g=$('gate');
+  if(g){g.classList.add('on');if(typeof gateOpen==='function')gateOpen();}
+}
+function gateDone(){
+  var g=$('gate'); if(g)g.classList.remove('on');
+  var L=LINES[lineIdx];
+  if(L.b&&BEEP[L.b])BEEP[L.b]();
+  setTimeout(function(){typeLine(lineIdx+1);},L.b==='long'?1400:620);
+}
+function startTalk(){
+  idle.style.display='none';talk.style.display='flex';linesEl.textContent='';typeLine(0);
+}
+function finish(){
+  if(spoken)return;spoken=true;
+  setTimeout(function(){
+    screen.classList.add('crt-off');
+    beep(520,.5,'sine',.09,90);
+    setTimeout(function(){
+      talk.style.display='none';
+      screen.classList.remove('crt-off');
+      caseEl.classList.add('on');
+      led.classList.add('off');
+      screen.classList.add('crt-on');
+    },700);
+  },1300);
+}
+function power(){
+  if(running)return;running=true;
+  screen.classList.add('crt-on');
+  led.classList.remove('off');
+  bootBeep();
+  if(typeof powerExtra==='function'){powerExtra();return;}
+  setTimeout(startTalk,950);
+}
+function replay(){
+  spoken=false;running=false;
+  caseEl.classList.remove('on');
+  screen.classList.remove('crt-on','crt-off');
+  talk.style.display='none';
+  idle.style.display='flex';
+  linesEl.textContent='';
+  led.classList.remove('off');
+  beep(TF.f,.06,TF.type,.07);
+}
+$('pwr').addEventListener('click',function(e){e.stopPropagation();power();});
+talk.addEventListener('pointerdown',skipLine);
+$('again').addEventListener('click',function(e){e.stopPropagation();replay();});
+/* ===== 返回目录：顶栏常驻「◀ 目录」+ 收尾「回目录」+ Esc 快捷键 ===== */
+var CATALOG='旧世界-00-目录.html#05';
+Array.prototype.forEach.call(document.querySelectorAll('.go-home'),function(a){a.href=CATALOG;});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){location.href=CATALOG;}
+});
+sndBtn.addEventListener('click',function(e){
+  e.stopPropagation();soundOn=!soundOn;
+  sndBtn.textContent=soundOn?'♪ 开':'♪ 关';
+  if(soundOn)beep(TF.f,.05,TF.type,.06);
+});
+document.addEventListener('keydown',function(e){
+  if(e.target&&e.target.tagName==='A')return;
+  if(e.key===' '||e.key==='Enter'){e.preventDefault();skipLine();}
+});
+function powerExtra(){
+  var bx=$('bootfx'); bx.classList.add('on');
+  bx.innerHTML='<div class="mlab">MEMORY TEST</div><div class="mem" id="memn">000 KB</div>';
+  var v=0,el=$('memn');
+  var iv=setInterval(function(){
+    v+=16; el.textContent=String(v).padStart(3,'0')+' KB';
+    beep(620+v*4,.05,'square',.05);
+    if(v>=64){clearInterval(iv);
+      setTimeout(function(){bx.classList.remove('on');bx.innerHTML='';startTalk();},650);}
+  },280);
+}
+$('disk').addEventListener('click',function(){
+  var d=$('disk'); if(d.classList.contains('in'))return;
+  d.classList.add('in');
+  beep(140,.18,'square',.12,80);beep(90,.1,'square',.1,null,.18);
+  setTimeout(gateDone,750);
+});
+</script>
+</body>
+</html>

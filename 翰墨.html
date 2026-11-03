@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>翰墨编年史 · Old World Series Vol.06 — A Chronicle in Ink</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@500;700;900&family=EB+Garamond:ital@0;1&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+ --paper:#F5F1E6;--paperD:#EDE6D4;--papW:#FBF8F0;
+ --jiao:#141210;--nong:#2B2724;--zhong:#4A443E;--dan:#7A7268;--qing:#A99F92;
+ --cinnabar:#B03A2A;--cinnD:#8E2C20;
+ --line:rgba(43,39,36,.18);
+ --serif:'Noto Serif SC',serif;--brush:'Ma Shan Zheng',cursive;--en:'EB Garamond',serif;
+}
+html{scroll-behavior:smooth}
+body{
+ color:var(--nong);font-family:var(--serif);overflow-x:hidden;
+ background:
+  /* 宣纸云斑（抄纸晕痕） */
+  radial-gradient(ellipse 340px 260px at 12% 6%,rgba(190,176,146,.12),transparent 70%),
+  radial-gradient(ellipse 400px 280px at 84% 18%,rgba(190,176,146,.10),transparent 70%),
+  radial-gradient(ellipse 320px 320px at 20% 52%,rgba(198,184,152,.08),transparent 70%),
+  radial-gradient(ellipse 360px 240px at 72% 74%,rgba(190,176,146,.11),transparent 70%),
+  radial-gradient(ellipse 280px 220px at 45% 93%,rgba(190,176,146,.09),transparent 70%),
+  radial-gradient(ellipse 500px 400px at 55% 35%,rgba(255,253,246,.5),transparent 75%),
+  /* 帘纹：抄纸帘留下的细密横纹 */
+  repeating-linear-gradient(180deg,rgba(150,134,98,.028) 0 1px,transparent 1px 7px),
+  /* 竖帘痕 */
+  repeating-linear-gradient(90deg,rgba(150,134,98,.013) 0 1px,transparent 1px 5px),
+  /* 纤维丝（长短不一的草料痕） */
+  repeating-linear-gradient(88deg,transparent 0 37px,rgba(166,150,112,.05) 37px 38px,transparent 38px 121px),
+  repeating-linear-gradient(92deg,transparent 0 89px,rgba(166,150,112,.04) 89px 90px,transparent 90px 233px),
+  repeating-linear-gradient(4deg,transparent 0 53px,rgba(150,134,98,.035) 53px 54px,transparent 54px 157px),
+  var(--paper);
+}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+ background:
+  radial-gradient(circle 2px at 8% 22%,rgba(120,104,74,.10),transparent 60%),
+  radial-gradient(circle 1px at 15% 68%,rgba(120,104,74,.10),transparent 60%),
+  radial-gradient(circle 1.5px at 27% 41%,rgba(120,104,74,.09),transparent 60%),
+  radial-gradient(circle 2px at 36% 85%,rgba(120,104,74,.10),transparent 60%),
+  radial-gradient(circle 1px at 52% 12%,rgba(120,104,74,.09),transparent 60%),
+  radial-gradient(circle 1.5px at 64% 57%,rgba(120,104,74,.10),transparent 60%),
+  radial-gradient(circle 1px at 78% 31%,rgba(120,104,74,.09),transparent 60%),
+  radial-gradient(circle 2px at 88% 77%,rgba(120,104,74,.10),transparent 60%),
+  radial-gradient(circle 1px at 94% 10%,rgba(120,104,74,.09),transparent 60%);
+}
+/* 烟雾：低透明度墨雾缓移 */
+#mist{position:fixed;inset:0;z-index:59;pointer-events:none;overflow:hidden}
+#mist i{position:absolute;border-radius:50%;filter:blur(46px);background:radial-gradient(ellipse,rgba(150,142,120,.15),transparent 66%)}
+#mist i:nth-child(1){width:52vw;height:34vh;top:6%;left:6%;animation:mist1 52s ease-in-out infinite}
+#mist i:nth-child(2){width:44vw;height:30vh;top:44%;right:4%;animation:mist2 64s ease-in-out infinite;animation-delay:-18s}
+#mist i:nth-child(3){width:38vw;height:26vh;bottom:5%;left:28%;animation:mist1 58s ease-in-out infinite reverse;animation-delay:-34s}
+@keyframes mist1{0%,100%{transform:translate(0,0) scale(1);opacity:.5}50%{transform:translate(9vw,-5vh) scale(1.22);opacity:.95}}
+@keyframes mist2{0%,100%{transform:translate(0,0) scale(1.1);opacity:.85}50%{transform:translate(-8vw,6vh) scale(.92);opacity:.45}}
+@media (prefers-reduced-motion:reduce){#mist i{animation:none;opacity:.5}}
+/* 祥云纹（装饰用） */
+.yun{position:absolute;pointer-events:none;opacity:.16;background-repeat:no-repeat;background-size:contain;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 64'%3E%3Cg fill='none' stroke='%23806e4e' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M4 46 q4-20 24-17 q3-16 21-11 q15 4 14 17 q17-3 17 11 q0 11-13 11 l-58 0 q-15 0-14-14'/%3E%3Cpath d='M30 56 q7-7 16-4 q8 2 10 9'/%3E%3Cpath d='M70 55 q9-8 20-4'/%3E%3Cpath d='M96 26 q8-6 14-1'/%3E%3Cpath d='M10 22 q6-6 13-3'/%3E%3C/g%3E%3C/svg%3E")}
+::selection{background:var(--cinnabar);color:var(--papW)}
+
+/* ---------- 纸面反光（宣纸釉面，随滚动缓流） ---------- */
+#glaze{position:fixed;inset:0;z-index:60;pointer-events:none;mix-blend-mode:multiply;opacity:.5;
+ background:radial-gradient(ellipse 60% 45% at 30% var(--gly,20%),rgba(255,255,255,.0) 0%,rgba(120,110,95,.05) 55%,rgba(120,110,95,.10) 100%)}
+
+/* ---------- 收卷进度杆 ---------- */
+#scrollrod{position:fixed;left:0;right:0;bottom:0;height:14px;z-index:95;background:rgba(20,18,16,.12)}
+#scrollrod i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--dan),var(--zhong) 60%,var(--jiao));transition:width .15s linear}
+
+/* ---------- 声音按钮 ---------- */
+.soundBtn{position:fixed;top:14px;right:14px;z-index:96;background:rgba(245,241,230,.85);border:1px solid var(--zhong);color:var(--zhong);font:600 10.5px Manrope,sans-serif;letter-spacing:.18em;padding:8px 13px;cursor:pointer}
+.soundBtn:hover{background:var(--nong);color:var(--paper)}
+
+/* ---------- 顶栏（章节栏） ---------- */
+.chapter{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;justify-content:space-between;align-items:center;padding:10px 6vw;background:rgba(245,241,230,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);transform:translateY(-100%);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.chapter.on{transform:none}
+#chLeft{font-size:12px;letter-spacing:.22em;font-weight:700}
+#chLeft em{font-style:normal;color:var(--cinnabar);margin-right:10px;font-family:var(--en);font-size:15px}
+#chRight{font-size:10.5px;letter-spacing:.3em;color:var(--dan)}
+/* 卷签导航 */
+.ribbon{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:80;display:flex;flex-direction:column;gap:6px}
+.ribbon a{writing-mode:vertical-rl;font-size:9.5px;letter-spacing:.14em;padding:8px 3px;background:var(--papW);border:1px solid var(--line);border-right:3px solid var(--dan);color:var(--zhong);text-decoration:none;transition:all .2s;cursor:pointer}
+.ribbon a:hover{background:var(--cinnabar);color:var(--papW);border-right-color:var(--cinnD)}
+.ribbon a.act{background:var(--nong);color:var(--paper);border-right-color:var(--cinnabar)}
+
+/* ---------- 天头 · 馆名页 ---------- */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px 60px;position:relative}
+.hero::before{content:"";position:absolute;inset:0;background:
+ radial-gradient(ellipse 70% 50% at 50% 30%,rgba(255,255,255,.35),transparent 70%),
+ repeating-linear-gradient(90deg,rgba(43,39,36,.014) 0 2px,transparent 2px 7px);pointer-events:none}
+.tsign{writing-mode:vertical-rl;background:var(--papW);border:1px solid var(--line);box-shadow:0 8px 30px rgba(43,39,36,.12),inset 0 0 40px rgba(43,39,36,.04);padding:22px 14px 34px;display:flex;gap:11px;align-items:center;position:relative}
+.tsign .tt{font-family:var(--brush);font-size:clamp(24px,3.6vw,34px);letter-spacing:.18em;color:var(--jiao)}
+.tsign .st{font-size:10px;letter-spacing:.34em;color:var(--dan);margin-top:14px}
+.tsign .vol{font-size:9px;letter-spacing:.26em;color:var(--cinnabar);writing-mode:horizontal-tb;align-self:flex-start;margin-top:0}
+.tsign .enh{position:absolute;bottom:11px;left:50%;transform:translateX(-50%);writing-mode:horizontal-tb;font-family:var(--en);font-style:italic;font-size:9.5px;letter-spacing:.22em;color:var(--qing);white-space:nowrap}
+.couplet{margin-top:18px;text-align:center}
+.couplet .zh{font-family:var(--brush);font-size:clamp(21px,3.4vw,32px);letter-spacing:.1em;color:var(--jiao);line-height:1.5}
+.couplet .en{font-family:var(--en);font-style:italic;font-size:clamp(11px,1.4vw,14px);color:var(--dan);margin-top:7px;letter-spacing:.07em}
+.couplet .colophon{margin-top:11px;font-size:10px;letter-spacing:.16em;color:var(--dan)}
+.couplet .colophon b{color:var(--cinnabar);font-weight:700}
+#openseal{margin-top:24px;width:70px;height:70px;border:none;background:var(--cinnabar);color:var(--papW);cursor:pointer;position:relative;box-shadow:0 4px 18px rgba(176,58,42,.35);transition:transform .25s}
+#openseal:hover{transform:scale(1.05) rotate(-1.5deg)}
+#openseal .sq{position:absolute;inset:5px;border:2px solid rgba(245,241,230,.85);display:grid;grid-template-columns:1fr 1fr;place-items:center;font-family:var(--brush);font-size:21px;line-height:1}
+#openseal .cap{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:8px;white-space:nowrap;font-size:9.5px;letter-spacing:.26em;color:var(--dan)}
+.hero-note{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-size:9.5px;letter-spacing:.3em;color:var(--qing)}
+
+/* ---------- 隔水 ---------- */
+.divider{width:min(520px,86%);margin:64px auto;background:
+ url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 64'%3E%3Cg fill='none' stroke='%23D8B75C' stroke-width='2.2' stroke-linecap='round' opacity='.16'%3E%3Cpath d='M4 46 q4-20 24-17 q3-16 21-11 q15 4 14 17 q17-3 17 11 q0 11-13 11 l-58 0 q-15 0-14-14'/%3E%3Cpath d='M30 56 q7-7 16-4 q8 2 10 9'/%3E%3Cpath d='M70 55 q9-8 20-4'/%3E%3C/g%3E%3C/svg%3E") center/64px no-repeat,
+ linear-gradient(180deg,#4C4134,#31281E 60%,#282017);border:1px solid #1F1912;border-radius:8px;padding:24px 26px 20px;text-align:center;position:relative;box-shadow:0 12px 30px rgba(43,39,36,.3),inset 0 1px 0 rgba(255,255,255,.1),inset 0 -6px 18px rgba(0,0,0,.25)}
+.divider::before,.divider::after{content:"";position:absolute;top:11px;width:7px;height:7px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#E8C96A,#8a6d1a);box-shadow:0 1px 2px rgba(0,0,0,.5)}
+.divider::before{left:12px}.divider::after{right:12px}
+.divider .in{display:flex;flex-direction:column;align-items:center;gap:8px}
+.divider span{font-family:var(--brush);font-size:clamp(18px,2.6vw,24px);letter-spacing:.32em;color:#D8B75C;text-shadow:0 1px 0 rgba(0,0,0,.6),0 0 14px rgba(216,183,92,.18)}
+.divider .en{font-family:var(--en);font-style:italic;font-size:10px;letter-spacing:.26em;color:#9A8455}
+
+/* ---------- 画心 · 展台 ---------- */
+.scrollbody{max-width:1200px;margin:0 auto;padding:70px 4vw 40px}
+.booth{display:grid;grid-template-columns:minmax(300px,1fr) minmax(320px,1.1fr);gap:56px;align-items:center;padding:74px 0;border-bottom:1px dashed var(--line)}
+.booth.rev .meta{order:2}.booth.rev .stage{order:1}
+.booth-no{font-family:var(--en);font-size:12px;letter-spacing:.34em;color:var(--cinnabar)}
+.booth-year{font-family:var(--en);font-size:clamp(34px,4.4vw,52px);color:var(--qing);letter-spacing:.06em;margin-top:6px}
+.booth h2{font-family:var(--brush);font-size:clamp(30px,4vw,44px);color:var(--jiao);letter-spacing:.1em;margin-top:2px}
+.booth h2 .en{display:block;font-family:var(--en);font-style:italic;font-weight:400;font-size:clamp(13px,1.5vw,17px);letter-spacing:.1em;color:var(--dan);margin-top:6px}
+.booth .material{margin-top:14px;font-family:var(--brush);font-size:14.5px;letter-spacing:.14em;color:var(--dan);border-left:3px solid var(--cinnabar);padding-left:10px}
+.booth-desc{margin-top:16px;font-family:var(--brush);font-weight:400;font-size:16px;line-height:1.95;letter-spacing:.04em;color:var(--zhong)}
+.booth-desc .en{display:block;font-family:var(--en);font-size:13px;line-height:1.75;color:var(--dan);margin-top:10px;font-style:italic}
+.srcs{margin-top:18px;font-family:var(--brush);font-size:13.5px;letter-spacing:.06em;color:var(--dan);line-height:1.9}
+.srcs-h{display:inline-block;background:var(--nong);color:var(--paper);font-size:9.5px;letter-spacing:.28em;padding:2px 8px;margin-right:8px}
+.rev{animation:none}
+.booth{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
+.dict{opacity:1;transform:none}
+
+/* ---------- 展台通用 ---------- */
+.stage{display:flex;flex-direction:column;align-items:center}
+.board{background:var(--papW);border:1px solid var(--line);box-shadow:0 10px 34px rgba(43,39,36,.10),inset 0 0 60px rgba(43,39,36,.03);padding:26px;width:100%;max-width:520px;position:relative}
+.board .lbl{position:absolute;top:9px;left:12px;font-size:9px;letter-spacing:.3em;color:var(--qing)}
+.hint{margin-top:12px;font-family:var(--brush);font-size:13px;letter-spacing:.1em;color:var(--dan);text-align:center}
+.hint b{color:var(--cinnabar)}
+.abtn{background:transparent;border:1px solid var(--zhong);color:var(--zhong);font-family:var(--serif);font-size:12px;letter-spacing:.2em;padding:8px 18px;cursor:pointer;transition:all .2s}
+.abtn:hover{background:var(--nong);color:var(--paper)}
+canvas.inkc{display:block;width:100%;touch-action:none;cursor:crosshair}
+
+/* ---------- 词条卡 Cat.00 ---------- */
+.dict{max-width:860px;margin:0 auto;padding:70px 4vw}
+.dict h2{text-align:center;font-family:var(--brush);font-size:clamp(30px,4.4vw,46px);color:var(--jiao);letter-spacing:.2em}
+.dict h2 .en{display:block;font-family:var(--en);font-style:italic;font-size:14px;letter-spacing:.14em;color:var(--dan);margin-top:8px}
+.dict .grid{margin-top:40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px}
+.dict .cell{background:var(--papW);border:1px solid var(--line);padding:22px 18px}
+.dict .cell h3{font-family:var(--brush);font-size:26px;color:var(--jiao)}
+.dict .cell .e{font-family:var(--en);font-style:italic;font-size:11px;color:var(--dan);letter-spacing:.08em;margin-top:2px}
+.dict .cell p{margin-top:12px;font-size:12.5px;line-height:1.95;color:var(--zhong)}
+
+/* ---------- 字形三体 ---------- */
+.glyphrow{display:flex;gap:14px;justify-content:center;align-items:stretch;flex-wrap:wrap}
+.gcell{flex:1;min-width:120px;background:var(--papW);border:1px solid var(--line);padding:14px 10px;text-align:center;cursor:pointer;transition:all .25s}
+.gcell:hover{border-color:var(--cinnabar)}
+.gcell.act{background:var(--jiao)}
+.gcell.act .gname{color:var(--paper)}
+.gcell svg{width:100%;height:120px}
+.gcell .gname{font-size:11px;letter-spacing:.2em;color:var(--dan);margin-top:6px}
+.seg{display:flex;gap:0;margin-top:16px;justify-content:center}
+.seg button{border:1px solid var(--zhong);background:transparent;color:var(--zhong);font-size:12px;letter-spacing:.16em;padding:7px 16px;cursor:pointer;margin-left:-1px}
+.seg button.act{background:var(--nong);color:var(--paper)}
+
+/* ---------- 滑杆（隶变） ---------- */
+input[type=range].mslider{-webkit-appearance:none;width:100%;height:2px;background:var(--zhong);margin:18px 0 8px}
+input[type=range].mslider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;background:var(--cinnabar);border:2px solid var(--papW);box-shadow:0 0 0 1px var(--cinnD);cursor:pointer;border-radius:50%}
+.morphwrap{position:relative;height:170px;background:var(--papW);border:1px solid var(--line)}
+.morphwrap svg{position:absolute;inset:0;width:100%;height:100%}
+
+/* ---------- 印章 ---------- */
+.sealBtn{width:96px;height:96px;border:none;background:var(--cinnabar);cursor:pointer;position:relative;box-shadow:0 4px 14px rgba(176,58,42,.3);transition:transform .18s}
+.sealBtn:active{transform:scale(.92)}
+.sealBtn .sq{position:absolute;inset:7px;border:2px solid rgba(245,241,230,.85);display:grid;grid-template-columns:1fr 1fr;place-items:center;font-family:var(--brush);font-size:24px;color:var(--papW);line-height:1}
+.stamped{position:relative;display:inline-block;margin-top:16px;opacity:0;transform:scale(1.4) rotate(-6deg);transition:all .35s cubic-bezier(.2,.8,.3,1.2)}
+.stamped.show{opacity:1;transform:scale(1) rotate(-3deg)}
+.stamped .imp{width:74px;height:74px;background:var(--cinnabar);display:grid;grid-template-columns:1fr 1fr;place-items:center;font-family:var(--brush);font-size:20px;color:var(--papW);filter:url(#inkrough)}
+
+/* ---------- 敦煌横卷 ---------- */
+.sstrip{overflow-x:auto;overflow-y:hidden;cursor:grab;scrollbar-width:none}
+.sstrip::-webkit-scrollbar{display:none}
+.sstrip.grabbing{cursor:grabbing}
+.sstrip .inner{display:flex;gap:0;width:max-content;padding:10px 0}
+.sstrip .sheet{width:190px;height:230px;flex:none;font-family:var(--brush);font-weight:400;position:relative;border-right:1px solid var(--line);padding:16px 14px;writing-mode:vertical-rl;font-size:15px;line-height:1.9;color:var(--nong);background:
+ radial-gradient(ellipse 60% 40% at 20% 15%,rgba(160,130,80,.09),transparent 70%),
+ radial-gradient(ellipse 50% 35% at 85% 80%,rgba(160,130,80,.08),transparent 70%),
+ radial-gradient(ellipse 40% 30% at 60% 45%,rgba(120,90,50,.05),transparent 70%),
+ linear-gradient(180deg,#EFE7D2,#E6DCC2)}
+.sstrip .sheet::before{content:"";position:absolute;inset:0;pointer-events:none;background:
+ repeating-linear-gradient(94deg,rgba(120,95,55,.05) 0 1px,transparent 1px 5px),
+ repeating-linear-gradient(2deg,rgba(120,95,55,.035) 0 1px,transparent 1px 7px)}
+.sstrip .sheet::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 26px rgba(120,90,50,.18)}
+.sstrip .sheet b{color:var(--cinnabar)}
+
+/* ---------- 拓片三步 ---------- */
+.rubsteps{display:flex;gap:8px;justify-content:center;margin-top:14px}
+.rubsteps span{font-size:10.5px;letter-spacing:.2em;color:var(--qing);padding:4px 10px;border:1px solid var(--line)}
+.rubsteps span.act{color:var(--paper);background:var(--nong);border-color:var(--nong)}
+
+/* ---------- 转轮排字 ---------- */
+#deskName{position:absolute;left:50%;top:4px;transform:translateX(-50%);background:var(--nong);color:var(--papW);font-size:12px;letter-spacing:.14em;padding:6px 14px;border-radius:3px;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;z-index:3}
+#deskName.on{opacity:1}
+.wheelbox{position:relative;width:300px;height:300px;margin:0 auto}
+.wheelbox .wheel{position:absolute;inset:0;border-radius:50%;border:2px solid var(--zhong);background:radial-gradient(circle,#EFE8D5,#E4DAC0);transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.wheelbox .hub{position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px;border-radius:50%;background:var(--nong);z-index:2}
+.wtype{position:absolute;width:34px;height:34px;background:var(--papW);border:1px solid var(--zhong);display:grid;place-items:center;font-family:var(--brush);font-size:19px;color:var(--jiao);cursor:grab;user-select:none;transition:box-shadow .2s}
+.wtype:hover{box-shadow:0 0 0 2px var(--cinnabar)}
+.frame{display:flex;gap:6px;justify-content:center;margin-top:18px}
+.fslot{width:38px;height:44px;border:1.5px dashed var(--dan);display:grid;place-items:center;font-family:var(--brush);font-size:20px;color:var(--jiao);background:rgba(255,255,255,.4)}
+.fslot.full{border-style:solid;border-color:var(--zhong)}
+#movetyp{position:fixed;z-index:99;pointer-events:none;display:none;width:34px;height:34px;background:var(--papW);border:1px solid var(--cinnabar);display:none;place-items:center;font-family:var(--brush);font-size:19px;color:var(--jiao)}
+
+/* ---------- 拖尾 ---------- */
+.colophon{max-width:820px;margin:0 auto;padding:90px 4vw 70px;text-align:center;position:relative}
+.colophon h3{font-family:var(--brush);font-size:clamp(26px,3.6vw,38px);color:var(--jiao);letter-spacing:.2em}
+.colophon .en{font-family:var(--en);font-style:italic;color:var(--dan);font-size:13px;margin-top:8px;letter-spacing:.1em}
+.colophon p{margin-top:26px;font-size:13.5px;line-height:2.2;color:var(--zhong);text-align:left}
+.colophon p .en{display:block;font-size:12px;text-align:left;margin-top:4px}
+#hairseal{margin-top:46px;width:78px;height:78px;background:var(--cinnabar);border:none;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 3px 12px rgba(176,58,42,.3)}
+#hairseal::after{content:"";position:absolute;top:0;bottom:0;right:0;width:50%;background:var(--paper)}
+#hairseal .sq{position:absolute;inset:6px;border:2px solid rgba(245,241,230,.85);display:grid;grid-template-columns:1fr 1fr;place-items:center;font-family:var(--brush);font-size:22px;color:var(--papW)}
+#hairseal .cap{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:10px;white-space:nowrap;font-size:10.5px;letter-spacing:.3em;color:var(--dan)}
+/* 合券遮罩 */
+#hejuan{position:fixed;inset:0;z-index:120;background:var(--papW);display:none;align-items:center;justify-content:center;flex-direction:column;overflow:hidden}
+#hejuan.show{display:flex}
+#hejuan .sheetbg{position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(43,39,36,.02) 0 2px,transparent 2px 8px)}
+#hejuan .bigseal{width:min(46vw,300px);height:min(46vw,300px);background:var(--cinnabar);display:grid;grid-template-columns:1fr 1fr;place-items:center;font-family:var(--brush);font-size:min(11vw,72px);color:var(--papW);position:relative;transform:scale(1.4) rotate(-8deg);opacity:0;transition:all .8s cubic-bezier(.2,.7,.2,1);filter:url(#inkrough)}
+#hejuan.show .bigseal{transform:scale(1) rotate(-2deg);opacity:1}
+#hejuan .bigseal::after{content:"";position:absolute;inset:14px;border:3px solid rgba(245,241,230,.8)}
+#hejuan .msg{margin-top:34px;font-size:12px;letter-spacing:.4em;color:var(--dan)}
+#hejuan .close{margin-top:20px}
+
+/* ---------- 地杆 ---------- */
+.rod{height:26px;background:linear-gradient(180deg,#2B2724,#141210 60%,#000);border-radius:13px;margin:0 auto;max-width:1200px;position:relative;box-shadow:0 10px 26px rgba(0,0,0,.3)}
+.rod::before,.rod::after{content:"";position:absolute;top:-7px;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#4A443E,#141210)}
+.rod::before{left:-18px}.rod::after{right:-18px}
+
+@media (max-width:920px){
+ .booth{grid-template-columns:1fr;gap:34px;padding:52px 0}
+ .booth.rev .meta{order:1}.booth.rev .stage{order:2}
+ .ribbon{display:none}
+ .divider{width:92%}
+}
+@media (prefers-reduced-motion:reduce){
+ *{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><filter id="inkrough"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .9 0" result="a"/><feComposite operator="in" in="SourceGraphic" in2="a"/></filter></svg>
+<div id="glaze"></div>
+<div id="mist"><i></i><i></i><i></i></div>
+<div id="scrollrod"><i></i></div>
+<button class="soundBtn" id="soundBtn">乐 SOUND · OFF</button>
+<div class="chapter" id="chapter"><span id="chLeft"></span><span id="chRight">翰墨编年史 · A CHRONICLE IN INK</span></div>
+<nav class="ribbon" id="ribbon"></nav>
+<div id="movetyp"></div>
+
+<!-- ================= 天头 ================= -->
+<header class="hero" id="top">
+ <i class="yun" style="left:4%;top:16%;width:150px;height:80px;transform:scaleX(-1)"></i>
+ <i class="yun" style="right:5%;top:24%;width:130px;height:70px"></i>
+ <i class="yun" style="left:9%;bottom:14%;width:110px;height:60px;opacity:.1"></i>
+ <i class="yun" style="right:10%;bottom:10%;width:120px;height:64px;opacity:.1;transform:scaleX(-1)"></i>
+ <div class="tsign">
+  <span class="vol">OLD WORLD SERIES · VOL.06</span>
+  <span class="tt">翰墨编年史</span>
+  <span class="st">辑录十七目</span>
+  <span class="enh">A CHRONICLE IN INK</span>
+ </div>
+ <div class="couplet">
+  <p class="zh">碑是金石不朽，帖是纸素风流。</p>
+  <p class="en">Inscribed in stone to endure; copied on silk to circulate.</p>
+  <p class="colophon"><b>辑录者题记 · 拟古</b>　语意本朱长文《墨池编》、阮元《北碑南帖论》</p>
+ </div>
+ <button id="openseal" aria-label="钤印开馆"><span class="sq"><span>輯</span><span>錄</span><span>者</span><span>印</span></span><span class="cap">钤印开馆 · 落印乐起</span></button>
+ <p class="hero-note">向下滚动 · 展卷</p>
+</header>
+
+<!-- ================= Cat.00 词条卡 ================= -->
+<section class="dict" id="b0">
+ <h2>文房四宝<span class="en">The Four Treasures of the Study</span></h2>
+ <div class="grid">
+  <div class="cell"><h3>笔</h3><div class="e">Brush</div><p>「笔」作为文房器物义，南朝已见。北宋苏易简《文房四谱》（984 前后）首次将笔、墨、纸、砚合为一谱。</p></div>
+  <div class="cell"><h3>墨</h3><div class="e">Ink</div><p>同上谱合称。南唐以"宣州诸葛笔、徽州廷珪墨、澄心堂纸、龙尾砚"并称，四宝格局成型。</p></div>
+  <div class="cell"><h3>纸</h3><div class="e">Paper</div><p>宣纸产泾县，因宣州府得名。名称首见唐张彦远《历代名画记》卷二。</p></div>
+  <div class="cell"><h3>砚</h3><div class="e">Inkstone</div><p>龙尾砚出歙州，与廷珪墨并称于南唐。砚为研墨之器，与墨互为表里。</p></div>
+ </div>
+</section>
+
+<!-- ============ 隔水一 · 文房 ============ -->
+<div class="divider"><div class="in"><span>第一展厅 · 文房</span><span class="en">The Study</span></div></div>
+
+<main class="scrollbody">
+
+<!-- Cat.01 毛笔 -->
+<section class="booth" id="b1">
+ <div class="meta">
+  <div class="booth-no">CAT. 01</div>
+  <h2>毛笔<span class="en">The Writing Brush</span></h2>
+  <div class="material">材质 竹 · 毫 · 丝 · 漆</div>
+  <p class="booth-desc">最早的毛笔实物为战国楚笔：1954 年长沙左家公山楚墓出土，兔毫、竹杆，丝线缠绕髹漆；1978 年随州曾侯乙墓亦出土。1975 年云梦睡虎地秦墓出三支，笔头插入镂空笔腔——插入式取代捆扎式。汉代有"白马作"笔，武威磨嘴子汉墓出土。旧传"蒙恬造笔"，考古证明此前已有毛笔，今列为传说。
+   <span class="en">The earliest surviving brushes are Warring-States Chu examples (Changsha Zuojiagongshan, excav. 1954). Qin tombs at Shuihudi (1975) yielded three brushes with the head inserted into a hollowed barrel. "Meng Tian invented the brush" is legend — archaeology predates him.</span></p>
+  <div class="srcs"><span class="srcs-h">资料来源</span>据湖南省博物馆 / 荆州博物馆考古报告；国家博物馆《笔的历程》。</div>
+ </div>
+ <div class="stage">
+  <div class="board"><span class="lbl">BRUSH · PRESSURE</span>
+   <canvas class="inkc" id="cBrush" width="440" height="200"></canvas>
+  </div>
+  <p class="hint">按住拖动书写 · <b>按得越慢笔锋越饱，拉得越快线条越枯</b></p>
+ </div>
+</section>
+
+<!-- Cat.02 墨与砚 -->
+<section class="booth rev" id="b2">
+ <div class="meta">
+  <div class="booth-no">CAT. 02</div>
+  <h2>墨与砚<span class="en">Inkstick &amp; Inkstone</span></h2>
+  <div class="material">材质 松烟 · 歙石</div>
+  <p class="booth-desc">最早人工墨实物为 1975 年云梦秦墓出土墨块。三国后期，松烟墨取代石墨（学界通说）。徽墨源出唐末奚超、奚廷珪父子南迁歙州，南唐李煜赐国姓，有"黄金易得，李墨难求"之语。1121 年歙州改称徽州，徽墨因此得名。现存最早徽墨实物为徽州文化博物馆藏"文府墨"。旧传"邢夷制墨"，列为传说。
+   <span class="en">The earliest artificial ink unearthed is a Qin lump from Yunmeng (1975). Pine-soot ink superseded graphite after the Three Kingdoms. Huizhou ink traces to the Xi family, later ennobled "Li" by Li Yu of Southern Tang.</span></p>
+  <div class="srcs"><span class="srcs-h">资料来源</span>据《徽州府志》；《天工开物》；徽墨制作技艺 2006 年列入首批国家级非物质文化遗产名录。</div>
+ </div>
+ <div class="stage">
+  <div class="board"><span class="lbl">INKSTONE · GRIND</span>
+   <canvas class="inkc" id="cGrind" width="440" height="220"></canvas>
+  </div>
+  <p class="hint">按住砚池<b>画圈研磨</b>，水色由清转浓 · 再次研磨更浓</p>
+ </div>
+</section>
+
+<!-- Cat.03 宣纸 -->
+<section class="booth" id="b3">
+ <div class="meta">
+  <div class="booth-no">CAT. 03</div>
+  <h2>宣纸<span class="en">Xuan Paper</span></h2>
+  <div class="material">材质 青檀皮 · 沙田稻草</div>
+  <p class="booth-desc">"宣纸"之名首见唐张彦远《历代名画记》卷二："好事家宜置宣纸百幅。"产泾县，因宣州府得名，有一千二百余年历史。现存最早宣纸实物为宋张即之《华严经》抄经册，藏安徽博物院。凡一百零八道工序，青檀皮与沙田稻草相配，有生宣、熟宣之分。2006 年列入国家级非物质文化遗产名录，2009 年入选联合国教科文组织人类非物质文化遗产代表作名录。
+   <span class="en">The name "xuan paper" first appears in Zhang Yanyuan's Tang-dynasty Notes on Famous Paintings of Successive Dynasties. Made in Jing county from blue sandalwood bark and straw, through 108 processes.</span></p>
+  <div class="srcs"><span class="srcs-h">资料来源</span>据《历代名画记》；新华社 / 中新网报道。</div>
+ </div>
+ <div class="stage">
+  <div class="board"><span class="lbl">XUAN PAPER · BLEED</span>
+   <canvas class="inkc" id="cBleed" width="440" height="220"></canvas>
+  </div>
+  <p class="hint">点击纸面<b>滴墨</b>，看墨色沿宣纸纤维洇开</p>
+ </div>
+</section>
+
+<!-- Cat.04 文房清供 -->
+<section class="booth rev" id="b4">
+ <div class="meta">
+  <div class="booth-no">CAT. 04</div>
+  <h2>文房清供<span class="en">Scholar's Desk Ornaments</span></h2>
+  <div class="material">材质 铜 · 瓷 · 玉 · 竹木</div>
+  <p class="booth-desc">笔架、水注、镇纸、臂搁之属，通称文房清供。此组器物断代最杂，不可笼统系于一朝：臂搁盛于明代，铜鎏金笔架以明器为代表，水注、镇纸历代形制不一。本卷按器物分别断代陈列。
+   <span class="en">Brush rests, water droppers, paperweights and wrist rests are grouped as "study ornaments" — each dated separately; the wrist rest flourished in the Ming.</span></p>
+  <div class="srcs"><span class="srcs-h">资料来源</span>据各馆藏品页（逐件标注具体博物馆）。</div>
+ </div>
+ <div class="stage">
+  <div class="board"><span class="lbl">SCHOLAR'S DESK</span>
+   <div id="desk" style="position:relative;height:230px">
+    <div id="deskName"></div>
+    <!-- 笔架：底座 + 三峰 -->
+    <div class="obj" data-n="笔架 · 明铜鎏金笔架（代表器）" style="position:absolute;left:7%;bottom:74px;width:104px;height:46px;cursor:pointer">
+     <div style="position:absolute;left:0;right:0;bottom:0;height:9px;border-radius:3px;background:linear-gradient(180deg,#D9B96A,#8a6d1a)"></div>
+     <div style="position:absolute;left:6px;bottom:7px;width:18px;height:36px;background:linear-gradient(90deg,#E0C57A,#A8842E);clip-path:polygon(0 100%,20% 0,80% 0,100% 100%)"></div>
+     <div style="position:absolute;left:40px;bottom:7px;width:18px;height:38px;background:linear-gradient(90deg,#E0C57A,#A8842E);clip-path:polygon(0 100%,20% 0,80% 0,100% 100%)"></div>
+     <div style="position:absolute;left:74px;bottom:7px;width:18px;height:36px;background:linear-gradient(90deg,#E0C57A,#A8842E);clip-path:polygon(0 100%,20% 0,80% 0,100% 100%)"></div>
+    </div>
+    <!-- 水注：蟾蜍形瓷水注（壶身+流+钮） -->
+    <div class="obj" data-n="水注 · 形制不一（瓷）" style="position:absolute;left:36%;bottom:74px;width:64px;height:56px;cursor:pointer">
+     <div style="position:absolute;left:8px;right:8px;bottom:0;height:42px;border-radius:46% 46% 44% 44%/58% 58% 42% 42%;background:radial-gradient(ellipse at 35% 30%,#E4EBE2,#A9B8AC 70%,#8CA093);box-shadow:inset 0 -4px 8px rgba(60,80,70,.25)"></div>
+     <div style="position:absolute;left:-4px;bottom:22px;width:14px;height:8px;border-radius:6px 2px 2px 6px;background:#B9C7BB;transform:rotate(-18deg)"></div>
+     <div style="position:absolute;left:26px;top:2px;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#DDE5DA,#9DB0A3)"></div>
+    </div>
+    <!-- 镇纸：铜镇纸平卧 -->
+    <div class="obj" data-n="镇纸 · 历代形制不一（铜）" style="position:absolute;left:58%;bottom:76px;width:96px;height:16px;cursor:pointer">
+     <div style="position:absolute;inset:0;border-radius:8px;background:linear-gradient(180deg,#E0C57A 0 30%,#A8842E 70%,#6d5515);box-shadow:0 3px 5px rgba(43,39,36,.3)"></div>
+     <div style="position:absolute;left:8px;right:8px;top:5px;height:2px;border-radius:2px;background:rgba(255,255,255,.35)"></div>
+    </div>
+    <!-- 臂搁：竹制，微斜 -->
+    <div class="obj" data-n="臂搁 · 盛于明代（竹）" style="position:absolute;left:80%;bottom:74px;width:30px;height:104px;cursor:pointer;transform:rotate(-6deg)">
+     <div style="position:absolute;inset:0;border-radius:15px 15px 7px 7px;background:linear-gradient(90deg,#C8A86A,#E4CE9C 45%,#A5824A);box-shadow:0 3px 6px rgba(43,39,36,.25)"></div>
+     <div style="position:absolute;left:6px;right:6px;top:12px;height:1px;background:rgba(90,60,20,.35)"></div>
+     <div style="position:absolute;left:6px;right:6px;top:34px;height:1px;background:rgba(90,60,20,.35)"></div>
+     <div style="position:absolute;left:6px;right:6px;top:56px;height:1px;background:rgba(90,60,20,.35)"></div>
+     <div style="position:absolute;left:6px;right:6px;top:78px;height:1px;background:rgba(90,60,20,.35)"></div>
+    </div>
+    <!-- 案面 -->
+    <div style="position:absolute;left:3%;right:3%;bottom:56px;height:14px;border-radius:4px;background:linear-gradient(180deg,#7A5A38,#5A3F26 60%,#46301C);box-shadow:0 6px 10px rgba(43,39,36,.28),inset 0 1px 0 rgba(255,255,255,.15)"></div>
+    <div style="position:absolute;left:12%;right:12%;bottom:16px;height:10px;background:linear-gradient(180deg,#5A3F26,#3E2A18);border-radius:2px"></div>
+    <div style="position:absolute;left:6%;bottom:24px;width:10px;height:34px;background:linear-gradient(90deg,#4A3320,#6B4C2E)"></div>
+    <div style="position:absolute;right:6%;bottom:24px;width:10px;height:34px;background:linear-gradient(90deg,#4A3320,#6B4C2E)"></div>
+   </div>
+  </div>
+  <p class="hint">轻触器物<b>细看名目与断代</b></p>
+ </div>
+</section>
+</main>
+
+<!-- ============ 隔水二 · 书体 ============ -->
+<div class="divider"><div class="in"><span>第二展厅 · 书体</span><span class="en">The Scripts</span></div></div>
+
+<main class="scrollbody">
+
+<!-- Cat.05 甲骨文 -->
+<section class="booth" id="b5">
+ <div class="meta">
+  <div class="booth-no">CAT. 05</div>
+  <h2>甲骨文<span class="en">Oracle Bone Script</span></h2>
+  <div class="material">材质 龟甲 · 兽骨 · 刀刻</div>
+  <p class="booth-desc">1899 年王懿荣鉴识甲骨文。迄今出土约十五万片，单字约四千四百，可识者约二千四百（宋镇豪数据）。2017 年入选联合国教科文组织"世界记忆名录"。故宫博物院藏甲骨数字有两个官方口径：2017 年发布会称 23,000 片；故宫古文字数字平台（2021）为 21,395 片。本卷采用后者，据故宫古文字数字平台口径。
+   <span class="en">Identified by Wang Yirong in 1899. About 150,000 pieces excavated, c. 4,400 characters, c. 2,400 deciphered (Song Zhenhao's figures). Entered UNESCO's Memory of the World in 2017.</span></p>
+  <div class="srcs"><span class="srcs-h">资料来源</span>据故宫博物院官网 / 古文字数字平台；《人民日报》2017-12-27。</div>
+ </div>
+ <div class="stage">
+  <div class="board"><span class="lbl">ONE CHARACTER · THREE STATES</span>
+   <div class="glyphrow" id="oracle">
+    <div class="gcell act" data-g="0"><svg viewBox="0 0 100 120"><path d="M50 12 L30 60 L38 60 L50 28 L62 60 L70 60 Z M26 72 H74 V80 H26 Z M20 92 H80" fill="none" stroke="#2B2724" stroke-width="2.5"/></svg><div class="gname">刀刻 · 甲骨</div></div>
+    <div class="gcell" data-g="1"><svg viewBox="0 0 100 120"><path d="M50 14 C40 14 34 24 34 34 C34 48 44 56 50 56 C56 56 66 48 66 34 C66 24 60 14 50 14 Z M34 66 H66 C68 66 68 78 66 78 H34 C32 78 32 66 34 66 Z" fill="#2B2724"/></svg><div class="gname">铸金 · 金文</div></div>
+    <div class="gcell" data-g="2"><svg viewBox="0 0 100 120"><rect x="36" y="14" width="28" height="42" rx="14" fill="none" stroke="#2B2724" stroke-width="3"/><path d="M36 66 H64 M36 78 H64 M50 88 V100" stroke="#2B2724" stroke-width="3" fill="none"/></svg><div class="gname">匀圆 · 小篆</div></div>
+   </div>
+  </div>
+  <p class="hint">示例字「日」之示意 · 点击三态<b>循环切换高亮</b></p>
+ </div>
+</section>
+
+<!-- Cat.06 金文与石鼓文 -->
+<section class="booth rev" id="b6">
+ <div class="meta">
+  <div class="booth-no">CAT. 06</div>
+  <h2>金文与石鼓文<span class="en">Bronze &amp; Stone-drum Scripts</span></h2>
+  <div class="material">材质 青铜铸款 · 花岗石刻凿</div>
+  <p class="booth-desc">石鼓凡十鼓，刻四言诗，籀文，字体介于金文与小篆之间。唐初出土于凤翔三畤原。原文约六百五十字，乾隆年间余三百一十字，今存三百余字。宋徽宗曾以金填字。抗战中南迁，1956 年起藏故宫（今石鼓馆）。故宫另藏明拓本（新00045770，朱翼盦捐献）。断代无定论：郭沫若主秦襄公说，马衡主秦穆公说，唐兰考秦献公十一年（前 374），李铁华考秦文公五十年（前 716）。四说并存。
+   <span class="en">Ten stone drums with tetrasyllabic poems in zhouwen, between bronze and small-seal scripts. Dating disputed: Guo Moruo, Ma Heng, Tang Lan and Li Tiehua propose four different reigns — all listed.</span></p>
+  <div class="srcs"><span class="srcs-h">资料来源</span>据故宫博物院石鼓馆；诸家考释文献。</div>
+ </div>
+ <div class="stage">
+  <div class="board"><span class="lbl">CAST vs CARVED</span>
+   <div class="glyphrow">
+    <div class="gcell act"><svg viewBox="0 0 100 120"><circle cx="50" cy="42" r="22" fill="#2B2724"/><rect x="42" y="34" width="16" height="16" rx="3" fill="#FBF8F0"/><path d="M50 76 v22 M38 84 h24" stroke="#2B2724" stroke-width="8" stroke-linecap="round" fill="none"/></svg><div class="gname">铸造 · 肥厚圆浑</div></div>
+    <div class="gcell"><svg viewBox="0 0 100 120"><circle cx="50" cy="42" r="22" fill="none" stroke="#2B2724" stroke-width="2"/><rect x="44" y="36" width="12" height="12" fill="#2B2724"/><path d="M50 76 v22 M38 84 h24" stroke="#2B2724" stroke-width="2" fill="none"/></svg><div class="gname">刻凿 · 方折瘦硬</div></div>
+   </div>
+  </div>
+  <p class="hint">「日」字示意 · 左铸造右刻凿，<b>对比肥厚与方折</b></p>
+ </div>
+</section>
+
+<!-- Cat.07 小篆 -->
+<section class="booth" id="b7">
+ <div class="meta">
+  <div class="booth-no">CAT. 07</div>
+  <h2>小篆<span class="en">Small Seal Script</span></h2>
+  <div class="material">材质 刻石 · 泰山 / 峄山</div>
+  <p class="booth-desc">峄山刻石，前 219 年秦始皇东巡立，传李斯书。原石北魏时推倒，后焚毁；今存"长安本"为北宋淳化四年（993）郑文宝据徐铉摹本重刻，218×84cm，两面刻字，藏西安碑林。泰山刻石为秦七刻石中仅存原刻者之一；明初余二十九字，清乾隆间遭火，嘉庆二十年（1815）从玉女池寻得残石，今存十字，藏泰安岱庙东御座。
+   <span class="en">The Yishan stele (219 BCE) is traditionally attributed to Li Si; the original was destroyed and the extant "Chang'an version" is a 993 re-engraving in the Xi'an Beilin. Of Mount Tai's inscription only ten characters survive.</span></p>
+  <div class="srcs"><span class="srcs-h">资料来源</span>据西安碑林博物馆；泰安岱庙。</div>
+ </div>
+ <div class="stage">
+  <div class="board"><span class="lbl">SCRIPT UNIFICATION</span>
+   <div class="glyphrow" id="unify">
+    <div class="gcell act"><svg viewBox="0 0 100 120"><path d="M30 20 L50 44 L70 20 M50 44 V100 M38 70 H62" stroke="#2B2724" stroke-width="3" fill="none"/></svg><div class="gname">六国异形 · 甲</div></div>
+    <div class="gcell"><svg viewBox="0 0 100 120"><path d="M30 30 Q50 10 70 30 M50 18 V100 M36 60 Q50 74 64 60" stroke="#2B2724" stroke-width="3" fill="none"/></svg><div class="gname">六国异形 · 乙</div></div>
+    <div class="gcell"><svg viewBox="0 0 100 120"><path d="M50 14 V106 M32 30 Q50 46 68 30 M34 74 Q50 60 66 74" stroke="#2B2724" stroke-width="3.5" fill="none"/></svg><div class="gname">统一 · 小篆</div></div>
+   </div>
+  </div>
+  <p class="hint">点击末格 → <b>书同文</b>，异形归一</p>
+ </div>
+</section>
+
+<!-- Cat.08 隶变 -->
+<section class="booth rev" id="b8">
+ <div class="meta">
+  <div class="booth-no">CAT. 08</div>
+  <h2>隶变<span class="en">The Clerical Transition</span></h2>
+  <div class="material">材质 碑刻 · 曹全碑</div>
+  <p class="booth-desc">曹全碑，东汉中平二年（185）立，明万历年间出土于郃阳，汉隶典范。故宫藏明拓本。隶变者，篆书圆转之笔折为方折，今文由此生。
+   <span class="en">The Cao Quan stele (185 CE), unearthed in the Wanli era of the Ming, is a model of Han clerical script. "Clerical transition" turns seal script's rounded strokes into angular ones.</span></p>
+  <div class="srcs"><span class="srcs-h">资料来源</span>据故宫博物院藏拓；碑刻通论。</div>
+ </div>
+ <div class="stage">
+  <div class="board"><span class="lbl">ROUND → ANGULAR</span>
+   <div class="morphwrap">
+    <svg viewBox="0 0 300 170" id="morphSeal"><path d="M150 20 C110 20 92 52 92 85 C92 118 110 150 150 150 C190 150 208 118 208 85 C208 52 190 20 150 20 Z M150 48 V122" fill="none" stroke="#2B2724" stroke-width="4"/></svg>
+    <svg viewBox="0 0 300 170" id="morphCler" style="opacity:0"><path d="M96 30 H204 M150 30 V140 M96 140 H204 M104 66 H196" fill="none" stroke="#2B2724" stroke-width="6"/></svg>
+   </div>
+   <input type="range" class="mslider" id="slCler" min="0" max="100" value="0">
+   <div style="display:flex;justify-content:space-between;font-size:10px;letter-spacing:.2em;color:var(--dan)"><span>篆 · 圆转</span><span>隶 · 方折</span></div>
+  </div>
+  <p class="hint">拖动滑杆 · 看同一字<b>由篆入隶</b></p>
+ </div>
+</section>
+
+<!-- Cat.09 楷书 -->
+<section class="booth" id="b9">
+ <div class="meta">
+  <div class="booth-no">CAT. 09</div>
+  <h2>楷书<span class="en">Regular Script</span></h2>
+  <div class="material">材质 碑石 · 颜 / 柳</div>
+  <p class="booth-desc">颜筋柳骨：颜真卿笔意丰腴，筋力内蕴；柳公权笔势峻利，骨力外张。此页以「永」字示意两家之别。所选碑刻之年代与馆藏，以西安碑林等馆藏页为准，实现时再核。
+   <span class="en">"Yan's sinew and Liu's bone": Yan Zhenqing's strokes are full and sinewy; Liu Gongquan's, lean and bony. Illustrated with the character 永.</span></p>
+  <div class="srcs"><span class="srcs-h">资料来源</span>据西安碑林等馆藏页。</div>
+ </div>
+ <div class="stage">
+  <div class="board"><span class="lbl">YAN vs LIU</span>
+   <div style="text-align:center;padding:6px 0">
+    <div id="kaiji" style="font-family:var(--brush);font-size:120px;line-height:1.1;color:var(--jiao)">永</div>
+    <div id="kaijiName" style="font-size:12px;letter-spacing:.3em;color:var(--dan);margin-top:6px">颜体 · 筋丰</div>
+   </div>
+   <div class="seg"><button class="act" data-k="0">颜 · 筋</button><button data-k="1">柳 · 骨</button></div>
+  </div>
+  <p class="hint">点击切换<b>颜筋 / 柳骨</b></p>
+ </div>
+</section>
+
+<!-- Cat.10 行书 -->
+<section class="booth rev" id="b10">
+ <div class="meta">
+  <div class="booth-no">CAT. 10</div>
+  <h2>行书<span class="en">Running Script</span></h2>
+  <div class="material">材质 纸本 · 神龙本兰亭序</div>
+  <p class="booth-desc">神龙本《兰亭序》，唐摹，纸本行书，纵 24.5 × 横 69.9 cm，28 行 324 字，故宫博物院藏，文物号故00002597。传冯承素摹——然"神龙"半印系后人所添，定为冯摹不可信（故宫官方页面自载此考订），故仍书"传"。真迹下落，据唐何延之《兰亭记》传葬昭陵，五代温韬盗陵后无踪——此据唐人记载。
+   <span class="en">The "Shenlong" Lanting, a Tang tracing copy on paper, 24.5×69.9 cm, Palace Museum no. 故00002597. Attributed to Feng Chengsu — but the attribution is unreliable (the half-seal is a later addition), so "traditionally attributed" it remains.</span></p>
+  <div class="srcs"><span class="srcs-h">资料来源</span>据故宫博物院数字文物库。</div>
+ </div>
+ <div class="stage">
+  <div class="board"><span class="lbl">TRACE FREELY · NO SCORING</span>
+   <canvas class="inkc" id="cTrace" width="440" height="220"></canvas>
+  </div>
+  <p class="hint">在<b>半透明底字</b>上自由摹写 · 不设评分，笔迹自留</p>
+ </div>
+</section>
+
+<!-- Cat.11 草书 -->
+<section class="booth" id="b11">
+ <div class="meta">
+  <div class="booth-no">CAT. 11</div>
+  <h2>草书<span class="en">Cursive Script</span></h2>
+  <div class="material">材质 纸本 · 怀素自叙帖</div>
+  <p class="booth-desc">怀素《自叙帖》，大历十一或十二年（776/777），纸本纵 28.3 × 横 755 cm（采用故宫系口径），126 行 698 字，首六行为宋苏舜钦补书，李东阳篆书引首"藏真自叙"，藏台北故宫博物院。真伪为百年公案：启功主宋摹本说；傅申 2005 年提"北宋映写本"说（三胞本：故宫本、流日半卷本、契兰堂本），至今未定。
+   <span class="en">Huaisu's Autobiography (776/777), 28.3×755 cm, 126 lines, National Palace Museum, Taipei. Authenticity disputed: Qi Gong argues a Song copy; Fu Shen (2005) proposes a Northern Song tracing — unresolved.</span></p>
+  <div class="srcs"><span class="srcs-h">资料来源</span>据台北故宫；启功、傅申相关论著。</div>
+ </div>
+ <div class="stage">
+  <div class="board"><span class="lbl">SPEED = FLYING WHITE</span>
+   <canvas class="inkc" id="cCursive" width="440" height="220"></canvas>
+  </div>
+  <p class="hint">快速拖动出<b>连笔飞白</b>，缓行则墨饱</p>
+ </div>
+</section>
+</main>
+
+<!-- ============ 隔水三 · 金石与流传 ============ -->
+<div class="divider"><div class="in"><span>第三展厅 · 金石与流传</span><span class="en">Stone and Silk</span></div></div>
+
+<main class="scrollbody">
+
+<!-- Cat.12 敦煌遗书 -->
+<section class="booth" id="b12">
+ <div class="meta">
+  <div class="booth-no">CAT. 12</div>
+  <h2>敦煌遗书<span class="en">The Dunhuang Manuscripts</span></h2>
+  <div class="material">材质 纸本卷子 · 写经</div>
+  <p class="booth-desc">1900 年 6 月 22 日，王圆箓发现莫高窟第 17 窟藏经洞。遗书总数约六七万件，各机构编目口径不同；上起魏晋，下至宋初，佛经约居九成。唐咸通九年（868）《金刚经》为世界最早有明确纪年的雕版印刷品。1907 年斯坦因、1908 年伯希和携取部分——此处客观陈述。现分藏：中国国家图书馆 16000 余件、英国国家图书馆 17000 余号、法国国家图书馆 7000 余号、俄罗斯藏 19870 号等。为二十世纪中国古文献四大发现之一。
+   <span class="en">On 22 June 1900 Wang Yuanlu opened Cave 17 at Mogao. Some 60–70,000 items (cataloguing varies by institution), spanning Wei-Jin to early Song, nine-tenths Buddhist. The 868 Diamond Sutra is the world's earliest dated woodblock print. Stein (1907) and Pelliot (1908) removed portions — stated here as fact.</span></p>
+  <div class="srcs"><span class="srcs-h">资料来源</span>据各馆敦煌文献目录；敦煌研究院。</div>
+ </div>
+ <div class="stage">
+  <div class="board"><span class="lbl">HANDSCROLL · DRAG →</span>
+   <div class="sstrip" id="sutra"><div class="inner">
+    <div class="sheet"><b>金刚般若波罗蜜经</b><br>咸通九年四月十五日<br>王玠为二亲敬造普施</div>
+    <div class="sheet">如是我闻。一时佛在舍卫国。祇树给孤独园。与大比丘众。千二百五十人俱。</div>
+    <div class="sheet">尔时世尊食时。著衣持钵。入舍卫大城乞食。于其城中次第乞已。还至本处。</div>
+    <div class="sheet">饭食讫。收衣钵。洗足已。敷座而坐。时长老须菩提。在大众中。即从座起。</div>
+    <div class="sheet">—— 卷子本 · 现存最早有明确纪年（868）雕版印刷品 ——</div>
+   </div></div>
+  </div>
+  <p class="hint">横向<b>拖动经卷</b>展读 · 本卷唯一横向交互 · 字体「马善政毛笔体」（SIL OFL 开源，免费商用）</p>
+ </div>
+</section>
+
+<!-- Cat.13 双钩廓填 -->
+<section class="booth rev" id="b13">
+ <div class="meta">
+  <div class="booth-no">CAT. 13</div>
+  <h2>双钩廓填<span class="en">Outline-and-fill Tracing</span></h2>
+  <div class="material">材质 纸本 · 万岁通天帖</div>
+  <p class="booth-desc">《万岁通天帖》：唐万岁通天二年（697），王方庆献王氏一门二十八人墨迹十卷，武则天命弘文馆双钩摹制。唐代原名《宝章集》，"万岁通天帖"之名系南宋岳珂著录所定。今存七人十帖，含羲之《姨母帖》《初月帖》。历明真赏斋、清乾清宫两次火劫，火痕犹存。米芾评"下真迹一等"。1922 年溥仪携往长春，1954 年入藏辽宁省博物馆。
+   <span class="en">In 697 Wang Fangqing presented the Wang clan's autographs; Wu Zetian ordered outline-and-fill copies. The album survives two fires, enters Liaoning Provincial Museum in 1954.</span></p>
+  <div class="srcs"><span class="srcs-h">资料来源</span>据辽宁省博物馆。</div>
+ </div>
+ <div class="stage">
+  <div class="board"><span class="lbl">OUTLINE → FILL</span>
+   <div style="text-align:center;padding:4px 0">
+    <div id="gouChar" style="position:relative;display:inline-block;font-family:var(--brush);font-size:120px;line-height:1.1">
+     <span id="gouOut" style="color:transparent;-webkit-text-stroke:1.5px var(--zhong)">摹</span>
+     <span id="gouFill" style="position:absolute;inset:0;color:var(--jiao);clip-path:inset(100% 0 0 0);transition:clip-path .6s ease">摹</span>
+    </div>
+   </div>
+   <div class="seg"><button class="act" data-s="0">描外缘 · 双钩</button><button data-s="1">廓内填墨</button></div>
+  </div>
+  <p class="hint">先<b>双钩</b>描外缘，再<b>廓填</b>——复制技术的交互化</p>
+ </div>
+</section>
+
+<!-- Cat.14 碑与拓 -->
+<section class="booth" id="b14">
+ <div class="meta">
+  <div class="booth-no">CAT. 14</div>
+  <h2>碑与拓<span class="en">Stele &amp; Rubbing</span></h2>
+  <div class="material">材质 碑石 · 纸 · 墨</div>
+  <p class="booth-desc">传拓一般认为隋代已产生（《隋书·经籍志》："其相承传拓之本，犹在秘府"）。现存最早有明确纪年拓本为唐太宗《温泉铭》（贞观二十二年 / 648 刻石，1900 年敦煌藏经洞发现，现藏法国国家图书馆）。全形拓为清嘉道间马起凤所创。
+   <span class="en">Rubbing generally dates from the Sui. The earliest dated rubbing extant is Taizong's Wenquan Inscription (648), found at Dunhuang in 1900, now in the BnF.</span></p>
+  <div class="srcs"><span class="srcs-h">资料来源</span>据《隋书·经籍志》；故宫"宋拓魅力"展；上博"与时偕行"特展资料。</div>
+ </div>
+ <div class="stage">
+  <div class="board"><span class="lbl">RUBBING · 3 STEPS</span>
+   <div id="rubStage" style="position:relative;height:180px;background:linear-gradient(180deg,#6d675c,#57524a);border-radius:6px;display:grid;place-items:center;transition:background .5s">
+    <div id="rubText" style="font-family:var(--brush);font-size:44px;color:rgba(245,241,230,.25);letter-spacing:.2em;transition:color .5s">温 泉 铭</div>
+   </div>
+   <div class="rubsteps" id="rubSteps"><span class="act">一 · 铺纸</span><span>二 · 捶拓</span><span>三 · 上墨</span></div>
+  </div>
+  <p class="hint">点击拓台 · <b>铺纸 → 捶拓 → 上墨</b>，拓片渐次显影</p>
+ </div>
+</section>
+
+<!-- Cat.15 淳化阁帖 -->
+<section class="booth rev" id="b15">
+ <div class="meta">
+  <div class="booth-no">CAT. 15</div>
+  <h2>淳化阁帖<span class="en">Model-letters of the Chunhua Pavilion</span></h2>
+  <div class="material">材质 枣木刻版 · 拓本</div>
+  <p class="booth-desc">淳化三年（992），宋太宗命王著编次摹勒，为中国最早的丛帖，号"法帖之祖"。凡十卷，收一百三人四百二十件，六至八卷为王羲之。原版于 1032 年皇宫火灾焚毁。2003 年，上海博物馆以 450 万美元自安思远处购回四、六、七、八卷最善本。明肃府本刻石存兰州。编者王著识鉴不精，真伪杂糅——如实记之。
+   <span class="en">Commissioned by Emperor Taizong in 992, compiled by Wang Zhu: the earliest anthology of model calligraphy, in ten juan. The original blocks burned in 1032. In 2003 the Shanghai Museum reacquired four juan from the Ellsworth collection for US$4.5M. Wang Zhu's connoisseurship was imprecise — noted as fact.</span></p>
+  <div class="srcs"><span class="srcs-h">资料来源</span>据上海博物馆。</div>
+ </div>
+ <div class="stage">
+  <div class="board"><span class="lbl">BLOCK-PRINTED MODEL</span>
+   <div style="display:flex;gap:10px;justify-content:center">
+    <div style="flex:1;height:150px;background:var(--jiao);border-radius:4px;display:grid;place-items:center"><span style="writing-mode:vertical-rl;font-family:var(--brush);font-size:26px;color:var(--papW);letter-spacing:.2em">法帖之祖</span></div>
+    <div style="flex:1;height:150px;background:var(--papW);border:1px solid var(--line);border-radius:4px;display:grid;place-items:center"><span style="writing-mode:vertical-rl;font-family:var(--brush);font-size:26px;color:var(--nong);letter-spacing:.2em">淳化三年摹勒</span></div>
+   </div>
+  </div>
+  <p class="hint">上承碑拓 · 下启雕版 · <b>刻帖填时间线</b></p>
+ </div>
+</section>
+
+<!-- Cat.16 印章与篆刻 -->
+<section class="booth" id="b16">
+ <div class="meta">
+  <div class="booth-no">CAT. 16</div>
+  <h2>印章与篆刻<span class="en">Seals &amp; Seal-carving</span></h2>
+  <div class="material">材质 铜 · 玉 · 花乳石 · 朱泥</div>
+  <p class="booth-desc">殷墟出土商代铜玺三件（于省吾《双剑簃古器物图录》著录）；学界对"商玺"尚有争议——一说商代，至少春秋战国已普遍使用。秦传国玉玺"受命于天既寿永昌"，传李斯篆，实物早失，历代传讹，只作文献叙述。汉以后钤朱于纸。元王冕以花乳石刻印，为印材革新。2009 年，中国篆刻入选联合国人类非物质文化遗产代表作名录。
+   <span class="en">Three bronze seals from Yinxu are recorded by Yu Xingwu, though "Shang seals" remain debated — say rather: in general use by the Spring-and-Autumn/Warring-States. The imperial jade seal is lost; treated as textual record only.</span></p>
+  <div class="srcs"><span class="srcs-h">资料来源</span>据《周礼·地官》；《双剑簃古器物图录》；篆刻史通论。</div>
+ </div>
+ <div class="stage">
+  <div class="board"><span class="lbl">STAMP A SEAL</span>
+   <div style="display:flex;align-items:center;justify-content:center;gap:26px;padding:10px 0">
+    <button class="sealBtn" id="sealBtn"><span class="sq"><span>墨</span><span>迹</span><span>之</span><span>印</span></span></button>
+    <span class="stamped" id="stamped"><span class="imp"><span>墨</span><span>迹</span><span>之</span><span>印</span></span></span>
+   </div>
+  </div>
+  <p class="hint">点击印章 → 纸上<b>钤下朱印</b>（与天头、骑缝印一脉）</p>
+ </div>
+</section>
+
+<!-- Cat.17 王祯转轮排字盘 -->
+<section class="booth rev" id="b17">
+ <div class="meta">
+  <div class="booth-no">CAT. 17</div>
+  <h2>王祯转轮排字盘<span class="en">Wang Zhen's Revolving Type-case</span></h2>
+  <div class="material">材质 木活字 · 转轮木盘</div>
+  <p class="booth-desc">王祯 1295 年任旌德县尹，1298 年（大德二年）制木活字三万余枚，置转轮排字盘，印《旌德县志》，"不出一月，百部齐成"——该县志已失传。《造活字印书法》附于《农书》（1313 刊），为世界上最早系统叙述活字印刷的文献。"以人寻字则难，以字就人则易"，王祯原文。对照线（只列年代，不评优劣）：毕昇泥活字（北宋）→ 王祯木活字（1298）→ 古腾堡铅活字（c. 1440s，见 Vol.05 Cat.10）。
+   <span class="en">Wang Zhen carved over 30,000 wooden types in 1298 and set them on a revolving case; his treatise, appended to the Book of Agriculture (1313), is the earliest systematic account of movable-type printing. "For a man to chase characters is hard; for characters to come to the man is easy."</span></p>
+  <div class="srcs"><span class="srcs-h">资料来源</span>据王祯《农书·造活字印书法》；泾县 / 旌德官方史料。</div>
+ </div>
+ <div class="stage">
+  <div class="board"><span class="lbl">REVOLVING TYPE-CASE</span>
+   <div class="wheelbox" id="wheelbox"><div class="wheel" id="wheel"></div><div class="hub"></div></div>
+   <div class="frame" id="frame">
+    <div class="fslot"></div><div class="fslot"></div><div class="fslot"></div><div class="fslot"></div>
+   </div>
+  </div>
+  <p class="hint">转动轮盘，<b>点活字放入版框</b> · 转盘上寻字，以字就人</p>
+ </div>
+</section>
+</main>
+
+<!-- ============ 拖尾 ============ -->
+<footer class="colophon" id="colo">
+ <i class="yun" style="left:6%;top:12%;width:140px;height:74px;transform:scaleX(-1)"></i>
+ <i class="yun" style="right:6%;bottom:16%;width:130px;height:70px"></i>
+ <h3>辑录者按</h3>
+ <div class="en">Editor's Note</div>
+ <p>本卷资料辑自公开出版物与博物馆藏品档案，存疑处标"传""约""一说"，欢迎指正。题记为今人拟古，非古人原句；化用出处已于天头注明。碑帖真伪、石鼓断代、自叙帖公案，皆学界未决之题，本卷并列诸说，不妄裁断。</p>
+ <p><span class="en">Compiled from public publications and museum archives; doubtful points are marked "traditionally", "c.", or "one account holds". Corrections welcome.</span></p>
+ <button id="hairseal" aria-label="骑缝印 · 合券"><span class="sq"><span>合</span><span>卷</span></span><span class="cap">骑缝印 · 点击合券</span></button>
+</footer>
+<div style="padding:0 4vw 60px"><div class="rod"></div></div>
+
+<!-- 合券遮罩 -->
+<div id="hejuan">
+ <div class="sheetbg"></div>
+ <div class="bigseal"><span>合</span><span>而</span><span>为</span><span>卷</span></div>
+ <p class="msg">十七目合为一卷 · 翰墨编年史 · 完</p>
+ <button class="abtn close" id="closeHejuan">收卷</button>
+</div>
+
+<script>
+"use strict";
+var $=function(s){return document.querySelector(s)},$$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s))};
+function on(el,ev,fn){if(el)el.addEventListener(ev,fn,{passive:false})}
+
+/* ============ 墨引擎（公共模块） ============ */
+function fitCanvas(cv){
+ var w=cv.getBoundingClientRect().width||cv.width, h=cv.height;
+ cv.width=w; var ctx=cv.getContext('2d');
+ ctx.fillStyle='#FBF8F0';ctx.fillRect(0,0,cv.width,cv.height);
+ /* 纸纹 */
+ for(var i=0;i<400;i++){ctx.fillStyle='rgba(120,110,95,'+(Math.random()*.05)+')';ctx.fillRect(Math.random()*cv.width,Math.random()*cv.height,Math.random()*14+2,1);}
+ return ctx;
+}
+function inkDot(ctx,x,y,r,a){
+ for(var i=0;i<14;i++){var dx=(Math.random()-.5)*r*1.8,dy=(Math.random()-.5)*r*1.8,rr=r*(.3+Math.random()*.7);
+  ctx.beginPath();ctx.arc(x+dx,y+dy,rr,0,7);ctx.fillStyle='rgba(20,18,16,'+(a*(0.25+Math.random()*.5))+')';ctx.fill();}
+ ctx.beginPath();ctx.arc(x,y,r*.5,0,7);ctx.fillStyle='rgba(20,18,16,'+a+')';ctx.fill();
+}
+/* 笔触：速度→枯润 */
+function inkStroke(ctx,x1,y1,x2,y2,w,dry){
+ var d=Math.hypot(x2-x1,y2-y1),steps=Math.max(1,d/2|0);
+ for(var i=0;i<=steps;i++){
+  var t=i/steps,x=x1+(x2-x1)*t,y=y1+(y2-y1)*t;
+  var ww=w*(0.4+0.6*Math.sin(t*Math.PI*.8+.3));
+  if(dry&&Math.random()<.45)continue; /* 飞白 */
+  inkDot(ctx,x,y,ww,dry?.55:.8);
+ }
+}
+function makePainter(cv,opt){
+ opt=opt||{};var ctx=fitCanvas(cv),down=false,lx=0,ly=0,lt=0,ink=1;
+ function pos(e){var r=cv.getBoundingClientRect();var p=e.touches?e.touches[0]:e;return{x:(p.clientX-r.left)*(cv.width/r.width),y:(p.clientY-r.top)*(cv.height/r.height)}}
+ function st(e){down=true;var p=pos(e);lx=p.x;ly=p.y;lt=performance.now();if(opt.ondown)opt.ondown(p,ctx);}
+ function mv(e){if(!down)return;e.preventDefault();var p=pos(e);var now=performance.now();
+  var sp=Math.hypot(p.x-lx,p.y-ly)/Math.max(1,now-lt);
+  var w=(opt.w||10)*Math.max(.25,Math.min(1.1,.9-sp*.4))*ink;
+  var dry=opt.dry&&sp>.55;
+  inkStroke(ctx,lx,ly,p.x,p.y,w,dry);
+  ink=Math.max(.15,ink-.004*Math.hypot(p.x-lx,p.y-ly)*.02); /* 墨渐枯 */
+  lx=p.x;ly=p.y;lt=now;}
+ function up(){down=false;}
+ on(cv,'pointerdown',st);on(cv,'pointermove',mv);on(window,'pointerup',up);
+ on(cv,'touchstart',st);on(cv,'touchmove',mv);on(window,'touchend',up);
+ return{reink:function(){ink=1},ctx:ctx};
+}
+
+/* Cat.01 毛笔 */
+(function(){var cv=$('#cBrush');if(cv)makePainter(cv,{w:12,dry:true});})();
+/* Cat.10 兰亭 摹写：半透明底字（必须在 makePainter 之后画，否则 fitCanvas 会清空） */
+(function(){var cv=$('#cTrace');if(!cv)return;
+ var pt=makePainter(cv,{w:4,dry:false}),ctx=pt.ctx;
+ var dirty=false;
+ on(cv,'pointerdown',function(){dirty=true});
+ on(cv,'touchstart',function(){dirty=true});
+ function base(){
+  ctx.save();
+  ctx.font='92px "Ma Shan Zheng","Noto Serif SC",serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillStyle='rgba(122,114,104,.3)';ctx.fillText('永和九年',cv.width/2,cv.height/2);
+  ctx.restore();
+ }
+ base();
+ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){if(!dirty)base();});
+})();
+/* Cat.11 草书 飞白 */
+(function(){var cv=$('#cCursive');if(cv)makePainter(cv,{w:10,dry:true});})();
+
+/* Cat.02 磨墨（砚台重构：石砚 · 砚堂 · 水色随磨墨转浓 · 墨锭随手） */
+(function(){var cv=$('#cGrind');if(!cv)return;var ctx=fitCanvas(cv);
+ var cx=cv.width/2,cy=cv.height*.54,rx=168,ry=84;
+ var conc=0,lastA=null,ang=-.7,grind=false;
+ function stoneBody(){
+  ctx.save();
+  ctx.beginPath();ctx.ellipse(cx,cy+9,rx+4,ry,0,0,7);ctx.fillStyle='rgba(43,39,36,.16)';ctx.fill();
+  var g=ctx.createLinearGradient(cx-rx,cy-ry,cx+rx,cy+ry);
+  g.addColorStop(0,'#5C5548');g.addColorStop(.45,'#3C372F');g.addColorStop(1,'#282420');
+  ctx.beginPath();ctx.ellipse(cx,cy,rx,ry,0,0,7);ctx.fillStyle=g;ctx.fill();
+  /* 石缘受光（上缘亮、下缘暗） */
+  ctx.lineWidth=2;ctx.strokeStyle='rgba(255,255,255,.13)';
+  ctx.beginPath();ctx.ellipse(cx,cy,rx-2,ry-2,0,Math.PI*1.05,Math.PI*1.95);ctx.stroke();
+  ctx.lineWidth=1.4;ctx.strokeStyle='rgba(0,0,0,.38)';
+  ctx.beginPath();ctx.ellipse(cx,cy,rx-2,ry-2,0,Math.PI*.08,Math.PI*.92);ctx.stroke();
+  /* 石眼点缀（端石） */
+  ctx.beginPath();ctx.arc(cx+rx*.62,cy-ry*.55,5,0,7);ctx.fillStyle='rgba(90,70,30,.55)';ctx.fill();
+  ctx.beginPath();ctx.arc(cx+rx*.62,cy-ry*.55,2,0,7);ctx.fillStyle='rgba(20,16,10,.8)';ctx.fill();
+  ctx.restore();
+ }
+ function pool(){
+  var prx=rx*.74,pry=ry*.64;
+  /* 砚唇 */
+  var rg=ctx.createRadialGradient(cx-prx*.4,cy-pry*.5,8,cx,cy,prx+9);
+  rg.addColorStop(0,'#504940');rg.addColorStop(1,'#2C2822');
+  ctx.beginPath();ctx.ellipse(cx,cy,prx+9,pry+9,0,0,7);ctx.fillStyle=rg;ctx.fill();
+  /* 水面：清水 → 墨汁 */
+  var r=Math.round,g0=200-150*conc,g1=205-158*conc,g2=205-158*conc;
+  var wg=ctx.createRadialGradient(cx-prx*.35,cy-pry*.4,4,cx,cy,prx);
+  wg.addColorStop(0,'rgba('+r(g0)+','+r(g1)+','+r(g2)+','+(.7-conc*.2)+')');
+  wg.addColorStop(.72,'rgba('+r(g0-30)+','+r(g1-28)+','+r(g2-24)+','+(.85-conc*.25)+')');
+  wg.addColorStop(1,'rgba('+(58+r(conc*22))+','+(62+r(conc*16))+','+(58+r(conc*12))+',.95)');
+  ctx.beginPath();ctx.ellipse(cx,cy,prx,pry,0,0,7);ctx.fillStyle=wg;ctx.fill();
+  /* 磨出的墨痕漩涡（浓度越高越明显） */
+  if(conc>.05){ctx.strokeStyle='rgba(20,18,16,'+(conc*.3)+')';ctx.lineWidth=3;
+   ctx.beginPath();ctx.ellipse(cx,cy,prx*.55,pry*.5,ang*.3,0,4.2);ctx.stroke();}
+  /* 水面高光（浓则弱） */
+  ctx.strokeStyle='rgba(255,255,255,'+(.2*(1-conc))+')';ctx.lineWidth=6;ctx.lineCap='round';
+  ctx.beginPath();ctx.ellipse(cx,cy,prx*.7,pry*.68,0,Math.PI*1.12,Math.PI*1.42);ctx.stroke();
+  ctx.lineWidth=1;ctx.strokeStyle='rgba(255,255,255,'+(.14*(1-conc*.7))+')';
+  for(var i=1;i<=3;i++){ctx.beginPath();ctx.ellipse(cx,cy,prx*i*.26,pry*i*.26,0,0,7);ctx.stroke();}
+ }
+ function stick(x,y){
+  ctx.save();ctx.translate(x,y);ctx.rotate(-.4);
+  ctx.beginPath();ctx.ellipse(0,24,14,4,0,0,7);ctx.fillStyle='rgba(20,18,16,.3)';ctx.fill();
+  var g=ctx.createLinearGradient(-11,0,11,0);
+  g.addColorStop(0,'#1C1A17');g.addColorStop(.5,'#34312B');g.addColorStop(1,'#141210');
+  ctx.fillStyle=g;ctx.beginPath();
+  if(ctx.roundRect)ctx.roundRect(-11,-22,22,44,5);else ctx.rect(-11,-22,22,44);
+  ctx.fill();
+  ctx.strokeStyle='rgba(201,162,39,.75)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(-6,-9);ctx.lineTo(6,-9);ctx.stroke();
+  ctx.fillStyle='rgba(201,162,39,.9)';ctx.font='9px "Noto Serif SC",serif';
+  ctx.textAlign='center';ctx.fillText('廷珪',0,6);
+  ctx.restore();
+ }
+ function draw(){
+  stoneBody();pool();
+  if(grind)stick(cx+Math.cos(ang)*rx*.42,cy+Math.sin(ang)*ry*.42);
+  else stick(cx-rx*.4,cy+ry*.3);
+ }
+ function pos(e){var r=cv.getBoundingClientRect();var p=e.touches?e.touches[0]:e;
+  return{x:(p.clientX-r.left)*(cv.width/r.width),y:(p.clientY-r.top)*(cv.height/r.height)}}
+ on(cv,'pointerdown',function(e){grind=true;lastA=null;var p=pos(e);ang=Math.atan2(p.y-cy,p.x-cx);draw()});
+ on(cv,'touchstart',function(e){grind=true;lastA=null;var p=pos(e);ang=Math.atan2(p.y-cy,p.x-cx);draw()});
+ on(cv,'pointermove',function(e){if(!grind)return;e.preventDefault();
+  var p=pos(e),a=Math.atan2(p.y-cy,p.x-cx);
+  if(lastA!==null){var da=Math.abs(a-lastA);if(da>Math.PI)da=2*Math.PI-da;conc=Math.min(1,conc+da*.02);}
+  ang=a;lastA=a;draw();
+ });
+ on(cv,'touchmove',function(e){if(!grind)return;e.preventDefault();
+  var p=pos(e),a=Math.atan2(p.y-cy,p.x-cx);
+  if(lastA!==null){var da=Math.abs(a-lastA);if(da>Math.PI)da=2*Math.PI-da;conc=Math.min(1,conc+da*.02);}
+  ang=a;lastA=a;draw();
+ });
+ function done(){if(grind){grind=false;draw()}}
+ on(window,'pointerup',done);on(window,'touchend',done);
+ draw();
+})();
+
+/* Cat.03 宣纸洇墨 */
+(function(){var cv=$('#cBleed');if(!cv)return;var ctx=fitCanvas(cv);var blobs=[];
+ on(cv,'pointerdown',function(e){var r=cv.getBoundingClientRect();
+  blobs.push({x:e.clientX-r.left,y:e.clientY-r.top,r:4,a:.5})});
+ (function loop(){
+  ctx.fillStyle='rgba(251,248,240,.02)';
+   blobs.forEach(function(b){
+    for(var i=0;i<5;i++){var ang=Math.random()*Math.PI*2;var d=b.r*(0.6+Math.random()*.5);
+     ctx.beginPath();ctx.arc(b.x+Math.cos(ang)*d,b.y+Math.sin(ang)*d*0.85,b.r*.28,0,7);
+     ctx.fillStyle='rgba(20,18,16,'+(b.a*.25)+')';ctx.fill();}
+    ctx.beginPath();ctx.arc(b.x,b.y,b.r*.4,0,7);ctx.fillStyle='rgba(20,18,16,'+b.a+')';ctx.fill();
+    b.r+=0.18;b.a*=0.995;
+   });
+  blobs=blobs.filter(function(b){return b.a>.02});
+  requestAnimationFrame(loop);
+ })();
+})();
+
+/* Cat.04 文房清供：名牌替代 alert */
+(function(){var n=$('#deskName');if(!n)return;
+ $$('#desk .obj').forEach(function(o){on(o,'click',function(){
+  n.textContent=o.getAttribute('data-n');n.classList.add('on');
+  clearTimeout(n._t);n._t=setTimeout(function(){n.classList.remove('on')},2600);
+ })});
+})();
+
+/* Cat.05 甲骨三态 */
+(function(){var cs=$$('#oracle .gcell');cs.forEach(function(c,i){on(c,'click',function(){var n=(cs.findIndex(function(x){return x.classList.contains('act')})+1)%3;cs.forEach(function(x){x.classList.remove('act')});cs[n].classList.add('act')})})})();
+
+/* Cat.07 书同文 */
+(function(){var cs=$$('#unify .gcell');cs.forEach(function(c,i){on(c,'click',function(){cs.forEach(function(x){x.classList.remove('act')});if(i===2){cs[2].classList.add('act')}else{c.classList.add('act')}})})})();
+
+/* Cat.08 隶变滑杆 */
+(function(){var s=$('#slCler');if(!s)return;on(s,'input',function(){var t=s.value/100;$('#morphCler').style.opacity=t;$('#morphSeal').style.opacity=1-t})})();
+
+/* Cat.09 颜柳 */
+(function(){var cs=$$('#b9 .seg button');var names=['颜体 · 筋丰','柳体 · 骨峻'];
+ cs.forEach(function(b,i){on(b,'click',function(){cs.forEach(function(x){x.classList.remove('act')});b.classList.add('act');$('#kaijiName').textContent=names[i];
+  $('#kaiji').style.textShadow=i?'2px 2px 0 rgba(20,18,16,.2)':'4px 4px 8px rgba(20,18,16,.15)';
+  $('#kaiji').style.fontWeight=i?'400':'700'})})})();
+
+/* Cat.13 双钩廓填 */
+(function(){var cs=$$('#b13 .seg button');cs.forEach(function(b,i){on(b,'click',function(){cs.forEach(function(x){x.classList.remove('act')});b.classList.add('act');
+ $('#gouFill').style.clipPath=i?'inset(0 0 0 0)':'inset(100% 0 0 0)'})})})();
+
+/* Cat.14 捶拓三步 */
+(function(){var stg=$('#rubStage'),txt=$('#rubText'),steps=$$('#rubSteps span'),n=0;
+ on(stg,'click',function(){n=(n+1)%4;
+  steps.forEach(function(s,i){s.classList.toggle('act',i<n)});
+  if(n===0){stg.style.background='linear-gradient(180deg,#6d675c,#57524a)';txt.style.color='rgba(245,241,230,.25)'}
+  if(n===1){stg.style.background='linear-gradient(180deg,#EDE6D4,#E2D8C2)';txt.style.color='rgba(43,39,36,.35)'}
+  if(n===2){txt.style.color='rgba(20,18,16,.75)'}
+  if(n===3){stg.style.background='linear-gradient(180deg,#1C1A17,#100e0c)';txt.style.color='#F5F1E6'}
+ });})();
+
+/* Cat.12 敦煌横卷拖拽 */
+(function(){var s=$('#sutra');if(!s)return;var down=false,sx=0,sl=0;
+ on(s,'pointerdown',function(e){down=true;sx=e.clientX;sl=s.scrollLeft;s.classList.add('grabbing');s.setPointerCapture(e.pointerId)});
+ on(s,'pointermove',function(e){if(!down)return;e.preventDefault();s.scrollLeft=sl-(e.clientX-sx)});
+ on(s,'pointerup',function(){down=false;s.classList.remove('grabbing')});
+})();
+
+/* Cat.16 钤印 */
+(function(){var b=$('#sealBtn'),s=$('#stamped');if(!b)return;on(b,'click',function(){s.classList.remove('show');void s.offsetWidth;s.classList.add('show');thud()})})();
+
+/* Cat.17 转轮排字盘 */
+(function(){var wheel=$('#wheel'),box=$('#wheelbox');if(!wheel)return;
+ var chars=['安','定','邦','国','泰','民','丰','宁'],rot=0,els=[];
+ chars.forEach(function(c,i){
+  var d=document.createElement('div');d.className='wtype';d.textContent=c;wheel.appendChild(d);els.push(d);
+ });
+ function place(){var r=box.offsetWidth/2-17;
+  els.forEach(function(d,i){var a=(i/chars.length)*Math.PI*2-Math.PI/2;
+   d.style.left=(r+Math.cos(a)*r*.72)+'px';d.style.top=(r+Math.sin(a)*r*.72)+'px'})}
+ place();on(window,'resize',place);
+ on(box,'click',function(e){if(e.target.classList.contains('wtype'))return;rot+=45;wheel.style.transform='rotate('+rot+'deg)'});
+ els.forEach(function(d){on(d,'click',function(e){e.stopPropagation();
+  var slot=$$('#frame .fslot').find(function(f){return !f.classList.contains('full')});
+  if(slot){slot.textContent=d.textContent;slot.classList.add('full');d.style.opacity=.25;d.style.pointerEvents='none'}})});
+})();
+
+/* ============ Karplus-Strong 合成古筝（抒情版：D宫五声 · 乐句式 · 简易混响） ============ */
+var AC=null,sndOn=false,melodyTimer=null,phraseIdx=0,REV=null;
+var SC=[293.66,329.63,369.99,440,493.88,587.33,659.25,739.99,880]; /* D E F# A B d e f# a */
+var BEAT=1.18;
+/* 乐句：[音级, 拍数]；null=休止。旋律取意《流水》式起承转合，抒情慢板 */
+var PHRASES=[
+ [[3,2],[4,1],[5,3],[null,.5],[6,1.5],[5,.75],[3,2.5],[null,1]],
+ [[5,1.5],[6,1],[7,2],[null,.5],[8,1.5],[7,.75],[5,2.5],[null,1]],
+ [[6,2],[5,1],[3,1.5],[2,1],[3,3],[null,1.5]],
+ [[3,.75],[4,.75],[5,1],[6,2],[null,.5],[5,1],[3,2.5],[null,2]]
+];
+function ensureAC(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();
+ if(AC&&!REV){ /* 反馈延迟作简易混响，给琴声留出空间感 */
+  var dl=AC.createDelay(1);dl.delayTime.value=.29;
+  var fb=AC.createGain();fb.gain.value=.36;var wet=AC.createGain();wet.gain.value=.28;
+  dl.connect(fb);fb.connect(dl);dl.connect(wet);wet.connect(AC.destination);REV=dl;}
+}
+function pluck(f,vol,decay){
+ if(!AC)return;
+ var N=Math.floor(AC.sampleRate/f),buf=AC.createBuffer(1,AC.sampleRate*3,AC.sampleRate),d=buf.getChannelData(0),ring=[];
+ for(var i=0;i<N;i++)ring.push(Math.random()*2-1);
+ for(var i=0;i<d.length;i++){var cur=ring[i%N];ring[i%N]=(cur+ring[(i+1)%N])/2*0.9978;d[i]=cur;}
+ var src=AC.createBufferSource();src.buffer=buf;
+ var g=AC.createGain();
+ g.gain.setValueAtTime(.0001,AC.currentTime);
+ g.gain.linearRampToValueAtTime(vol||.09,AC.currentTime+.012);
+ g.gain.exponentialRampToValueAtTime(.0008,AC.currentTime+(decay||2.8));
+ var lp=AC.createBiquadFilter();lp.type='lowpass';
+ lp.frequency.setValueAtTime(2400,AC.currentTime);
+ lp.frequency.exponentialRampToValueAtTime(850,AC.currentTime+2.4);
+ src.connect(g);g.connect(lp);lp.connect(AC.destination);
+ if(REV)lp.connect(REV);
+ src.start();
+}
+function thud(){ /* 钤印闷响 */
+ if(!AC||!sndOn)return;
+ var b=AC.createBuffer(1,AC.sampleRate*.18,AC.sampleRate),dd=b.getChannelData(0);
+ for(var i=0;i<dd.length;i++)dd[i]=(Math.random()*2-1)*Math.pow(1-i/dd.length,3);
+ var s=AC.createBufferSource();s.buffer=b;var f=AC.createBiquadFilter();f.type='lowpass';f.frequency.value=220;
+ var g=AC.createGain();g.gain.value=.5;s.connect(f);f.connect(g);g.connect(AC.destination);s.start();
+}
+function playPhrase(){
+ if(!sndOn)return 0;
+ var ph=PHRASES[phraseIdx%PHRASES.length];phraseIdx++;
+ var t=0;
+ if(Math.random()<.35){ /* 起句刮奏 */
+  for(var i=0;i<5;i++){(function(k){setTimeout(function(){if(sndOn)pluck(SC[Math.min(8,k+2)],.045,.9)},t*1000+i*.095)})(i);}
+  t+=.55;
+ }
+ ph.forEach(function(st){
+  if(st[0]!==null){
+   var f=SC[st[0]];
+   setTimeout(function(){if(sndOn)pluck(f,.1,3)},t*1000);
+   if(Math.random()<.28)setTimeout(function(){if(sndOn)pluck(f*2,.032,1.1)},t*1000+70); /* 高八度泛音点缀 */
+  }
+  t+=st[1]*BEAT;
+ });
+ return t;
+}
+function loop(){if(!sndOn)return;var dur=playPhrase();if(!dur){stopMelody();return}
+ melodyTimer=setTimeout(loop,(dur+1.1+Math.random()*1.6)*1000)}
+function startMelody(){if(melodyTimer)return;phraseIdx=Math.floor(Math.random()*PHRASES.length);loop()}
+function stopMelody(){if(melodyTimer){clearTimeout(melodyTimer);melodyTimer=null}}
+on($('#soundBtn'),'click',function(){
+ ensureAC();sndOn=!sndOn;this.textContent=sndOn?'乐 SOUND · ON':'乐 SOUND · OFF';
+ if(sndOn)startMelody();else stopMelody();
+});
+on($('#openseal'),'click',function(){
+ ensureAC();if(!sndOn){sndOn=true;$('#soundBtn').textContent='乐 SOUND · ON';startMelody()}
+ thud();this.style.transform='scale(.94)';
+});
+
+/* ============ 骑缝印 · 合券 ============ */
+on($('#hairseal'),'click',function(){thud();var h=$('#hejuan');h.classList.add('show')});
+on($('#closeHejuan'),'click',function(){$('#hejuan').classList.remove('show')});
+
+/* ============ 卷签导航 + 章节栏 + 渐入 + 进度杆 ============ */
+var BOOTH_LABELS={'b0':'词条','b1':'毛笔','b2':'墨砚','b3':'宣纸','b4':'清供','b5':'甲骨','b6':'金石','b7':'小篆','b8':'隶变','b9':'楷书','b10':'行书','b11':'草书','b12':'敦煌','b13':'廓填','b14':'碑拓','b15':'阁帖','b16':'篆刻','b17':'排字','colo':'辑按'};
+var CAT_NO={'b0':'CAT.00','b1':'CAT.01','b2':'CAT.02','b3':'CAT.03','b4':'CAT.04','b5':'CAT.05','b6':'CAT.06','b7':'CAT.07','b8':'CAT.08','b9':'CAT.09','b10':'CAT.10','b11':'CAT.11','b12':'CAT.12','b13':'CAT.13','b14':'CAT.14','b15':'CAT.15','b16':'CAT.16','b17':'CAT.17','colo':'尾 · 辑录者按'};
+var CAT_NM={'b0':'文房四宝','b1':'毛笔','b2':'墨与砚','b3':'宣纸','b4':'文房清供','b5':'甲骨文','b6':'金文与石鼓文','b7':'小篆','b8':'隶变','b9':'楷书','b10':'行书','b11':'草书','b12':'敦煌遗书','b13':'双钩廓填','b14':'碑与拓','b15':'淳化阁帖','b16':'印章与篆刻','b17':'王祯转轮排字盘','colo':'辑录者按'};
+(function(){
+ var rb=$('#ribbon');
+ Object.keys(BOOTH_LABELS).forEach(function(id){
+  var a=document.createElement('a');a.href='#'+id;a.textContent=BOOTH_LABELS[id];a.setAttribute('data-t',id);rb.appendChild(a);
+ });
+ var io=new IntersectionObserver(function(es){
+  es.forEach(function(e){
+   if(e.isIntersecting){
+    e.target.classList.add('on');
+    var id=e.target.id;
+    $$('.ribbon a').forEach(function(a){a.classList.toggle('act',a.getAttribute('data-t')===id)});
+    if(CAT_NO[id]){ $('#chLeft').innerHTML='<em>'+CAT_NO[id]+'</em>'+CAT_NM[id]; }
+   }
+  });
+ },{threshold:.3});
+ $$('.booth, .dict, .colophon').forEach(function(s){io.observe(s)});
+ on(window,'scroll',function(){
+  var st=window.scrollY,h=document.body.scrollHeight-innerHeight;
+  $('#scrollrod i').style.width=(h>0?st/h*100:0)+'%';
+  $('#chapter').classList.toggle('on',st>innerHeight*.6);
+  $('#glaze').style.setProperty('--gly',(18+(st/Math.max(1,h))*64)+'%');
+ },{passive:true});
+})();
+</script>
+</body>
+</html>

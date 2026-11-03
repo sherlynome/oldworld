@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>游戏机编年史 — Old World Series Vol.02</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&family=Noto+Serif+SC:wght@500;700;900&family=VT323&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--paper:#F5F1E8;--ink:#1B1710;--accent:#D8420A;--line:rgba(27,23,16,.16);--serif:'Cormorant Garamond','Noto Serif SC',serif}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:'Noto Serif SC',serif;overflow-x:hidden}
+::selection{background:var(--accent);color:#fff}
+canvas{display:block;width:100%;image-rendering:pixelated}
+
+/* ---------- Hero ---------- */
+.hero{min-height:100vh;background:#0D0C0A;color:#F5F1E8;display:flex;flex-direction:column;justify-content:center;position:relative;padding:90px 7vw 130px}
+.hero-term{position:absolute;top:34px;left:7vw;font-family:'VT323',monospace;color:#3DDC5A;font-size:19px;line-height:1.55;letter-spacing:.5px;opacity:.9;min-height:120px;text-shadow:0 0 6px rgba(61,220,90,.35)}
+.caret{display:inline-block;width:10px;height:17px;background:#3DDC5A;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.eyebrow{font-size:12px;letter-spacing:.42em;color:var(--accent);text-transform:uppercase;margin-bottom:26px;font-family:'Manrope',sans-serif;font-weight:600}
+.hero h1{font-family:var(--serif);font-weight:900;font-size:clamp(52px,10.5vw,148px);line-height:1.04;letter-spacing:.06em;opacity:0;transform:translateY(26px);transition:all 1.2s cubic-bezier(.2,.7,.2,1)}
+.hero.on h1{opacity:1;transform:none}
+.hero-sub{font-family:var(--serif);font-style:italic;font-size:clamp(15px,2vw,21px);color:rgba(245,241,232,.55);margin-top:20px;letter-spacing:.18em;opacity:0;transition:opacity 1.2s .35s}
+.hero.on .hero-sub{opacity:1}
+.hero-lead{max-width:580px;margin-top:38px;font-size:15.5px;line-height:2;color:rgba(245,241,232,.78);opacity:0;transition:opacity 1.2s .6s}
+.hero.on .hero-lead{opacity:1}
+.hero-lead b{color:#3DDC5A;font-weight:700}
+.tl{position:absolute;bottom:46px;left:7vw;right:7vw;height:2px;background:rgba(245,241,232,.22)}
+.tl-dot{position:absolute;top:50%;width:9px;height:9px;border-radius:50%;background:#0D0C0A;border:1.5px solid rgba(245,241,232,.6);transform:translate(-50%,-50%);cursor:pointer;transition:all .25s}
+.tl-dot:hover,.tl-dot.act{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 5px rgba(216,66,10,.25)}
+.tl-dot::after{content:attr(data-label);position:absolute;bottom:16px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:10.5px;font-family:'Manrope',sans-serif;letter-spacing:.12em;color:rgba(245,241,232,.75);opacity:0;transition:opacity .2s;pointer-events:none}
+.tl-dot:hover::after{opacity:1}
+.tl-cap{position:absolute;top:14px;font-size:11px;letter-spacing:.3em;color:rgba(245,241,232,.4);font-family:'Manrope',sans-serif}
+.scroll-hint{position:absolute;bottom:-2px;left:7vw;font-size:11px;letter-spacing:.34em;color:rgba(245,241,232,.45);font-family:'Manrope',sans-serif}
+.scroll-hint::after{content:"";display:block;width:1.5px;height:44px;background:linear-gradient(var(--accent),transparent);margin:10px 0 0 44%;animation:drop 2s ease-in-out infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}55%{transform:scaleY(1)}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ---------- 章节 / 导航 ---------- */
+.chapter{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;justify-content:space-between;align-items:center;padding:11px 7vw;background:rgba(245,241,232,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--ink);transform:translateY(-100%);transition:transform .45s cubic-bezier(.2,.8,.2,1);font-family:'Manrope',sans-serif}
+.chapter.on{transform:none}
+#chLeft{font-size:12px;letter-spacing:.22em;font-weight:800}
+#chLeft em{font-style:normal;color:var(--accent);margin-right:10px;font-family:var(--serif);font-size:15px}
+#chRight{font-size:11px;letter-spacing:.3em;color:rgba(27,23,16,.55)}
+.dots{position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:80;display:flex;flex-direction:column;gap:9px}
+.dots a{width:8px;height:8px;border-radius:50%;background:rgba(27,23,16,.25);display:block;transition:all .25s;position:relative}
+.dots a:hover{background:var(--ink)}
+.dots a.act{background:var(--accent);box-shadow:0 0 0 4px rgba(216,66,10,.18)}
+.dots a::after{content:attr(data-label);position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:10px;font-family:'Manrope',sans-serif;letter-spacing:.14em;background:var(--ink);color:#F5F1E8;padding:3px 8px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s}
+.dots a:hover::after{opacity:1}
+
+/* ---------- 展台 ---------- */
+.booth{padding:118px 7vw;border-top:1px solid var(--line);display:grid;grid-template-columns:340px 1fr;gap:64px;align-items:start;opacity:0;transform:translateY(46px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+.booth.visible{opacity:1;transform:none}
+.booth.rev .meta{order:2}.booth.rev .stage{order:1}
+.booth-no{font-family:'Manrope',sans-serif;font-size:11px;letter-spacing:.4em;color:var(--accent);font-weight:700;margin-bottom:8px}
+.booth-year{font-family:var(--serif);font-style:italic;font-weight:700;font-size:clamp(64px,8vw,104px);line-height:1;color:transparent;-webkit-text-stroke:1.5px rgba(27,23,16,.75);opacity:.5;transition:all .5s}
+.booth:hover .booth-year{-webkit-text-stroke-color:var(--accent);opacity:.9}
+.booth-title{font-family:var(--serif);font-weight:900;font-size:29px;margin:22px 0 6px;line-height:1.3}
+.booth-title .en{display:block;font-style:italic;font-weight:500;font-size:16px;color:rgba(27,23,16,.5);letter-spacing:.05em;margin-top:4px}
+.booth-desc{font-size:15px;line-height:2.05;color:rgba(27,23,16,.85);margin-top:18px;max-width:340px}
+.stage{display:flex;flex-direction:column;align-items:center}
+.cap{margin-top:16px;font-family:'Manrope',sans-serif;font-size:11px;letter-spacing:.14em;color:rgba(27,23,16,.5);text-align:center}
+.cap b{color:var(--accent);font-weight:700;margin-right:8px}
+
+/* ---------- 电源 ---------- */
+.power{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:14px;flex-wrap:wrap}
+.pw{display:inline-flex;align-items:center;gap:9px;font-family:'Manrope',sans-serif;font-weight:600;font-size:12px;letter-spacing:.12em;cursor:pointer;padding:9px 20px;border:1px solid var(--ink);background:var(--paper);color:var(--ink)}
+.pw svg{width:13px;height:13px;flex:none}
+.pt{font-size:12px;color:rgba(27,23,16,.6);font-family:'Manrope',sans-serif}
+.pw-pong{background:#000;color:#3DDC5A;border-color:#3DDC5A;font-family:'VT323',monospace;font-size:17px;letter-spacing:2px}
+.pw-pong:hover{background:#3DDC5A;color:#000}
+.pw-wood{background:linear-gradient(90deg,#6b4423,#8a5a2b,#5d3a1c);color:#f8e8c8;border-color:#2e1a08}
+.pw-lcd{background:linear-gradient(180deg,#e8c86a,#c8a44a);color:#4a3a10;border-color:#8a6a1a}
+.pw-fc{background:#E60012;color:#fff;border-color:#8a0009}
+.pw-fc:hover{filter:brightness(1.15)}
+.pw-gb{background:#8a8a92;color:#f4f4f4;border-color:#4a4a52}
+.pw-snes{background:#7b5ea7;color:#fff;border-color:#4a3670}
+.pw-ps{background:linear-gradient(180deg,#d8d8d8,#a8a8a8);color:#333;border-color:#666}
+.pw-dc{background:#F8A81C;color:#001f4d;border-color:#8a5a00}
+.pw-wii{background:#fff;color:#333}
+.pw-sw{background:linear-gradient(90deg,#E60012 0%,#E60012 49%,#00A3E0 51%,#00A3E0 100%);color:#fff;border-color:#333}
+
+/* ---------- 开关机状态 ---------- */
+.demo{transition:filter .45s ease;width:100%;max-width:470px;position:relative}
+.demo.off{filter:grayscale(1) brightness(.12)}
+.demo.boot{animation:bootF .8s ease}
+@keyframes bootF{0%{filter:brightness(0)}18%{filter:brightness(2.4)}34%{filter:brightness(.5)}52%{filter:brightness(1.7)}100%{filter:brightness(1)}}
+
+/* ============ 1. PONG 1972 ============ */
+.d-pong{background:#0e0e0e;padding:22px}
+.pong-bezel{background:#000;border:2px solid #8a8a8a;border-radius:6px;padding:12px;box-shadow:inset 0 0 40px rgba(0,0,0,.9)}
+.pong-marq{margin-top:12px;text-align:center;font-family:'VT323',monospace;color:#d8d8d8;font-size:18px;letter-spacing:4px;border:1px solid #3a3a3a;padding:6px 0}
+
+/* ============ 2. Atari 2600 1977 ============ */
+.d-atari{background:linear-gradient(90deg,#6b4423,#8a5a2b 30%,#5d3a1c 55%,#7c4f26 80%,#6b4423);padding:20px;border-radius:8px;box-shadow:0 8px 24px rgba(27,23,16,.25)}
+.atari-screen{background:#101010;border:4px solid #1a1a1a;border-radius:4px;padding:18px 16px;font-family:'VT323',monospace;color:#F8B858;text-shadow:0 0 8px rgba(248,184,88,.4)}
+.atari-rom{font-size:22px;letter-spacing:3px}
+.atari-scr{font-size:20px;letter-spacing:3px;margin-top:8px}
+.atari-pix{display:flex;gap:120px;justify-content:center;margin:16px 0}
+.atari-pix i{width:22px;height:14px;background:#F8B858;box-shadow:0 0 8px rgba(248,184,88,.5)}
+.atari-pix i:last-child{margin-top:10px;background:#5ADF5A;box-shadow:0 0 8px rgba(90,223,90,.5)}
+.atari-panel{background:#1c1c1c;border-radius:6px;padding:16px 14px;display:flex;justify-content:center;gap:26px;margin-top:14px}
+.at-sw{display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer}
+.at-switch{width:14px;height:34px;background:linear-gradient(180deg,#e8e8e8,#a8a8a8);border:1px solid #000;border-radius:3px;position:relative;transition:all .15s}
+.at-switch::after{content:"";position:absolute;left:1.5px;top:2px;width:9px;height:15px;background:linear-gradient(180deg,#fff,#ccc);border-radius:2px;transition:all .15s;box-shadow:0 2px 3px rgba(0,0,0,.5)}
+.at-switch.dn::after{top:15px}
+.at-sw label{font-family:'VT323',monospace;font-size:13px;color:#c8c8c8;letter-spacing:1px;cursor:pointer}
+.atari-brand{margin-top:12px;text-align:center;font-family:'VT323',monospace;color:#f0dcb0;font-size:16px;letter-spacing:3px}
+
+/* ============ 3. Game & Watch 1980 ============ */
+.d-gw{background:linear-gradient(180deg,#e8c86a,#c8a44a 60%,#b6943f);border-radius:12px 12px 34px 12px;padding:18px 18px 26px;box-shadow:0 10px 26px rgba(27,23,16,.3),inset 0 1px 0 rgba(255,255,255,.5)}
+.gw-brand{text-align:center;font-family:'Manrope',sans-serif;font-weight:800;font-size:11px;letter-spacing:.3em;color:#5a4410;margin-bottom:10px}
+.gw-lcd{background:#b8c66e;border-radius:6px;border:3px solid #8a9a4a;height:230px;position:relative;padding:8px 12px;box-shadow:inset 0 3px 8px rgba(74,86,26,.5)}
+.gw-hud{display:flex;justify-content:space-between;align-items:center;font-family:'VT323',monospace;color:#3a4a1a;font-size:20px}
+.gw-miss{display:flex;gap:6px}
+.gw-miss i{width:14px;height:14px;border-radius:50%;background:#3a4a1a;opacity:.14}
+.gw-miss i.on{opacity:1}
+.gw-grid{display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);height:130px;margin-top:4px}
+.gw-grid i{width:17px;height:17px;border-radius:50%;background:#3a4a1a;opacity:.13;margin:auto;justify-self:center}
+.gw-grid i.on{opacity:1}
+.gw-players{display:grid;grid-template-columns:repeat(5,1fr);height:46px}
+.gw-players i{width:15px;height:38px;border-radius:6px;background:#3a4a1a;opacity:.13;margin:auto;justify-self:center}
+.gw-players i.on{opacity:1}
+.gw-btns{display:flex;justify-content:space-between;margin-top:16px;padding:0 6px}
+.gw-btn{width:64px;height:44px;border-radius:26px;border:2px solid #8a2a1a;background:radial-gradient(circle at 38% 32%,#FFB8A8,#D84830 60%,#A82818);color:#fff;font-family:'Manrope',sans-serif;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 4px 0 #7a1a0e,0 6px 10px rgba(0,0,0,.35)}
+.gw-btn:active{transform:translateY(3px);box-shadow:0 1px 0 #7a1a0e}
+
+/* ============ 4. 红白机 1983 ============ */
+.d-fc{background:#f2f2f0;border-radius:10px;padding:16px;border:2px solid #c9c4c2;box-shadow:0 8px 24px rgba(27,23,16,.18)}
+.fc-strip{background:#E60012;color:#fff;font-family:'Manrope',sans-serif;font-weight:800;font-size:11px;letter-spacing:.24em;text-align:center;padding:7px 0;border-radius:4px;margin-bottom:12px}
+.fc-pad{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 4px}
+.fc-dpad{width:52px;height:52px;background:#2a2a2a;border-radius:8px;position:relative}
+.fc-dpad::after{content:"+";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#888;font-size:22px}
+.fc-ab{width:38px;height:38px;border-radius:50%;border:2px solid #8a0009;background:radial-gradient(circle at 38% 32%,#FF9A90,#E60012 60%,#A8000C);color:#fff;font-weight:800;font-family:'Manrope',sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 3px 0 #7a0008;margin-left:10px}
+.fc-ab:active{transform:translateY(2px);box-shadow:0 1px 0 #7a0008}
+.fc-ab.b{opacity:.6;cursor:default}
+
+/* ============ 5. Game Boy 1989 ============ */
+.d-gb{background:linear-gradient(180deg,#d6d2ca,#b8b4ac);border-radius:14px 14px 30px 14px;padding:18px 20px 24px;box-shadow:0 10px 28px rgba(27,23,16,.25),inset 0 1px 0 #fff}
+.gb-frame{background:#3a3a44;border-radius:8px 8px 4px 4px;padding:14px 18px 24px}
+.gb-lbl{color:#D84830;font-family:'Manrope',sans-serif;font-weight:800;font-size:9px;letter-spacing:.14em;text-align:center;margin-bottom:8px}
+.gb-screen{background:#9BBC0F;border:2px solid #0F380F;border-radius:4px;padding:8px}
+.gb-screen canvas{height:auto}
+.gb-brand{margin-top:10px;font-family:'Manrope',sans-serif;font-weight:800;font-style:italic;font-size:13px;color:#2a2a3a;letter-spacing:.06em}
+.gb-brand span{font-size:8px;vertical-align:top}
+.gb-ctl{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding:0 4px}
+.gb-dpad{display:grid;grid-template-columns:30px 34px 30px;grid-template-rows:30px 34px 30px;place-items:center}
+.gb-dpad button{width:100%;height:100%;background:linear-gradient(180deg,#4a4a54,#2a2a34);border:none;color:#b8b8c4;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.gb-dpad button:nth-of-type(1){grid-area:1/2;border-radius:6px 6px 0 0}
+.gb-dpad button:nth-of-type(2){grid-area:2/1;border-radius:6px 0 0 6px}
+.gb-dpad button:nth-of-type(3){grid-area:2/3;border-radius:0 6px 6px 0}
+.gb-dpad button:nth-of-type(4){grid-area:3/2;border-radius:0 0 6px 6px}
+.gb-dc{grid-area:2/2;width:26px;height:26px;background:radial-gradient(circle,#5a5a64,#3a3a44);border-radius:50%}
+.gb-ab{display:flex;gap:14px;align-items:center;transform:rotate(-14deg)}
+.gb-b,.gb-a{width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#E880D8,#A83098 60%,#781868);color:#f4e0f0;font-family:'Manrope',sans-serif;font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 0 #581048}
+
+/* ============ 6. SNES Mode 7 1991 ============ */
+.d-snes{background:linear-gradient(180deg,#c4c4d0,#9a9aa8);border-radius:16px 16px 42px 42px;padding:16px;box-shadow:0 10px 26px rgba(27,23,16,.22),inset 0 1px 0 #fff}
+.snes-strip{font-family:'Manrope',sans-serif;font-weight:800;font-size:11px;letter-spacing:.3em;color:#4a3670;text-align:center;padding:6px 0 10px}
+.snes-ctl{display:flex;justify-content:flex-end;gap:12px;padding:12px 16px 4px}
+.snes-b{width:24px;height:24px;border-radius:50% 50% 50% 8px;background:radial-gradient(circle at 38% 32%,#CAB8E8,#8a6ac0 60%,#5a44a0);box-shadow:0 3px 0 #3a2a70}
+
+/* ============ 7. PlayStation 1994 ============ */
+.d-ps{background:linear-gradient(180deg,#d8d8d8,#a8a8a8);border-radius:12px;padding:16px;box-shadow:0 10px 26px rgba(27,23,16,.22)}
+.ps-lid{background:linear-gradient(180deg,#e8e8e8,#c4c4c4);border-radius:8px;height:34px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;box-shadow:inset 0 1px 0 #fff}
+.ps-logo{display:flex;gap:4px}
+.ps-logo i{width:12px;height:12px;border-radius:3px}
+.ps-logo i:nth-child(1){background:#E60012}.ps-logo i:nth-child(2){background:#00A3E0}.ps-logo i:nth-child(3){background:#F8D048}.ps-logo i:nth-child(4){background:#8a8a92}
+.ps-screen{background:#050505;height:250px;position:relative;overflow:hidden;border-radius:4px;border:2px solid #333}
+.ps-boot{position:absolute;inset:0;background:#000;display:none;flex-direction:column;justify-content:center;align-items:center;z-index:3}
+.ps-boot b{color:#fff;font-family:Georgia,serif;font-weight:400;font-size:18px;letter-spacing:.06em;opacity:0}
+.ps-boot small{color:#888;font-family:'Manrope',sans-serif;font-size:10px;letter-spacing:.2em;margin-top:14px;opacity:0}
+.ps-boot.run b{animation:psFade 3.6s ease forwards}
+.ps-boot.run small{animation:psFade 3.6s .6s ease forwards}
+@keyframes psFade{0%{opacity:0}25%{opacity:1}80%{opacity:1}100%{opacity:0}}
+.ps-menu{position:absolute;inset:0;padding:26px 24px;color:#c8d8e8;font-family:'Manrope',sans-serif}
+.ps-menu h4{font-size:11px;letter-spacing:.24em;color:#6a8aaa;margin-bottom:12px;font-weight:600}
+.ps-blocks{display:flex;flex-wrap:wrap;gap:6px;max-width:200px}
+.ps-blocks i{width:16px;height:22px;background:#183048;border:1px solid #2a4a68;border-radius:2px}
+.ps-blocks i.on{background:#3a78a8;box-shadow:0 0 6px rgba(58,120,168,.6)}
+.ps-disc{margin-top:20px;width:54px;height:54px;border-radius:50%;background:radial-gradient(circle at 50% 50%,#c8d8e8 0 8px,conic-gradient(#E60012,#F8D048,#00A3E0,#5a5aa8,#E60012) 8px 44px,#0a0a0a 44px);border:1px solid #444;position:relative}
+.ps-disc::after{content:"";position:absolute;inset:38%;border-radius:50%;background:#0a0a0a}
+
+/* ============ 8. Dreamcast 1999 ============ */
+.d-dc{background:linear-gradient(180deg,#fff,#e8e8e8);border-radius:12px;padding:16px;box-shadow:0 10px 26px rgba(27,23,16,.2),inset 0 1px 0 #fff}
+.dc-screen{background:#001F4D;border-radius:6px;border:2px solid #001030;overflow:hidden}
+.dc-foot{display:flex;align-items:center;justify-content:space-between;padding:12px 8px 2px}
+.dc-vmu{width:56px;height:40px;background:#181818;border-radius:4px;color:#4AE04A;font-family:'VT323',monospace;font-size:16px;display:flex;align-items:center;justify-content:center;border:2px solid #333;box-shadow:inset 0 0 8px #000;text-shadow:0 0 6px rgba(74,224,74,.5)}
+.dc-logo{font-family:'Manrope',sans-serif;font-weight:800;font-style:italic;font-size:17px;color:#F8A81C;letter-spacing:.02em}
+.dc-logo span{color:#00A3E0}
+
+/* ============ 9. Wii 2006 ============ */
+.d-wii{background:#f8f8f8;border-radius:14px;padding:16px;border:1px solid #ddd;box-shadow:0 10px 26px rgba(27,23,16,.15)}
+.wii-screen{background:#f4f7fa;height:260px;position:relative;overflow:hidden;border-radius:8px;cursor:none}
+.wii-bar{display:flex;justify-content:space-between;padding:12px 18px;font-family:'Manrope',sans-serif;font-size:12px;color:#5a6a7a;letter-spacing:.1em}
+.wii-bar b{font-weight:800;color:#2a3a4a}
+.wii-grid{display:grid;grid-template-columns:repeat(3,1fr);justify-items:center;row-gap:18px;padding:14px 20px}
+.wii-ch{width:72px;height:72px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:30px;cursor:pointer;transition:transform .16s cubic-bezier(.2,.7,.2,1);box-shadow:0 3px 8px rgba(27,23,16,.18)}
+.wii-ch:nth-child(1){background:#dce8f4}.wii-ch:nth-child(2){background:#f4e8d8}.wii-ch:nth-child(3){background:#d8f0e0}
+.wii-ch:nth-child(4){background:#f0dce0}.wii-ch:nth-child(5){background:#e4dcf4}.wii-ch:nth-child(6){background:#e8e8e8}
+.wii-ch:hover{transform:scale(1.22);box-shadow:0 6px 14px rgba(27,23,16,.25)}
+.wii-ch.pop{animation:wpop .45s ease}
+@keyframes wpop{50%{transform:scale(1.55)}}
+.wii-hand{position:absolute;font-size:30px;pointer-events:none;z-index:5;transform:translate(-10px,-6px);filter:drop-shadow(0 2px 3px rgba(0,0,0,.35));transition:left .04s linear,top .04s linear;display:none}
+.wii-screen.playing .wii-hand{display:block}
+
+/* ============ 10. Switch 2017 ============ */
+.d-sw{background:#2a2a2e;border-radius:16px;padding:18px 20px;display:flex;gap:12px;box-shadow:0 10px 26px rgba(27,23,16,.3)}
+.sw-joy{width:34px;border-radius:16px;flex:none;position:relative}
+.sw-joy.l{background:linear-gradient(180deg,#E60012,#B8000E);box-shadow:inset 2px 0 0 rgba(255,255,255,.2)}
+.sw-joy.r{background:linear-gradient(180deg,#00A3E0,#0080B0);box-shadow:inset -2px 0 0 rgba(255,255,255,.2)}
+.sw-joy::after{content:"";position:absolute;left:50%;top:16px;transform:translateX(-50%);width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,.35);box-shadow:inset 0 2px 4px rgba(0,0,0,.5)}
+.sw-screen{flex:1;background:#000;border-radius:8px;padding:16px 14px;min-width:0}
+.sw-top{display:flex;justify-content:space-between;font-family:'Manrope',sans-serif;font-size:12px;color:#8a8a92;margin-bottom:16px}
+.sw-row{display:flex;gap:14px;justify-content:center;transition:all .3s}
+.sw-row.dim .sw-tile{opacity:.25;transform:scale(.92)}
+.sw-tile{width:84px;height:84px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:36px;cursor:pointer;transition:all .25s cubic-bezier(.2,.7,.2,1);border:2px solid transparent}
+.sw-tile:nth-child(1){background:linear-gradient(140deg,#4a5a8a,#1a2a5a)}
+.sw-tile:nth-child(2){background:linear-gradient(140deg,#8a3a4a,#5a1a2a)}
+.sw-tile:nth-child(3){background:linear-gradient(140deg,#3a6a4a,#1a3a2a)}
+.sw-row.dim .sw-tile.opened{opacity:1;transform:scale(1.2);border-color:#f4f4f4;box-shadow:0 0 24px rgba(255,255,255,.3)}
+.sw-dock{display:flex;gap:10px;justify-content:center;margin-top:18px}
+.sw-dock i{width:16px;height:16px;border-radius:4px;background:#1a1a1e;box-shadow:inset 0 0 0 1px #333}
+
+/* ---------- 小游戏扩展 ---------- */
+#atCv,#m7Cv,#psCv,#dcCv{touch-action:none}
+#atCv{display:block;width:100%;margin:10px 0 6px;background:#080808}
+.ps-game{position:absolute;inset:0;width:100%;height:100%;display:none;z-index:2}
+.d-ps.playing .ps-game{display:block}
+.d-ps.playing .ps-menu{visibility:hidden}
+.wii-target{position:absolute;width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;z-index:4;transform:translate(-50%,-50%);animation:wtgt 1.5s linear forwards;filter:drop-shadow(0 3px 4px rgba(0,0,0,.25))}
+.wii-target.hit{animation:none;transform:translate(-50%,-50%) scale(1.5);opacity:0;transition:all .18s}
+@keyframes wtgt{0%{transform:translate(-50%,-50%) scale(1.18)}75%{transform:translate(-50%,-50%) scale(1)}100%{transform:translate(-50%,-50%) scale(.5);opacity:.2}}
+.sw-tile.lit{border-color:#fff;box-shadow:0 0 26px rgba(255,255,255,.8);transform:scale(1.12)}
+.sw-tile.wrong{animation:swshake .32s}
+@keyframes swshake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* ---------- 尾声 / 页脚 ---------- */
+.outro{background:#0D0C0A;color:#F5F1E8;padding:130px 7vw 90px;text-align:center}
+.outro h2{font-family:var(--serif);font-weight:900;font-size:clamp(30px,5vw,58px);line-height:1.5;letter-spacing:.05em}
+.outro h2 span{color:var(--accent)}
+.outro p{margin-top:30px;font-size:14px;line-height:2;color:rgba(245,241,232,.6);max-width:560px;margin-left:auto;margin-right:auto}
+.outro .keys{margin-top:36px;font-family:'Manrope',sans-serif;font-size:11px;letter-spacing:.25em;color:rgba(245,241,232,.4)}
+.outro .keys b{border:1px solid rgba(245,241,232,.35);padding:3px 9px;margin:0 3px;font-weight:600}
+.footer{background:#0D0C0A;color:rgba(245,241,232,.35);border-top:1px solid rgba(245,241,232,.15);padding:26px 7vw;display:flex;justify-content:space-between;font-family:'Manrope',sans-serif;font-size:10.5px;letter-spacing:.2em}
+.top-btn{background:none;border:1px solid rgba(245,241,232,.35);color:#F5F1E8;font-family:'Manrope',sans-serif;font-size:10.5px;letter-spacing:.25em;padding:9px 22px;cursor:pointer;transition:all .25s}
+.top-btn:hover{background:var(--accent);border-color:var(--accent)}
+
+@media (max-width:1100px){.dots{display:none}}
+@media (max-width:920px){
+  .booth{grid-template-columns:1fr;gap:34px;padding:88px 6vw}
+  .booth.rev .meta{order:0}
+  .booth-year{font-size:60px}
+  .booth-desc{max-width:none}
+  .tl{display:none}
+  .hero{padding-bottom:100px}
+}
+</style>
+</head>
+<body>
+
+<section class="hero" id="hero">
+  <div class="hero-term" id="term"></div>
+  <div class="eyebrow">Old World Series · Vol. 02</div>
+  <h1>游戏机编年史</h1>
+  <p class="hero-sub">FROM PONG TO SWITCH · 1972 — 2017</p>
+  <p class="hero-lead">从吧台上的一枚硬币，到掌心里的一对 Joy-Con——四十五年间，机器换了十代，开机键始终是同一个仪式。这一卷的<b>十台机器全部能上手</b>：PONG 的挡板、COMBAT 的坦克、Mode 7 公路、VMU 迷你游戏、Wii 打靶与 Switch 的点亮方块。按 <b>⏻ 开机</b>，插好你的手。</p>
+  <div class="tl" id="tl"><span class="tl-cap" style="left:0">1972</span><span class="tl-cap" style="right:0">2017</span></div>
+  <div class="scroll-hint">向下滚动</div>
+</section>
+
+<div class="chapter" id="chapter">
+  <span id="chLeft"><em>1972</em>PONG 街机</span>
+  <span id="chRight">No. 01 / 10</span>
+</div>
+
+<nav class="dots" id="dots"></nav>
+
+<svg style="display:none"><symbol id="pwic" viewBox="0 0 24 24"><path d="M12 2.5v8" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M7 5.8a7.5 7.5 0 1 0 10 0" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round"/></symbol></svg>
+
+<main>
+<!-- 1 PONG -->
+<section class="booth" id="b1" data-year="1972" data-name="PONG 街机">
+  <div class="meta">
+    <div class="booth-no">No. 01</div><div class="booth-year">1972</div>
+    <h2 class="booth-title">PONG<span class="en">Insert Coin</span></h2>
+    <p class="booth-desc">一台街机、两块挡板、一只方点——电子游戏从吧台上的一枚硬币开始。</p>
+  </div>
+  <div class="stage">
+    <div class="demo d-pong off" id="demo1" data-era="pong">
+      <div class="pong-bezel"><canvas id="pongCv" width="380" height="260"></canvas></div>
+      <div class="pong-marq">PONG · ATARI · 1972</div>
+    </div>
+    <div class="power">
+      <button class="pw pw-pong" data-power="demo1"><svg><use href="#pwic"/></svg><span>开机</span></button>
+      <span class="pt">↑ ↓ 移动挡板 · 击败右边的机器</span>
+    </div>
+  </div>
+</section>
+
+<!-- 2 Atari 2600 -->
+<section class="booth rev" id="b2" data-year="1977" data-name="Atari 2600">
+  <div class="meta">
+    <div class="booth-no">No. 02</div><div class="booth-year">1977</div>
+    <h2 class="booth-title">Atari 2600<span class="en">Video Computer System</span></h2>
+    <p class="booth-desc">木纹贴皮与拨杆开关，把街机厅第一次搬进了客厅。</p>
+  </div>
+  <div class="stage">
+    <div class="demo d-atari off" id="demo2" data-era="atari">
+      <div class="atari-screen">
+        <div class="atari-rom">GAME NO.02 — COMBAT</div>
+        <canvas id="atCv" width="300" height="170"></canvas>
+        <div class="atari-scr" id="atHud">SCORE 000 · HI 000</div>
+      </div>
+      <div class="atari-panel">
+        <div class="at-sw"><span class="at-switch" data-n="1"></span><label>POWER</label></div>
+        <div class="at-sw"><span class="at-switch dn"></span><label>SELECT</label></div>
+        <div class="at-sw"><span class="at-switch"></span><label>RESET</label></div>
+        <div class="at-sw"><span class="at-switch"></span><label>DIFF A</label></div>
+        <div class="at-sw"><span class="at-switch dn"></span><label>DIFF B</label></div>
+      </div>
+      <div class="atari-brand">ATARI · VIDEO COMPUTER SYSTEM</div>
+    </div>
+    <div class="power">
+      <button class="pw pw-wood" data-power="demo2"><svg><use href="#pwic"/></svg><span>开机</span></button>
+      <span class="pt">← → 开坦克 · 空格开火（点屏幕左右半边同样有效）</span>
+    </div>
+  </div>
+</section>
+
+<!-- 3 Game & Watch -->
+<section class="booth" id="b3" data-year="1980" data-name="Game &amp; Watch">
+  <div class="meta">
+    <div class="booth-no">No. 03</div><div class="booth-year">1980</div>
+    <h2 class="booth-title">Game &amp; Watch<span class="en">横井军平的液晶掌上机</span></h2>
+    <p class="booth-desc">横井军平把数字钟与游戏缝在一起——掌上游戏自此诞生，连 D 键十字键也是它的遗产。</p>
+  </div>
+  <div class="stage">
+    <div class="demo d-gw off" id="demo3" data-era="gw">
+      <div class="gw-brand">GAME &amp; WATCH · BALL</div>
+      <div class="gw-lcd">
+        <div class="gw-hud"><span id="gwScore">0000</span><span class="gw-miss" id="gwMiss"><i></i><i></i><i></i></span></div>
+        <div class="gw-grid" id="gwGrid"></div>
+        <div class="gw-players" id="gwPlayers"></div>
+      </div>
+      <div class="gw-btns">
+        <button class="gw-btn" id="gwL">L</button>
+        <button class="gw-btn" id="gwR">R</button>
+      </div>
+    </div>
+    <div class="power">
+      <button class="pw pw-lcd" data-power="demo3"><svg><use href="#pwic"/></svg><span>开机</span></button>
+      <span class="pt">← →（或 L/R 键）接住落球 · 三次失误结束</span>
+    </div>
+  </div>
+</section>
+
+<!-- 4 红白机 -->
+<section class="booth rev" id="b4" data-year="1983" data-name="红白机 Famicom">
+  <div class="meta">
+    <div class="booth-no">No. 04</div><div class="booth-year">1983</div>
+    <h2 class="booth-title">红白机<span class="en">Family Computer</span></h2>
+    <p class="booth-desc">红白两色的塑料盒子，成为整整一代人的家庭纪念碑。</p>
+  </div>
+  <div class="stage">
+    <div class="demo d-fc off" id="demo4" data-era="fc">
+      <div class="fc-strip">FAMILY COMPUTER</div>
+      <canvas id="fcCv" width="340" height="220"></canvas>
+      <div class="fc-pad">
+        <span class="fc-dpad"></span>
+        <span><span class="fc-ab b">B</span><button class="fc-ab" id="fcA">A</button></span>
+      </div>
+    </div>
+    <div class="power">
+      <button class="pw pw-fc" data-power="demo4"><svg><use href="#pwic"/></svg><span>开机</span></button>
+      <span class="pt">空格 / ↑ / A 键跳起吃金币</span>
+    </div>
+  </div>
+</section>
+
+<!-- 5 Game Boy -->
+<section class="booth" id="b5" data-year="1989" data-name="Game Boy">
+  <div class="meta">
+    <div class="booth-no">No. 05</div><div class="booth-year">1989</div>
+    <h2 class="booth-title">Game Boy<span class="en">Dot Matrix With Stereo Sound</span></h2>
+    <p class="booth-desc">四阶灰绿的点阵屏幕，陪你走过了六个换电池的夏天。</p>
+  </div>
+  <div class="stage">
+    <div class="demo d-gb off" id="demo5" data-era="gb">
+      <div class="gb-shell">
+        <div class="gb-frame">
+          <div class="gb-lbl">DOT MATRIX WITH STEREO SOUND</div>
+          <div class="gb-screen"><canvas id="gbCv" width="152" height="120"></canvas></div>
+        </div>
+        <div class="gb-brand">Nintendo GAME BOY<span>™</span></div>
+        <div class="gb-ctl">
+          <div class="gb-dpad">
+            <button data-k="ArrowUp">▲</button><button data-k="ArrowLeft">◀</button>
+            <span class="gb-dc"></span>
+            <button data-k="ArrowRight">▶</button><button data-k="ArrowDown">▼</button>
+          </div>
+          <div class="gb-ab"><span class="gb-b">B</span><span class="gb-a">A</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="power">
+      <button class="pw pw-gb" data-power="demo5"><svg><use href="#pwic"/></svg><span>开机</span></button>
+      <span class="pt">方向键控制贪吃蛇（或点机身上的十字键）</span>
+    </div>
+  </div>
+</section>
+
+<!-- 6 SNES -->
+<section class="booth rev" id="b6" data-year="1991" data-name="16 位战争">
+  <div class="meta">
+    <div class="booth-no">No. 06</div><div class="booth-year">1991</div>
+    <h2 class="booth-title">16 位战争<span class="en">SNES vs Mega Drive</span></h2>
+    <p class="booth-desc">超任 1990 年 11 月以 Super Famicom 之名在日本首发，次年 8 月以 SNES 登陆北美——色彩与速度的军备竞赛，催生了 Mode 7 旋转大地与 16 位芯片音源。</p>
+  </div>
+  <div class="stage">
+    <div class="demo d-snes off" id="demo6" data-era="snes">
+      <div class="snes-strip">SUPER FAMICOM · MODE 7</div>
+      <canvas id="m7Cv" width="380" height="240"></canvas>
+      <div class="snes-ctl"><span class="snes-b"></span><span class="snes-b"></span><span class="snes-b"></span><span class="snes-b"></span></div>
+    </div>
+    <div class="power">
+      <button class="pw pw-snes" data-power="demo6"><svg><use href="#pwic"/></svg><span>开机</span></button>
+      <span class="pt">← →（或点路面左右半边）在 Mode 7 公路上疾驰 · 冲出弯道会陷进草地</span>
+    </div>
+  </div>
+</section>
+
+<!-- 7 PlayStation -->
+<section class="booth" id="b7" data-year="1994" data-name="PlayStation">
+  <div class="meta">
+    <div class="booth-no">No. 07</div><div class="booth-year">1994</div>
+    <h2 class="booth-title">PlayStation<span class="en">The 3D Era Begins</span></h2>
+    <p class="booth-desc">CD 光驱的旋转声与那一记开机音，宣告 3D 时代降临。</p>
+  </div>
+  <div class="stage">
+    <div class="demo d-ps off" id="demo7" data-era="ps1" data-boot="4600">
+      <div class="ps-lid"><span class="ps-logo"><i></i><i></i><i></i><i></i></span></div>
+      <div class="ps-screen">
+        <div class="ps-boot" id="psBoot"><b>Sony Computer Entertainment</b><small>DESIGNED FOR NTSC / 60Hz</small></div>
+        <div class="ps-menu">
+          <h4>MEMORY CARD</h4>
+          <div class="ps-blocks" id="psBlocks"></div>
+          <div class="ps-disc"></div>
+        </div>
+        <canvas class="ps-game" id="psCv" width="320" height="230"></canvas>
+      </div>
+    </div>
+    <div class="power">
+      <button class="pw pw-ps" data-power="demo7"><svg><use href="#pwic"/></svg><span>开机</span></button>
+      <span class="pt">开机音落定后 · ← → 操控三角机躲开多边形陷阱</span>
+    </div>
+  </div>
+</section>
+
+<!-- 8 Dreamcast -->
+<section class="booth rev" id="b8" data-year="1999" data-name="Dreamcast">
+  <div class="meta">
+    <div class="booth-no">No. 08</div><div class="booth-year">1999</div>
+    <h2 class="booth-title">Dreamcast<span class="en">The Swirl Before the Storm</span></h2>
+    <p class="booth-desc">橙色漩涡与能拆下来带走的记忆屏——1998 年末日本首发，次年 9 月 9 日登陆北美，一台超前于时代的主机。</p>
+  </div>
+  <div class="stage">
+    <div class="demo d-dc off" id="demo8" data-era="dc">
+      <div class="dc-screen"><canvas id="dcCv" width="320" height="220"></canvas></div>
+      <div class="dc-foot"><span class="dc-vmu">OK</span><span class="dc-logo">Dream<span>cast</span></span></div>
+    </div>
+    <div class="power">
+      <button class="pw pw-dc" data-power="demo8"><svg><use href="#pwic"/></svg><span>开机</span></button>
+      <span class="pt">VMU 迷你游戏 · 空格 / ↑ / 点屏幕跳过障碍</span>
+    </div>
+  </div>
+</section>
+
+<!-- 9 Wii -->
+<section class="booth" id="b9" data-year="2006" data-name="Nintendo Wii">
+  <div class="meta">
+    <div class="booth-no">No. 09</div><div class="booth-year">2006</div>
+    <h2 class="booth-title">Wii<span class="en">Wii Would Like to Play</span></h2>
+    <p class="booth-desc">挥手代替按键，客厅第一次全体起立。</p>
+  </div>
+  <div class="stage">
+    <div class="demo d-wii off" id="demo9" data-era="wii">
+      <div class="wii-screen" id="wiiScreen">
+        <div class="wii-bar"><b>Wii</b><span id="wiiRight">14:32</span></div>
+        <div class="wii-grid">
+          <div class="wii-ch">📷</div><div class="wii-ch">📰</div><div class="wii-ch">🌐</div>
+          <div class="wii-ch">📧</div><div class="wii-ch">🎮</div><div class="wii-ch">⚙️</div>
+        </div>
+        <span class="wii-hand" id="wiiHand">👆</span>
+      </div>
+    </div>
+    <div class="power">
+      <button class="pw pw-wii" data-power="demo9"><svg><use href="#pwic"/></svg><span>开机</span></button>
+      <span class="pt">手型光标点破升空的气球 · 飞走一个算一次脱靶</span>
+    </div>
+  </div>
+</section>
+
+<!-- 10 Switch -->
+<section class="booth rev" id="b10" data-year="2017" data-name="Nintendo Switch">
+  <div class="meta">
+    <div class="booth-no">No. 10</div><div class="booth-year">2017</div>
+    <h2 class="booth-title">Switch<span class="en">Home Console, Meet Handheld</span></h2>
+    <p class="booth-desc">红蓝两支 Joy-Con，把家用机与掌机焊成了一个。</p>
+  </div>
+  <div class="stage">
+    <div class="demo d-sw off" id="demo10" data-era="sw">
+      <span class="sw-joy l"></span>
+      <div class="sw-screen">
+        <div class="sw-top"><span>🎮 👤</span><span id="swRight">19:15 ▮▮▮</span></div>
+        <div class="sw-row" id="swRow">
+          <div class="sw-tile">🗡️</div><div class="sw-tile">🏎️</div><div class="sw-tile">🧩</div>
+        </div>
+        <div class="sw-dock"><i></i><i></i><i></i><i></i></div>
+      </div>
+      <span class="sw-joy r"></span>
+    </div>
+    <div class="power">
+      <button class="pw pw-sw" data-power="demo10"><svg><use href="#pwic"/></svg><span>开机</span></button>
+      <span class="pt">点亮点亮的地块（键盘 1 / 2 / 3 同样有效）· 三次失手结束</span>
+    </div>
+  </div>
+</section>
+</main>
+
+<section class="outro">
+  <h2>机器换了十代，<br><span>开机键始终是同一个仪式。</span></h2>
+  <p>还有很多名字没能放进这一卷：N64 的三叉戟手柄、GBA 的横屏、PS2 的蓝色塔楼、Xbox 的绿光……以及 Vol.03 正在排队。编年史永远写不完。</p>
+  <p class="keys"><b>⏻</b> 开机 · <b>空格 / 方向键</b> 游玩 · 关机所有机器后 <b>←</b><b>→</b> 翻页</p>
+</section>
+
+<footer class="footer">
+  <span>OLD WORLD SERIES · VOL.02 · GAME CONSOLES · 1972—2017</span>
+  <button class="top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">回到 1972</button>
+</footer>
+
+<script>
+(function(){
+  var booths = Array.prototype.slice.call(document.querySelectorAll('.booth'));
+  var total = booths.length;
+  var G = {focus:null};
+
+  /* ============ Web Audio 引擎 ============ */
+  var AC=null, master=null, nbuf=null;
+  function audioInit(){
+    if(!AC){
+      var A = window.AudioContext||window.webkitAudioContext;
+      AC = new A();
+      master = AC.createGain(); master.gain.value = .5; master.connect(AC.destination);
+      var len = AC.sampleRate, b = AC.createBuffer(1,len,AC.sampleRate), d = b.getChannelData(0);
+      for(var i=0;i<len;i++) d[i]=Math.random()*2-1;
+      nbuf = b;
+    }
+    if(AC.state==='suspended') AC.resume();
+  }
+  function now(){ return AC?AC.currentTime:0 }
+  function T(f,t,dur,type,g,slide){
+    if(!AC) return;
+    var o=AC.createOscillator(), gn=AC.createGain();
+    o.type=type||'square';
+    o.frequency.setValueAtTime(Math.max(20,f),t);
+    if(slide){ try{o.frequency.exponentialRampToValueAtTime(Math.max(20,slide),t+dur*.85)}catch(e){} }
+    gn.gain.setValueAtTime(.0001,t);
+    try{gn.gain.exponentialRampToValueAtTime(g||.1,t+.012)}catch(e){}
+    try{gn.gain.exponentialRampToValueAtTime(.0001,t+dur)}catch(e){}
+    o.connect(gn); gn.connect(master);
+    o.start(t); o.stop(t+dur+.06);
+  }
+  function padT(f,t,dur,g){
+    if(!AC) return;
+    var o=AC.createOscillator(), gn=AC.createGain();
+    o.type='sine'; o.frequency.value=f; o.detune.value=Math.random()*10-5;
+    gn.gain.setValueAtTime(.0001,t);
+    gn.gain.linearRampToValueAtTime(g,t+dur*.35);
+    try{gn.gain.exponentialRampToValueAtTime(.0001,t+dur)}catch(e){}
+    o.connect(gn); gn.connect(master); o.start(t); o.stop(t+dur+.1);
+  }
+  function NZ(t,dur,vol,fc,ft){
+    if(!AC||!nbuf) return;
+    var s=AC.createBufferSource(); s.buffer=nbuf; s.loop=true;
+    var f=AC.createBiquadFilter(); f.type=ft||'highpass'; f.frequency.value=fc||6000;
+    var g=AC.createGain(); g.gain.setValueAtTime(vol,t);
+    try{g.gain.exponentialRampToValueAtTime(.0005,t+dur)}catch(e){}
+    s.connect(f); f.connect(g); g.connect(master); s.start(t); s.stop(t+dur+.05);
+  }
+  var sfx={
+    pongHit:function(){audioInit();T(490,now(),.045,'square',.07)},
+    pongWall:function(){audioInit();T(240,now(),.04,'square',.05)},
+    pongScore:function(){audioInit();T(440,now(),.28,'square',.08)},
+    gwBeep:function(){audioInit();T(2100,now(),.06,'sine',.08)},
+    gwMiss:function(){audioInit();T(160,now(),.32,'square',.1)},
+    coin:function(){audioInit();var t=now();T(988,t,.08,'square',.07);T(1319,t+.08,.22,'square',.07)},
+    jump:function(){audioInit();T(200,now(),.18,'square',.08,620)},
+    gbEat:function(){audioInit();T(620,now(),.06,'square',.08,900)},
+    gbDie:function(){audioInit();T(300,now(),.5,'sawtooth',.1,70)},
+    wiiHover:function(){audioInit();var t=now();T(1000,t,.05,'sine',.05);T(1350,t+.05,.06,'sine',.045)},
+    wiiClick:function(){audioInit();var t=now();T(200,t,.1,'square',.09);T(840,t+.03,.12,'sine',.06)},
+    sw:function(){audioInit();var t=now();T(2500,t,.035,'square',.06);NZ(t,.05,.09,7000)},
+    atari:function(){audioInit();T(1400,now(),.06,'square',.07)},
+    atShot:function(){audioInit();T(980,now(),.09,'square',.07,220)},
+    atBoom:function(){audioInit();NZ(now(),.35,.2,900,'lowpass');T(130,now(),.35,'sawtooth',.12,45)},
+    atHitMe:function(){audioInit();T(300,now(),.7,'sawtooth',.12,55)},
+    m7Rumble:function(){audioInit();NZ(now(),.22,.12,480,'lowpass')},
+    psTick:function(){audioInit();var t=now();T(1046,t,.06,'square',.05);T(1568,t+.07,.09,'square',.05)},
+    psOver:function(){audioInit();T(220,now(),.9,'sawtooth',.11,55)},
+    dcJump:function(){audioInit();T(480,now(),.12,'square',.08,900)},
+    dcHit:function(){audioInit();T(180,now(),.4,'square',.1,60)},
+    dcScore:function(){audioInit();var t=now();T(880,t,.06,'square',.06);T(1175,t+.06,.1,'square',.06)},
+    wiiPop:function(){audioInit();NZ(now(),.16,.15,2400);T(660,now(),.12,'sine',.08,1500)},
+    wiiMiss:function(){audioInit();T(200,now(),.2,'sine',.06,120)},
+    swMissS:function(){audioInit();T(140,now(),.3,'square',.1,60)}
+  };
+  function sfxPS(){
+    audioInit(); var t=now()+.05;
+    T(65,t,2.8,'sine',.22,140);
+    [523.25,659.25,830.61,987.77,1318.5].forEach(function(f,i){ padT(f,t+.8+i*.14,2.4,.05); });
+    NZ(t+.9,2.2,.02,3000);
+  }
+  function sfxDC(){
+    audioInit(); var t=now(); if(!nbuf) return;
+    var s=AC.createBufferSource(); s.buffer=nbuf; s.loop=true;
+    var f=AC.createBiquadFilter(); f.type='bandpass'; f.Q.value=1.6;
+    f.frequency.setValueAtTime(140,t);
+    try{f.frequency.exponentialRampToValueAtTime(2400,t+1.1)}catch(e){}
+    var g=AC.createGain(); g.gain.setValueAtTime(.0001,t);
+    g.gain.linearRampToValueAtTime(.28,t+.2);
+    try{g.gain.exponentialRampToValueAtTime(.0001,t+1.5)}catch(e){}
+    s.connect(f); f.connect(g); g.connect(master); s.start(t); s.stop(t+1.6);
+    T(70,t,1.3,'sine',.16,380);
+  }
+
+  /* 音名转频率 */
+  var NMAP={C:0,'C#':1,D:2,'D#':3,E:4,F:5,'F#':6,G:7,'G#':8,A:9,'A#':10,B:11};
+  function F(n){ var m=/^([A-G]#?)(-?\d)$/.exec(n); return 440*Math.pow(2,(NMAP[m[1]]+12*(+m[2]+1)-69)/12); }
+
+  /* 16 位音序器（SNES 主题曲 & Atari 引擎） */
+  var seq={timer:null,step:0,next:0,def:null};
+  function startSong(def){
+    audioInit(); stopSong(); seq.def=def; seq.step=0; seq.next=now()+.1;
+    (function tick(){
+      if(!seq.def) return;
+      var spb=60/seq.def.bpm/4;
+      while(seq.next<now()+.35){ seq.def.play(seq.step,seq.next); seq.next+=spb; seq.step++; }
+      seq.timer=setTimeout(tick,90);
+    })();
+  }
+  function stopSong(){ if(seq.timer)clearTimeout(seq.timer); seq.timer=null; seq.def=null; }
+  var LEAD=['E5',0,'G5',0,'B5',0,'E6',0,'D6',0,'B5',0,'G5',0,'A5',0,'C6',0,'B5',0,'G5',0,'E5',0,'G5',0,'A5',0,'B5',0,'D6',0,'E5',0,'G5',0,'B5',0,'E6',0,'G6',0,'E6',0,'B5',0,'G5',0,'A5',0,'B5',0,'C6',0,'B5',0,'A5',0,'G5',0,'E5',0,'D5',0];
+  var BASS=['E2','E2','G2','G2','A2','A2','B2','B2','C3','C3','A2','A2','G2','G2','B2','B2'];
+  var snesDef={bpm:150,play:function(st,t){
+    var n=LEAD[st%64]; if(n) T(F(n),t,.13,'square',.05);
+    if(st%4===0) T(F(BASS[(st>>2)%16]),t,.3,'triangle',.1);
+    if(st%2===0) NZ(t,.03,.02,9000);
+    if(st%16===8) NZ(t,.12,.09,1800,'bandpass');
+  }};
+  var atariDef={bpm:112,play:function(st,t){
+    if(st%4===0){ T(55,t,.42,'square',.09); NZ(t,.05,.03,300,'lowpass'); }
+    if(st%16===12) T(82,t,.3,'square',.07);
+  }};
+
+  /* ============ 1. PONG ============ */
+  var pc=document.getElementById('pongCv').getContext('2d');
+  var P={on:false,x:190,y:130,vx:3,vy:2,py:105,ay:105,ps:0,as:0,ku:0,kd:0};
+  function pongReset(){ P.x=190;P.y=130; P.vx=3*(Math.random()>.5?1:-1); P.vy=1.8+Math.random()*1.4; }
+  function pongTitle(){
+    pc.fillStyle='#000'; pc.fillRect(0,0,380,260);
+    pc.fillStyle='#fff'; pc.font='22px monospace'; pc.textAlign='center';
+    pc.fillText('INSERT COIN',190,120); pc.fillText('PRESS POWER TO START',190,156); pc.textAlign='left';
+  }
+  function pongStep(){
+    if(P.ku)P.py-=4.4; if(P.kd)P.py+=4.4;
+    P.py=Math.max(34,Math.min(226,P.py));
+    P.ay+=Math.max(-2.4,Math.min(2.4,P.y-P.ay));
+    P.ay=Math.max(34,Math.min(226,P.ay));
+    P.x+=P.vx; P.y+=P.vy;
+    if(P.y<8||P.y>252){ P.vy*=-1; sfx.pongWall(); }
+    if(P.vx<0&&P.x<28&&P.x>14&&Math.abs(P.y-P.py)<34){ P.vx=-P.vx; P.vy+=(P.y-P.py)*.05; sfx.pongHit(); }
+    if(P.vx>0&&P.x>352&&P.x<366&&Math.abs(P.y-P.ay)<34){ P.vx=-P.vx; P.vy+=(P.y-P.ay)*.05; sfx.pongHit(); }
+    P.vy=Math.max(-3.4,Math.min(3.4,P.vy));
+    if(P.x<-8){ P.as++; sfx.pongScore(); pongReset(); }
+    if(P.x>388){ P.ps++; sfx.pongScore(); pongReset(); }
+    pc.fillStyle='#000'; pc.fillRect(0,0,380,260);
+    pc.fillStyle='#fff';
+    for(var y=8;y<252;y+=22) pc.fillRect(188,y,4,12);
+    pc.fillRect(16,P.py-32,8,64);
+    pc.fillRect(356,P.ay-32,8,64);
+    pc.fillRect(P.x-4,P.y-4,8,8);
+    pc.font='26px monospace';
+    pc.fillText(P.ps,130,34); pc.fillText(P.as,236,34);
+  }
+  document.getElementById('pongCv').addEventListener('mousemove',function(e){
+    if(!P.on) return;
+    var r=this.getBoundingClientRect();
+    P.py=Math.max(34,Math.min(226,(e.clientY-r.top)/r.height*260));
+  });
+
+  /* ============ 2. Atari 开关 ============ */
+  document.querySelectorAll('.at-switch').forEach(function(s){
+    s.parentElement.addEventListener('click',function(){
+      if(!document.getElementById('demo2').classList.contains('playing')) return;
+      s.classList.toggle('dn'); sfx.atari();
+    });
+  });
+
+  /* ============ 2b. Atari COMBAT 坦克战 ============ */
+  var atC=document.getElementById('atCv').getContext('2d');
+  var AT={on:false,hi:0,px:138,pdir:0,cool:0,shots:[],eshots:[],ex:138,edir:1,etimer:60,score:0,boom:0,bx:0,by:0,dead:false};
+  function atHud(){ document.getElementById('atHud').textContent='SCORE '+String(AT.score).padStart(3,'0')+' · HI '+String(AT.hi).padStart(3,'0'); }
+  function atReset(){ AT.px=138;AT.shots=[];AT.eshots=[];AT.ex=138;AT.edir=1;AT.etimer=60;AT.score=0;AT.boom=0;AT.dead=false;AT.pdir=0;AT.cool=0; atHud(); }
+  function atFire(){ if(!AT.on||AT.dead||AT.cool>0) return; AT.cool=26; AT.shots.push({x:AT.px+5,y:132}); sfx.atShot(); }
+  function atTank(c,x,y,col){ c.fillStyle=col; c.fillRect(x,y,12,7); c.fillRect(x+4,y-4,4,4); c.fillRect(x+5,y-8,2,4); c.fillRect(x-2,y+7,4,3); c.fillRect(x+10,y+7,4,3); }
+  function atStep(){
+    if(!AT.dead){
+      AT.px=Math.max(6,Math.min(282,AT.px+AT.pdir*2.2));
+      if(AT.cool>0)AT.cool--;
+      AT.ex+=AT.edir*(1.1+Math.min(1.3,AT.score*.07));
+      if(AT.ex<6||AT.ex>282){ AT.edir*=-1; AT.ex=Math.max(6,Math.min(282,AT.ex)); }
+      if(--AT.etimer<=0){ AT.eshots.push({x:AT.ex+5,y:26}); AT.etimer=Math.max(26,86-AT.score*4); }
+      for(var i=AT.shots.length-1;i>=0;i--){ var s=AT.shots[i]; s.y-=4.5;
+        if(s.y<32&&s.y>16&&Math.abs(s.x-AT.ex-5)<14){ AT.score++; AT.hi=Math.max(AT.hi,AT.score); AT.boom=14; AT.bx=s.x; AT.by=s.y; sfx.atBoom(); AT.shots.splice(i,1); AT.ex=40+Math.random()*210; AT.edir=Math.random()>.5?1:-1; atHud(); continue; }
+        if(s.y<8) AT.shots.splice(i,1); }
+      for(var j=AT.eshots.length-1;j>=0;j--){ var s2=AT.eshots[j]; s2.y+=3.6;
+        if(s2.y>130&&s2.y<146&&Math.abs(s2.x-AT.px-5)<14){ AT.dead=true; AT.boom=18; AT.bx=s2.x; AT.by=s2.y; sfx.atHitMe(); AT.eshots.splice(j,1); continue; }
+        if(s2.y>170) AT.eshots.splice(j,1); }
+    }
+    if(AT.boom>0)AT.boom--;
+    atDraw();
+  }
+  function atDraw(){
+    atC.fillStyle='#080808'; atC.fillRect(0,0,300,170);
+    atC.fillStyle='#F8B858'; atC.fillRect(0,157,300,2);
+    if(!AT.dead){ atTank(atC,AT.px,138,'#F8B858'); atTank(atC,AT.ex,16,'#5ADF5A'); }
+    atC.fillStyle='#fff';
+    AT.shots.forEach(function(s){ atC.fillRect(s.x,s.y,3,6); });
+    AT.eshots.forEach(function(s){ atC.fillRect(s.x,s.y,3,6); });
+    if(AT.boom>0){ atC.strokeStyle='#F8B858'; atC.lineWidth=2; atC.beginPath(); atC.arc(AT.bx+2,AT.by,(18-AT.boom)*2,0,7); atC.stroke(); }
+    if(AT.dead){ atC.fillStyle='#F8B858'; atC.font='bold 20px monospace'; atC.textAlign='center';
+      atC.fillText('GAME OVER',150,74); atC.font='13px monospace'; atC.fillText('POWER TO REBOOT',150,98); atC.textAlign='left'; }
+  }
+  var atCv=document.getElementById('atCv');
+  atCv.addEventListener('pointerdown',function(e){ if(!AT.on||AT.dead) return; var r=this.getBoundingClientRect(); AT.pdir=(e.clientX-r.left)<r.width/2?-1:1; });
+  ['pointerup','pointerleave','pointercancel'].forEach(function(ev){ atCv.addEventListener(ev,function(){AT.pdir=0}); });
+
+  /* ============ 3. Game & Watch ============ */
+  var gw={timer:null,ball:{r:0,c:2},p:2,score:0,miss:0,speed:420,over:false,cells:[],play:[]};
+  (function(){
+    var g=document.getElementById('gwGrid');
+    for(var r=0;r<5;r++){ var row=[];
+      for(var c=0;c<5;c++){ var d=document.createElement('i'); g.appendChild(d); row.push(d); }
+      gw.cells.push(row);
+    }
+    var p=document.getElementById('gwPlayers');
+    for(var i=0;i<5;i++){ var d2=document.createElement('i'); p.appendChild(d2); gw.play.push(d2); }
+  })();
+  function gwRender(){
+    for(var r=0;r<5;r++)for(var c=0;c<5;c++) gw.cells[r][c].classList.remove('on');
+    if(gw.ball.r<5 && !gw.over) gw.cells[gw.ball.r][gw.ball.c].classList.add('on');
+    for(var i=0;i<5;i++) gw.play[i].classList.toggle('on', i===gw.p && !gw.over);
+    var ms=document.getElementById('gwMiss').children;
+    for(var m=0;m<3;m++) ms[m].classList.toggle('on', m<gw.miss);
+    document.getElementById('gwScore').textContent=String(gw.score).padStart(4,'0');
+  }
+  function gwTick(){
+    if(gw.over) return;
+    gw.ball.r++;
+    if(gw.ball.r>=5){
+      if(gw.ball.c===gw.p){ gw.score++; sfx.gwBeep(); }
+      else { gw.miss++; sfx.gwMiss(); }
+      if(gw.miss>=3){ gw.over=true; gwRender(); return; }
+      if(gw.score>0 && gw.score%6===0 && gw.speed>220){
+        gw.speed-=40; clearInterval(gw.timer);
+        gw.timer=setInterval(gwTick,gw.speed);
+      }
+      gw.ball={r:0,c:Math.floor(Math.random()*5)};
+    }
+    gwRender();
+  }
+  function gwMove(d){
+    if(!gw.timer||gw.over) return;
+    gw.p=Math.max(0,Math.min(4,gw.p+d));
+    gwRender();
+  }
+  document.getElementById('gwL').addEventListener('click',function(){gwMove(-1)});
+  document.getElementById('gwR').addEventListener('click',function(){gwMove(1)});
+
+  /* ============ 4. 红白机跑酷 ============ */
+  var fc=document.getElementById('fcCv').getContext('2d');
+  var FC={on:false,y:0,vy:0,coins:[],score:0,t:0,clouds:[{x:60,y:34},{x:220,y:18},{x:330,y:48}]};
+  function fcJump(){ if(!FC.on) return; if(FC.y===0){ FC.vy=-6.9; sfx.jump(); } }
+  function fcStep(){
+    FC.t++;
+    FC.vy+=.38; FC.y+=FC.vy;
+    if(FC.y>0){ FC.y=0; FC.vy=0; }
+    if(FC.t%95===0) FC.coins.push({x:352,got:0});
+    for(var i=FC.coins.length-1;i>=0;i--){
+      var c=FC.coins[i]; c.x-=2.4;
+      if(!c.got && c.x>40 && c.x<92 && FC.y<-20){ c.got=1; FC.score++; sfx.coin(); }
+      if(c.x<-12||c.got) FC.coins.splice(i,1);
+    }
+    FC.clouds.forEach(function(cl){ cl.x-=.5; if(cl.x<-50) cl.x=390; });
+    fcDraw();
+  }
+  function fcDraw(){
+    fc.fillStyle='#5C94FC'; fc.fillRect(0,0,340,220);
+    fc.fillStyle='#fff';
+    FC.clouds.forEach(function(cl){
+      fc.fillRect(cl.x,cl.y,44,12); fc.fillRect(cl.x+8,cl.y-8,28,8);
+    });
+    fc.fillStyle='#C84C0C'; fc.fillRect(0,170,340,50);
+    fc.fillStyle='#000';
+    for(var y=170;y<220;y+=12){ fc.fillRect(0,y,340,1);
+      for(var x=(y/12%2)*12;x<340;x+=24) fc.fillRect(x,y,1,12);
+    }
+    FC.coins.forEach(function(c){
+      if(c.got) return;
+      fc.fillStyle='#F8D048'; fc.beginPath(); fc.arc(c.x+6,118,7,0,7); fc.fill();
+      fc.strokeStyle='#8a6a10'; fc.strokeRect(c.x-1,111,14,14);
+    });
+    var ty=140+FC.y;
+    fc.fillStyle='#E7000B'; fc.fillRect(56,ty,20,8);
+    fc.fillStyle='#FFB868'; fc.fillRect(58,ty+8,16,8);
+    fc.fillStyle='#E7000B'; fc.fillRect(56,ty+16,20,10);
+    fc.fillStyle='#2038EC'; fc.fillRect(60,ty+18,12,8);
+    fc.fillStyle='#7a2810'; fc.fillRect(56,ty+26,20,4);
+    fc.fillStyle='#fff'; fc.font='bold 10px monospace';
+    fc.fillText('WORLD 1-1',10,16);
+    fc.fillText('COINS ×'+String(FC.score).padStart(2,'0'),262,16);
+  }
+  document.getElementById('fcA').addEventListener('click',fcJump);
+
+  /* ============ 5. Game Boy 贪吃蛇 ============ */
+  var gbC=document.getElementById('gbCv').getContext('2d');
+  var gb={on:false,dead:false,snake:[[9,6],[8,6],[7,6]],dir:[1,0],nd:[1,0],food:[14,6],score:0};
+  function gbReset(){ gb.snake=[[9,6],[8,6],[7,6]]; gb.dir=[1,0]; gb.nd=[1,0]; gb.food=[14,6]; gb.score=0; gb.dead=false; }
+  function gbSpawn(){
+    do{ gb.food=[Math.floor(Math.random()*19),Math.floor(Math.random()*13)]; }
+    while(gb.snake.some(function(s){return s[0]===gb.food[0]&&s[1]===gb.food[1]}));
+  }
+  function gbDir(k){
+    if(!gb.on||gb.dead) return;
+    var m={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]};
+    var d=m[k]; if(!d) return;
+    if(d[0]===-gb.dir[0]&&d[1]===-gb.dir[1]) return;
+    gb.nd=d;
+  }
+  function gbMove(){
+    gb.dir=gb.nd;
+    var h=[gb.snake[0][0]+gb.dir[0], gb.snake[0][1]+gb.dir[1]];
+    if(h[0]<0||h[0]>18||h[1]<0||h[1]>12|| gb.snake.some(function(s){return s[0]===h[0]&&s[1]===h[1]})){
+      gb.dead=true; sfx.gbDie(); return;
+    }
+    gb.snake.unshift(h);
+    if(h[0]===gb.food[0]&&h[1]===gb.food[1]){ gb.score++; sfx.gbEat(); gbSpawn(); }
+    else gb.snake.pop();
+  }
+  var frame=0;
+  function gbDraw(){
+    gbC.fillStyle='#9BBC0F'; gbC.fillRect(0,0,152,120);
+    gbC.fillStyle='#0F380F'; gbC.font='8px monospace';
+    gbC.fillText('SCORE '+String(gb.score).padStart(3,'0'),6,9);
+    if(frame%16<8){ gbC.fillRect(gb.food[0]*8+1,14+gb.food[1]*8+1,6,6); }
+    gb.snake.forEach(function(s,i){ gbC.fillRect(s[0]*8+1,14+s[1]*8+1,6,6); });
+    if(gb.dead){
+      gbC.fillStyle='#306230'; gbC.fillRect(18,44,116,30);
+      gbC.fillStyle='#9BBC0F'; gbC.font='10px monospace'; gbC.textAlign='center';
+      gbC.fillText('GAME OVER',76,58); gbC.fillText('POWER TO REBOOT',76,68); gbC.textAlign='left';
+    }
+  }
+  document.querySelectorAll('.gb-dpad button').forEach(function(b){
+    b.addEventListener('click',function(){ gbDir(b.dataset.k); });
+  });
+
+  /* ============ 6. Mode 7 竞速 ============ */
+  var m7C=document.getElementById('m7Cv').getContext('2d');
+  var m7={on:false,ang:0,dist:0,speed:1.6,px:190,dir:0};
+  function m7Step(){
+    m7.px=Math.max(24,Math.min(356,m7.px+m7.dir*3.4));
+    var rc=190+Math.sin(m7.dist*.021)*120;
+    var off=Math.abs(m7.px-rc)>66;
+    m7.speed=Math.max(.9,Math.min(3.2,m7.speed+(off?-.05:.006)));
+    m7.dist+=m7.speed; m7.ang=m7.dist*.012;
+    if(off&&frame%10===0) sfx.m7Rumble();
+    var sky=m7C.createLinearGradient(0,0,0,92);
+    sky.addColorStop(0,'#5C94FC'); sky.addColorStop(1,'#A8D8F8');
+    m7C.fillStyle=sky; m7C.fillRect(0,0,380,92);
+    m7C.fillStyle='#F8D048'; m7C.beginPath(); m7C.arc(300,44,20,0,7); m7C.fill();
+    for(var y=92;y<238;y+=3){
+      var d=y-90, p=(y-92)/146, z=180/d, ph=Math.floor(z*.25+m7.ang*3);
+      var rcy=190+(rc-190)*p, hw=10+58*p;
+      for(var x=0;x<380;x+=12){
+        var wx=Math.floor(((x-190)/d)*.7+m7.ang*40);
+        var dxr=Math.abs(x+6-rcy);
+        if(dxr<hw){
+          var dash=(Math.floor(wx/16)+ph)&1;
+          m7C.fillStyle=(Math.abs(dxr-hw)<7)?(((Math.floor(m7.dist/16)&1)?'#E8E8E8':'#D04028')):(dash?'#9A9AA8':'#686869');
+        }else{
+          m7C.fillStyle=((Math.floor(wx/16)+ph)&1)?'#209048':'#0C5F30';
+        }
+        m7C.fillRect(x,y,12,3);
+      }
+    }
+    var bob=Math.sin(m7.ang*10)*2+(off?Math.sin(frame*1.7)*3:0);
+    var cx=m7.px-30;
+    m7C.fillStyle='#202020';
+    m7C.fillRect(cx+24,198+bob,20,14); m7C.fillRect(cx+76,198+bob,20,14);
+    m7C.fillStyle='#E7000B'; m7C.fillRect(cx+30,178+bob,60,24);
+    m7C.fillStyle='#F8D048'; m7C.fillRect(cx+50,168+bob,20,14);
+    m7C.fillStyle='#fff'; m7C.fillRect(cx+56,172+bob,3,3); m7C.fillRect(cx+62,172+bob,3,3);
+    m7C.fillStyle='rgba(13,12,10,.55)'; m7C.fillRect(8,8,150,26);
+    m7C.fillStyle='#fff'; m7C.font='bold 13px monospace';
+    m7C.fillText('DIST '+Math.floor(m7.dist/10)+'m'+(off?' · OFF ROAD':''),16,26);
+  }
+  var m7Cv=document.getElementById('m7Cv');
+  m7Cv.addEventListener('pointerdown',function(e){
+    if(!m7.on) return;
+    var r=this.getBoundingClientRect(); m7.dir=(e.clientX-r.left)<r.width/2?-1:1;
+  });
+  ['pointerup','pointerleave','pointercancel'].forEach(function(ev){ m7Cv.addEventListener(ev,function(){m7.dir=0}); });
+
+  /* ============ 7. PS1 ============ */
+  (function(){
+    var bl=document.getElementById('psBlocks');
+    for(var i=0;i<12;i++){ var d=document.createElement('i'); if(i<4) d.className='on'; bl.appendChild(d); }
+  })();
+  function psBoot(){
+    var ov=document.getElementById('psBoot');
+    ov.style.display='flex'; ov.classList.remove('run');
+    void ov.offsetWidth; ov.classList.add('run');
+    sfxPS();
+    setTimeout(function(){ ov.style.display='none'; },4300);
+  }
+
+  /* ============ 7b. PS 多边形闪避 ============ */
+  var psC=document.getElementById('psCv').getContext('2d');
+  var PS={on:false,x:160,dir:0,obs:[],t:0,dead:false,spawn:30};
+  function psReset(){ PS.x=160;PS.dir=0;PS.obs=[];PS.t=0;PS.dead=false;PS.spawn=30; }
+  function psShape(o){
+    psC.save(); psC.translate(o.x,o.y); psC.rotate(o.rot);
+    psC.strokeStyle=o.kind===0?'#3A78A8':(o.kind===1?'#E60012':'#F8D048');
+    psC.lineWidth=1.5; psC.beginPath();
+    if(o.kind===0) psC.rect(-o.r,-o.r,o.r*2,o.r*2);
+    else if(o.kind===1){ psC.moveTo(0,-o.r); psC.lineTo(o.r*.87,o.r*.5); psC.lineTo(-o.r*.87,o.r*.5); psC.closePath(); }
+    else { psC.moveTo(0,-o.r); psC.lineTo(o.r,0); psC.lineTo(0,o.r); psC.lineTo(-o.r,0); psC.closePath(); }
+    psC.stroke(); psC.restore();
+  }
+  function psStep(){
+    if(!PS.dead){
+      PS.t++;
+      PS.x=Math.max(22,Math.min(298,PS.x+PS.dir*3.6));
+      if(--PS.spawn<=0){
+        PS.spawn=Math.max(16,(40-PS.t/300)|0);
+        PS.obs.push({x:24+Math.random()*272,y:-24,vy:1.3+Math.random()*1.3+PS.t*.0011,r:10+Math.random()*8,rot:Math.random()*6,vr:(Math.random()-.5)*.09,kind:Math.floor(Math.random()*3)});
+      }
+      for(var i=PS.obs.length-1;i>=0;i--){ var o=PS.obs[i]; o.y+=o.vy; o.rot+=o.vr;
+        var dx=o.x-PS.x, dy=o.y-202;
+        if(dx*dx+dy*dy<(o.r+11)*(o.r+11)){ PS.dead=true; sfx.psOver(); }
+        if(o.y>260) PS.obs.splice(i,1); }
+      if(PS.t%600===0) sfx.psTick();
+    }
+    psDraw();
+  }
+  function psDraw(){
+    psC.fillStyle='#050510'; psC.fillRect(0,0,320,230);
+    psC.strokeStyle='rgba(58,120,168,.22)'; psC.lineWidth=1;
+    for(var i=0;i<5;i++){ var yy=40+i*i*11; psC.beginPath(); psC.moveTo(0,yy); psC.lineTo(320,yy); psC.stroke(); }
+    for(var j=0;j<7;j++){ psC.beginPath(); psC.moveTo(160+(j-3)*14,40); psC.lineTo(160+(j-3)*90,230); psC.stroke(); }
+    PS.obs.forEach(psShape);
+    psC.fillStyle=PS.dead?'#666':'#fff';
+    psC.beginPath(); psC.moveTo(PS.x,192); psC.lineTo(PS.x+13,212); psC.lineTo(PS.x-13,212); psC.closePath(); psC.fill();
+    psC.fillStyle='#c8d8e8'; psC.font='12px monospace';
+    psC.fillText('TIME '+Math.floor(PS.t/60)+'s',10,18);
+    if(PS.dead){ psC.fillStyle='#E60012'; psC.font='bold 22px monospace'; psC.textAlign='center';
+      psC.fillText('GAME OVER',160,110); psC.font='12px monospace'; psC.fillStyle='#c8d8e8';
+      psC.fillText('POWER TO REBOOT',160,134); psC.textAlign='left'; }
+    else if(PS.t<110){ psC.textAlign='center'; psC.fillText('DODGE!',160,120); psC.textAlign='left'; }
+  }
+  var psCv=document.getElementById('psCv');
+  psCv.addEventListener('pointerdown',function(e){ if(!PS.on||PS.dead) return; var r=this.getBoundingClientRect(); PS.dir=(e.clientX-r.left)<r.width/2?-1:1; });
+  ['pointerup','pointerleave','pointercancel'].forEach(function(ev){ psCv.addEventListener(ev,function(){PS.dir=0}); });
+
+  /* ============ 8. Dreamcast 漩涡（关机待机画面） ============ */
+  var dcC=document.getElementById('dcCv').getContext('2d');
+  var dc={on:false,ang:0};
+  function dcStep(){
+    dc.ang+=.02;
+    dcC.fillStyle='#001F4D'; dcC.fillRect(0,0,320,220);
+    dcC.save(); dcC.translate(160,105);
+    dcC.strokeStyle='#F8A81C'; dcC.lineWidth=3;
+    dcC.shadowColor='#F8A81C'; dcC.shadowBlur=14;
+    dcC.beginPath();
+    for(var i=0;i<260;i++){
+      var r=3+i*.42, a=dc.ang*3+i*.075;
+      var x=Math.cos(a)*r, y=Math.sin(a)*r*.85;
+      i?dcC.lineTo(x,y):dcC.moveTo(x,y);
+    }
+    dcC.stroke(); dcC.restore();
+  }
+
+  /* ============ 8b. DC VMU 跳跳 ============ */
+  var dcg={on:false,y:0,vy:0,obs:[],t:0,score:0,dead:false,spd:2.2,spawn:55};
+  function dcgReset(){ dcg.y=0;dcg.vy=0;dcg.obs=[];dcg.t=0;dcg.score=0;dcg.dead=false;dcg.spd=2.2;dcg.spawn=55; }
+  function dcgJump(){ if(!dcg.on||dcg.dead) return; if(dcg.y===0){ dcg.vy=-5.1; sfx.dcJump(); } }
+  function dcgStep(){
+    if(!dcg.dead){
+      dcg.t++;
+      dcg.spd=Math.min(4.6,2.2+dcg.t*.004);
+      dcg.vy+=.34; dcg.y+=dcg.vy; if(dcg.y>0){dcg.y=0;dcg.vy=0;}
+      if(--dcg.spawn<=0){ dcg.spawn=Math.max(38,86-dcg.t*.06); dcg.obs.push({x:150,h:Math.random()>.72?16:8,passed:0}); }
+      for(var i=dcg.obs.length-1;i>=0;i--){ var o=dcg.obs[i]; o.x-=dcg.spd;
+        if(!o.passed&&o.x+8<22){ o.passed=1; dcg.score++; sfx.dcScore(); }
+        if(o.x<30&&o.x+8>22&&dcg.y>-o.h){ dcg.dead=true; sfx.dcHit(); }
+        if(o.x<-14) dcg.obs.splice(i,1); }
+    }
+    dcgDraw();
+  }
+  function dcgDraw(){
+    dcC.fillStyle='#001F4D'; dcC.fillRect(0,0,320,220);
+    dcC.fillStyle='#C9C9D1'; dcC.fillRect(70,8,180,204);
+    dcC.fillStyle='#B6B6BF'; dcC.fillRect(78,16,164,188);
+    dcC.fillStyle='#0A180A'; dcC.fillRect(86,26,148,116);
+    dcC.fillStyle='#4AE04A';
+    dcC.fillRect(86,132,148,2);
+    dcg.obs.forEach(function(o){ dcC.fillRect(86+Math.round(o.x),132-o.h,8,o.h); });
+    if(!dcg.dead) dcC.fillRect(86+22,132+dcg.y-10,8,10);
+    dcC.font='13px monospace';
+    dcC.fillText(String(dcg.score).padStart(3,'0'),92,42);
+    dcC.fillStyle='#8A8A94';
+    dcC.beginPath(); dcC.arc(122,166,11,0,7); dcC.fill();
+    dcC.beginPath(); dcC.arc(198,166,11,0,7); dcC.fill();
+    dcC.fillStyle='#4A4A54'; dcC.fillRect(150,158,20,7); dcC.fillRect(156,152,8,20);
+    if(dcg.dead){ dcC.fillStyle='#0A180A'; dcC.fillRect(100,64,120,40);
+      dcC.fillStyle='#4AE04A'; dcC.font='bold 14px monospace'; dcC.textAlign='center';
+      dcC.fillText('GAME OVER',160,80); dcC.font='11px monospace'; dcC.fillText('POWER TO REBOOT',160,96); dcC.textAlign='left'; }
+  }
+  var dcCvEl=document.getElementById('dcCv');
+  dcCvEl.addEventListener('pointerdown',function(){ dcgJump(); });
+
+  /* ============ 9. Wii ============ */
+  var wiiScreen=document.getElementById('wiiScreen'), wiiHand=document.getElementById('wiiHand');
+  wiiScreen.addEventListener('mousemove',function(e){
+    var r=wiiScreen.getBoundingClientRect();
+    wiiHand.style.left=(e.clientX-r.left)+'px';
+    wiiHand.style.top=(e.clientY-r.top)+'px';
+  });
+  document.querySelectorAll('.wii-ch').forEach(function(t){
+    t.addEventListener('mouseenter',function(){
+      if(!document.getElementById('demo9').classList.contains('playing')) return;
+      sfx.wiiHover();
+    });
+    t.addEventListener('click',function(){
+      if(!document.getElementById('demo9').classList.contains('playing')) return;
+      sfx.wiiClick();
+      t.classList.remove('pop'); void t.offsetWidth; t.classList.add('pop');
+    });
+  });
+
+  /* ============ 9b. Wii 打靶 ============ */
+  var wii={timer:null,score:0};
+  var wiiRight=document.getElementById('wiiRight');
+  function wiiUpd(){ wiiRight.textContent='🎈 '+String(wii.score).padStart(2,'0'); }
+  function wiiSpawn(){
+    var t=document.createElement('span'); t.className='wii-target'; t.textContent='🎈';
+    t.style.left=(10+Math.random()*80)+'%';
+    t.style.top=(32+Math.random()*58)+'%';
+    t.addEventListener('click',function(ev){
+      ev.stopPropagation();
+      if(t.classList.contains('hit')) return;
+      t.classList.add('hit'); wii.score++; sfx.wiiPop(); wiiUpd();
+      setTimeout(function(){ t.remove(); },200);
+    });
+    t.addEventListener('animationend',function(){ if(!t.classList.contains('hit')){ t.remove(); sfx.wiiMiss(); } });
+    wiiScreen.appendChild(t);
+  }
+  function wiiStart(){ wii.score=0; wiiUpd(); wiiSpawn(); clearInterval(wii.timer); wii.timer=setInterval(wiiSpawn,950); }
+  function wiiStop(){ clearInterval(wii.timer); wii.timer=null;
+    document.querySelectorAll('.wii-target').forEach(function(t){ t.remove(); }); }
+
+  /* ============ 10. Switch 点亮方块 ============ */
+  var swTiles=Array.prototype.slice.call(document.querySelectorAll('.sw-tile'));
+  var sw={timer:null,life:null,lit:-1,score:0,miss:0,win:1100,over:false};
+  var swRight=document.getElementById('swRight');
+  function swUpd(t){ swRight.textContent=t; }
+  function swRound(){
+    swTiles.forEach(function(t){ t.classList.remove('lit'); });
+    sw.lit=Math.floor(Math.random()*3);
+    swTiles[sw.lit].classList.add('lit');
+    clearTimeout(sw.life);
+    sw.life=setTimeout(function(){ swFail(sw.lit); },sw.win);
+  }
+  function swFail(idx){
+    clearTimeout(sw.life);
+    if(idx>=0){ swTiles[idx].classList.remove('lit'); swTiles[idx].classList.add('wrong');
+      (function(i){ setTimeout(function(){ swTiles[i].classList.remove('wrong'); },340); })(idx); }
+    sw.miss++; sw.lit=-1; sfx.swMissS();
+    if(sw.miss>=3){ sw.over=true; swUpd('OVER · '+sw.score); return; }
+    swUpd('MISS '+sw.miss+' / 3');
+    sw.timer=setTimeout(swRound,440);
+  }
+  function swHit(t){
+    if(sw.over) return;
+    var n=swTiles.indexOf(t);
+    if(n===sw.lit){
+      clearTimeout(sw.life);
+      swTiles[n].classList.remove('lit'); sw.lit=-1;
+      sw.score++; sw.win=Math.max(430,sw.win-38);
+      sfx.sw(); swUpd('SCORE '+sw.score);
+      sw.timer=setTimeout(swRound,170);
+    } else swFail(sw.lit);
+  }
+  function swStart(){ sw.score=0; sw.miss=0; sw.win=1100; sw.over=false; sw.lit=-1;
+    swTiles.forEach(function(t){ t.classList.remove('lit','wrong'); });
+    swUpd('SCORE 0'); sw.timer=setTimeout(swRound,400); }
+  function swStop(){ clearTimeout(sw.timer); clearTimeout(sw.life);
+    swTiles.forEach(function(t){ t.classList.remove('lit','wrong'); });
+    swUpd('19:15 ▮▮▮'); }
+  document.querySelectorAll('.sw-tile').forEach(function(t){
+    t.addEventListener('click',function(){
+      if(!document.getElementById('demo10').classList.contains('playing')) return;
+      swHit(t);
+    });
+  });
+
+  /* ============ 电源总控 ============ */
+  function startEra(era){
+    if(era==='pong'){ P.on=true; P.ps=0; P.as=0; pongReset(); G.focus='pong'; }
+    else if(era==='gw'){
+      gw.score=0; gw.miss=0; gw.over=false; gw.speed=420; gw.ball={r:0,c:2}; gw.p=2;
+      clearInterval(gw.timer); gw.timer=setInterval(gwTick,gw.speed); gwRender(); G.focus='gw';
+    }
+    else if(era==='fc'){ FC.on=true; FC.score=0; FC.y=0; FC.vy=0; FC.coins=[]; FC.t=0; G.focus='fc'; }
+    else if(era==='gb'){ gbReset(); gb.on=true; G.focus='gb'; }
+    else if(era==='snes'){ m7.on=true; m7.dist=0; m7.speed=1.6; m7.px=190; m7.dir=0; startSong(snesDef); G.focus='snes'; }
+    else if(era==='atari'){ atReset(); AT.on=true; startSong(atariDef); G.focus='atari'; }
+    else if(era==='ps1'){ psReset(); PS.on=true; G.focus='ps1'; }
+    else if(era==='dc'){ dcgReset(); dcg.on=true; G.focus='dc'; }
+    else if(era==='wii'){ wiiScreen.classList.add('playing'); wiiStart(); }
+    else if(era==='sw'){ swStart(); G.focus='sw'; }
+  }
+  function stopEra(era){
+    var map={pong:'pong',gw:'gw',fc:'fc',gb:'gb',atari:'atari',snes:'snes',ps1:'ps1',dc:'dc',sw:'sw'};
+    if(map[era]&&G.focus===map[era]) G.focus=null;
+    if(era==='pong'){ P.on=false; P.ku=P.kd=0; pongTitle(); }
+    if(era==='gw'){ clearInterval(gw.timer); gw.timer=null; }
+    if(era==='fc') FC.on=false;
+    if(era==='gb') gb.on=false;
+    if(era==='snes'){ m7.on=false; m7.dir=0; stopSong(); }
+    if(era==='atari'){ AT.on=false; AT.pdir=0; stopSong(); }
+    if(era==='ps1'){ PS.on=false; PS.dir=0; document.getElementById('psBoot').style.display='none'; }
+    if(era==='dc'){ dcg.on=false; dcStep(); }
+    if(era==='wii'){ wiiScreen.classList.remove('playing'); wiiStop(); wiiRight.textContent='14:32'; }
+    if(era==='sw'){ swStop(); }
+  }
+  document.querySelectorAll('[data-power]').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var demo=document.getElementById(btn.getAttribute('data-power'));
+      var era=demo.dataset.era, label=btn.querySelector('span');
+      if(!demo||demo.classList.contains('boot')) return;
+      if(demo.classList.contains('off')){
+        demo.classList.remove('off'); demo.classList.add('boot');
+        label.textContent='启动中';
+        if(era==='ps1') psBoot();
+        if(era==='dc') sfxDC();
+        setTimeout(function(){
+          demo.classList.remove('boot'); demo.classList.add('playing');
+          label.textContent='关机'; startEra(era);
+        }, +(demo.dataset.boot||820));
+      } else {
+        demo.classList.remove('playing'); demo.classList.add('off');
+        label.textContent='开机'; stopEra(era);
+      }
+    });
+  });
+
+  /* ============ 主循环 ============ */
+  pongTitle(); fcDraw(); gbDraw(); m7Step(); dcStep(); atDraw(); psDraw();
+  (function loop(){
+    requestAnimationFrame(loop); frame++;
+    if(P.on) pongStep();
+    if(FC.on) fcStep();
+    if(gb.on){ if(frame%8===0&&!gb.dead) gbMove(); gbDraw(); }
+    if(m7.on) m7Step();
+    if(AT.on) atStep();
+    if(PS.on) psStep();
+    if(dcg.on) dcgStep();
+  })();
+
+  /* ============ 键盘 ============ */
+  document.addEventListener('keydown',function(e){
+    if(G.focus){
+      if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' ','1','2','3'].indexOf(e.key)>=0) e.preventDefault();
+      if(G.focus==='pong'){ if(e.key==='ArrowUp')P.ku=1; if(e.key==='ArrowDown')P.kd=1; }
+      else if(G.focus==='gw'){ if(e.key==='ArrowLeft')gwMove(-1); if(e.key==='ArrowRight')gwMove(1); }
+      else if(G.focus==='fc'){ if(e.key===' '||e.key==='ArrowUp')fcJump(); }
+      else if(G.focus==='gb'){ gbDir(e.key); }
+      else if(G.focus==='atari'){ if(e.key==='ArrowLeft')AT.pdir=-1; if(e.key==='ArrowRight')AT.pdir=1; if(e.key===' ')atFire(); }
+      else if(G.focus==='snes'){ if(e.key==='ArrowLeft')m7.dir=-1; if(e.key==='ArrowRight')m7.dir=1; }
+      else if(G.focus==='ps1'){ if(e.key==='ArrowLeft')PS.dir=-1; if(e.key==='ArrowRight')PS.dir=1; }
+      else if(G.focus==='dc'){ if(e.key===' '||e.key==='ArrowUp')dcgJump(); }
+      else if(G.focus==='sw'){ var k={'1':0,'2':1,'3':2}[e.key]; if(k!==undefined) swHit(swTiles[k]); }
+      return;
+    }
+    if(e.key==='ArrowLeft'||e.key==='ArrowRight'){
+      e.preventDefault();
+      var cur=-1;
+      booths.forEach(function(b,i){ if(b.getBoundingClientRect().top<=120) cur=i; });
+      if(cur<0) return;
+      if(e.key==='ArrowRight'&&cur<total-1) booths[cur+1].scrollIntoView({behavior:'smooth'});
+      if(e.key==='ArrowLeft'&&cur>0) booths[cur-1].scrollIntoView({behavior:'smooth'});
+    }
+  });
+  document.addEventListener('keyup',function(e){
+    if(e.key==='ArrowUp')P.ku=0;
+    if(e.key==='ArrowDown')P.kd=0;
+    if(e.key==='ArrowLeft'||e.key==='ArrowRight'){ AT.pdir=0; m7.dir=0; PS.dir=0; }
+  });
+
+  /* ============ 页面框架 ============ */
+  var term=document.getElementById('term');
+  var lines=['> load --history consoles/1972..2017','> 10 machines found','> inserting coin ... OK','> press ⏻ to start'];
+  var li=0,ci=0,out='';
+  function type(){
+    if(li>=lines.length){ term.innerHTML=out.replace(/\n$/,'')+'<br>&gt; <span class="caret"></span>'; return; }
+    out+=lines[li][ci]; ci++;
+    if(ci>=lines[li].length){ out+='\n'; li++; ci=0; setTimeout(type,260); }
+    else setTimeout(type,26);
+    term.innerHTML=out.replace(/\n/g,'<br>');
+  }
+  setTimeout(type,500);
+  setTimeout(function(){ document.getElementById('hero').classList.add('on'); },1500);
+
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+  },{threshold:.12});
+  booths.forEach(function(b){ io.observe(b); });
+
+  var tl=document.getElementById('tl'), dots=document.getElementById('dots');
+  booths.forEach(function(b,i){
+    var d=document.createElement('span');
+    d.className='tl-dot'; d.style.left=((i+.5)/total*100)+'%';
+    d.setAttribute('data-label',b.dataset.year+' '+b.dataset.name.split('·')[0].trim());
+    d.addEventListener('click',function(){ b.scrollIntoView({behavior:'smooth',block:'start'}); });
+    tl.appendChild(d);
+    var a=document.createElement('a');
+    a.href='#'+b.id; a.setAttribute('data-label',b.dataset.year);
+    a.addEventListener('click',function(ev){ ev.preventDefault(); b.scrollIntoView({behavior:'smooth'}); });
+    dots.appendChild(a);
+  });
+  var tlDots=Array.prototype.slice.call(document.querySelectorAll('.tl-dot'));
+  var dotLinks=Array.prototype.slice.call(dots.children);
+  var chapter=document.getElementById('chapter');
+  var chL=document.getElementById('chLeft'), chR=document.getElementById('chRight');
+  var ticking=false;
+  function onScroll(){
+    if(ticking) return; ticking=true;
+    requestAnimationFrame(function(){
+      ticking=false;
+      var y=window.scrollY, cur=-1;
+      var heroH=document.getElementById('hero').offsetHeight;
+      booths.forEach(function(b,i){ if(b.getBoundingClientRect().top<=120) cur=i; });
+      chapter.classList.toggle('on',y>heroH-80);      if(cur>=0){
+        var b=booths[cur];
+        chL.innerHTML='<em>'+b.dataset.year+'</em>'+b.dataset.name;
+        chR.textContent='No. '+String(cur+1).padStart(2,'0')+' / '+total;
+        dotLinks.forEach(function(a,i){ a.classList.toggle('act',i===cur); });
+        tlDots.forEach(function(d,i){ d.classList.toggle('act',i===cur); });
+      }
+    });
+  }
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+})();
+</script>
+</body>
+</html>

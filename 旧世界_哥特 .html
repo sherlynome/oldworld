@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>哥特编年史 · Old World Series Vol.05 — Museum Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=EB+Garamond:ital@0;1&family=Noto+Serif+SC:wght@500;700;900&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--blk:#0D0C0A;--pap:#F4EEE1;--gold:#C9A227;--goldD:#8a6d1a;--ink:#221D15;--mx:50%;--my:35%;--spot:300px}
+html{scroll-behavior:smooth}
+body{background:var(--blk);color:var(--ink);font-family:'Noto Serif SC',serif;overflow-x:hidden}
+::selection{background:var(--gold);color:#0D0C0A}
+button{font-family:inherit}
+
+/* ---------- 射灯 ---------- */
+#spot{position:fixed;inset:0;z-index:70;pointer-events:none;
+ background:radial-gradient(circle var(--spot) at var(--mx) var(--my),rgba(13,12,10,0) 0%,rgba(13,12,10,.12) 55%,rgba(13,12,10,.82) 100%)}
+#spot.off{display:none}
+.lightBtn{position:fixed;top:12px;right:12px;z-index:96;background:rgba(13,12,10,.72);border:1px solid var(--gold);color:var(--gold);font:600 10.5px Manrope,sans-serif;letter-spacing:.18em;padding:8px 13px;cursor:pointer}
+.lightBtn:hover{background:var(--gold);color:var(--blk)}
+
+/* ---------- 馆名页 ---------- */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 38%,#191510,#0D0C0A 72%);padding:60px 20px}
+.panel{max-width:640px;width:100%;background:linear-gradient(180deg,#F5EFE2,#EDE3CE);border:1px solid var(--gold);box-shadow:0 0 0 7px #0D0C0A,0 0 0 8px rgba(201,162,39,.55),0 34px 90px rgba(0,0,0,.85);padding:54px 44px 44px;text-align:center;position:relative}
+.panel::before{content:"";position:absolute;inset:9px;border:1px solid rgba(138,109,26,.35);pointer-events:none}
+.pSeries{font-family:'UnifrakturMaguntia',serif;color:var(--goldD);font-size:19px;animation:fadeUp 1s .1s both}
+.pTitle{font-weight:900;font-size:clamp(38px,7vw,62px);letter-spacing:.14em;margin:16px 0 8px;animation:fadeUp 1.1s .3s both}
+.pSub{font-family:'EB Garamond',serif;font-style:italic;font-size:15px;color:rgba(34,29,21,.65);letter-spacing:.08em;animation:fadeUp 1.1s .5s both}
+.pRule{width:64px;height:1px;background:var(--gold);margin:24px auto;animation:fadeIn 1s .7s both}
+.pLat{font-family:'EB Garamond',serif;font-style:italic;font-size:13.5px;color:rgba(138,109,26,.95);animation:fadeIn 2.4s .9s both}
+.pNote{margin-top:28px;font:500 10.5px Manrope,sans-serif;letter-spacing:.2em;color:rgba(34,29,21,.5);animation:fadeUp 1.2s 1.5s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.cue{margin-top:34px;color:rgba(242,236,223,.4);font:500 10px Manrope,sans-serif;letter-spacing:.32em;animation:fadeIn 1.5s 2s both}
+.cue::after{content:"";display:block;width:1.5px;height:40px;background:linear-gradient(var(--gold),transparent);margin:10px auto 0;animation:drop 2.2s ease-in-out infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}55%{transform:scaleY(1)}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ---------- 框架 ---------- */
+main{background:linear-gradient(180deg,#F5EFE2,#EDE3CE 60%,#F1E9D8)}
+main::before{content:"";display:block;height:8px;background:linear-gradient(180deg,rgba(13,12,10,.9),transparent)}
+.chapter{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;justify-content:space-between;align-items:center;padding:10px 96px 10px 7vw;background:rgba(13,12,10,.93);border-bottom:1px solid rgba(201,162,39,.45);transform:translateY(-100%);transition:transform .4s}
+.chapter.on{transform:none}
+#chLeft{font-size:12.5px;letter-spacing:.14em;color:#F2ECDF}
+#chLeft em{font-style:normal;color:var(--gold);margin-right:10px;font-family:'EB Garamond',serif;font-size:14px}
+#chRight{font-size:10.5px;letter-spacing:.26em;color:rgba(242,236,223,.55);font-family:Manrope,sans-serif}
+.ribbons{position:fixed;right:0;top:64px;z-index:85;display:flex;flex-direction:column;gap:7px}
+.rb{width:15px;height:42px;background:var(--gold);clip-path:polygon(0 0,100% 0,100% 100%,50% 82%,0 100%);cursor:pointer;opacity:.55;transition:opacity .25s;border:none;display:block}
+.rb:nth-child(even){background:#A8862C}
+.rb:hover{opacity:.85}
+.rb.act{opacity:1}
+
+/* ---------- 展签 ---------- */
+.booth{max-width:1060px;margin:0 auto;padding:82px 6vw 70px;display:grid;grid-template-columns:340px 1fr;gap:56px;align-items:start;border-top:1px solid rgba(201,162,39,.4);opacity:0;transform:translateY(38px);transition:opacity .85s,transform .85s cubic-bezier(.2,.7,.2,1)}
+.booth.visible{opacity:1;transform:none}
+.booth.rev .lbl{order:2}.booth.rev .exh{order:1}
+.cat{font-family:'UnifrakturMaguntia',serif;font-size:16px;color:var(--goldD)}
+.tzh{font-size:25px;font-weight:900;margin:10px 0 3px;line-height:1.4}
+.ten{font-family:'EB Garamond',serif;font-style:italic;font-size:15px;color:rgba(34,29,21,.6)}
+.mat{margin-top:14px;font-size:12.5px;color:rgba(34,29,21,.78);line-height:1.8}
+.mat i{color:rgba(34,29,21,.55)}
+.rule{border:none;height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin:16px 0}
+.dz{font-size:14.5px;line-height:2.05;color:rgba(34,29,21,.92)}
+.de{margin-top:10px;font-family:'EB Garamond',serif;font-size:14px;line-height:1.8;color:rgba(34,29,21,.7)}
+.src{margin-top:18px;font-size:11.5px;color:rgba(34,29,21,.6);border-left:2px solid var(--gold);padding-left:10px;line-height:1.75}
+.src i{font-family:'EB Garamond',serif;font-size:12.5px}
+.exh{display:flex;flex-direction:column;align-items:center;min-width:0}
+.cap{font:500 11px Manrope,sans-serif;letter-spacing:.14em;color:rgba(34,29,21,.55);margin-top:18px;text-align:center}
+.hint{margin-top:10px;font:600 11px Manrope,sans-serif;letter-spacing:.14em;border:1px solid rgba(34,29,21,.35);padding:7px 16px;color:rgba(34,29,21,.75);text-align:center}
+.abtn{border:1px solid rgba(34,29,21,.4);background:#F8F2E3;padding:7px 16px;cursor:pointer;font:600 11px Manrope,sans-serif;letter-spacing:.12em;color:rgba(34,29,21,.8)}
+.abtn:hover{background:var(--gold);color:var(--blk);border-color:var(--gold)}
+.msBtns{display:flex;gap:10px;margin-top:12px}
+.exh svg{display:block;max-width:100%}
+
+/* ---------- Cat.00 词条 ---------- */
+.gloss{width:100%;max-width:520px}
+.grow{display:grid;grid-template-columns:92px 1fr;gap:14px;padding:13px 0;border-bottom:1px dashed rgba(34,29,21,.25)}
+.grow:last-child{border-bottom:none}
+.gyr{font-family:'EB Garamond',serif;font-style:italic;font-size:15px;color:var(--goldD)}
+.gtx{font-size:13.5px;line-height:1.8}
+.gtx .ge{display:block;font-family:'EB Garamond',serif;font-size:12.5px;color:rgba(34,29,21,.6);margin-top:2px}
+
+/* ---------- Cat.01 玫瑰窗 ---------- */
+.rwSvg{width:min(340px,84vw);height:auto}
+.rwSvg .glass{transition:fill .55s ease,filter .55s ease}
+.rwSvg path,.rwSvg circle{cursor:pointer}
+.rwPool{width:250px;height:58px;margin-top:12px;border-radius:50%;filter:blur(15px);opacity:0;transition:opacity 1.2s}
+.rwPool.on{opacity:.8}
+
+/* ---------- Cat.02 尖拱 ---------- */
+.archSvg{width:min(340px,86vw);height:auto}
+.archRange{width:min(300px,80vw);margin-top:16px;accent-color:var(--goldD)}
+.archOut{font:600 11.5px Manrope,sans-serif;letter-spacing:.1em;color:rgba(34,29,21,.8);margin-top:12px;text-align:center}
+.archBarW{width:min(300px,80vw);height:8px;border:1px solid rgba(34,29,21,.35);margin-top:8px}
+.archBar{height:100%;background:linear-gradient(90deg,#3E6B4F,#C9A227,#8E1F2F);width:40%;transition:width .2s}
+
+/* ---------- Cat.03 滴水嘴 ---------- */
+.gargSvg{width:min(340px,86vw);height:auto}
+.gargHit{cursor:pointer}
+.gargSvg .gFlow{opacity:0;transition:opacity .45s}
+.gargSvg.draining .gFlow{opacity:1}
+.gargSvg.draining .gPoolE{animation:gpuddle 2.4s ease-out both}
+@keyframes gpuddle{0%{opacity:0;rx:4}30%{opacity:.85}100%{opacity:0;rx:30}}
+
+/* ---------- Cat.04 贴金 ---------- */
+.msWrap{position:relative;width:min(380px,86vw)}
+.msWrap canvas{display:block;width:100%;height:auto;border:1px solid rgba(34,29,21,.25)}
+.msTop{position:absolute;inset:0;touch-action:none;cursor:crosshair}
+
+/* ---------- Cat.05 管风琴 ---------- */
+.orgSvg{width:min(360px,88vw);height:auto}
+.orgKeys{display:flex;gap:5px;margin-top:14px}
+.okey{width:34px;height:86px;background:linear-gradient(180deg,#fdfaf2,#d8cdb4);border:1px solid #6b625a;border-radius:2px 2px 5px 5px;cursor:pointer;font:600 11px Manrope,sans-serif;color:rgba(34,29,21,.5)}
+.okey:active,.okey.held{background:linear-gradient(180deg,#e8dcb8,#cbbd98);box-shadow:inset 0 3px 6px rgba(0,0,0,.25)}
+.pipe{transition:filter .15s}
+.pipe.lit{filter:brightness(1.4) drop-shadow(0 0 10px rgba(201,162,39,.9))}
+
+/* ---------- Cat.06 钟 ---------- */
+.bellSvg{width:230px;height:auto;cursor:pointer}
+#bellSwing{transform-origin:120px 46px;transform-box:view-box}
+#bellSwing.swing{animation:bswing 2.3s ease-in-out}
+@keyframes bswing{0%{transform:rotate(0)}16%{transform:rotate(7deg)}46%{transform:rotate(-5deg)}74%{transform:rotate(3deg)}100%{transform:rotate(0)}}
+.bellSvg .wv{opacity:0;transform-origin:120px 150px;transform-box:view-box}
+.bellSvg.ringing .wv1{animation:wv 2.2s .15s ease-out both}
+.bellSvg.ringing .wv2{animation:wv 2.2s .5s ease-out both}
+@keyframes wv{0%{opacity:.8;transform:scale(.7)}100%{opacity:0;transform:scale(1.3)}}
+
+/* ---------- Cat.07 油灯 ---------- */
+.lampSvg{width:280px;height:auto}
+#lampFlame{transform-origin:254px 106px;transform-box:view-box;animation:flick 1.15s ease-in-out infinite}
+@keyframes flick{0%,100%{transform:scale(1) rotate(-2deg)}50%{transform:scale(1.13,.94) rotate(2.5deg)}}
+.lampRange{width:min(240px,74vw);margin-top:10px;accent-color:var(--goldD)}
+
+/* ---------- Cat.08 纹章盾 ---------- */
+.shWrap{perspective:900px;width:170px;cursor:pointer}
+.shCard{position:relative;width:170px;height:200px;transform-style:preserve-3d;transition:transform .65s}
+.shWrap.open .shCard{transform:rotateY(180deg)}
+.shFace{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.shSvg{width:100%;height:162px;display:block}
+.shBack{transform:rotateY(180deg);background:#F8F2E3;border:1px solid var(--gold);padding:9px 11px;font-size:10px;line-height:1.6;overflow:hidden}
+.shBack b{color:var(--goldD)}
+.shBack .note{font-size:8.5px;color:rgba(34,29,21,.5);margin-top:4px}
+
+/* ---------- Cat.09 面具 ---------- */
+.maskSvg{width:250px;height:auto;cursor:pointer}
+.mBeakG{transform-origin:130px 126px;transform-box:view-box;transition:transform .5s}
+.maskWrap.open .mBeakG{transform:rotate(6deg) translateY(4px)}
+.mSlip{position:absolute;left:50%;bottom:-6px;transform:translate(-50%,14px);width:222px;background:#F8F2E3;border:1px solid var(--gold);padding:10px 13px;font-size:11px;line-height:1.75;opacity:0;transition:all .45s;z-index:3;box-shadow:0 8px 20px rgba(0,0,0,.2)}
+.mSlip b{color:var(--goldD);font-size:10px;letter-spacing:.14em}
+.maskWrap.open .mSlip{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- Cat.10 印刷机 ---------- */
+.pressSvg{width:300px;height:auto}
+#pressScrew{transform-origin:150px 78px;transform-box:view-box}
+#pressScrew.spin{animation:pspin .7s ease-in-out}
+@keyframes pspin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.pressWrap.pressing #pressPlaten{animation:ppress .7s ease-in-out}
+@keyframes ppress{0%,100%{transform:translateY(0)}45%{transform:translateY(24px)}}
+#pressPaper{opacity:0;transition:opacity .35s}
+.pressWrap.printed #pressPaper{opacity:1}
+.copies{margin-top:10px;font:600 11px Manrope,sans-serif;letter-spacing:.14em;color:rgba(34,29,21,.75)}
+.copies b{color:var(--goldD)}
+
+/* ---------- 卷末 ---------- */
+.outro{background:var(--blk);padding:110px 7vw 70px}
+.cnPanel{max-width:660px;margin:0 auto;background:linear-gradient(#F5EFE2,#EDE3CE);border:1px solid var(--gold);padding:44px 42px}
+.cnPanel h4{font-size:16px;letter-spacing:.2em;color:var(--goldD);margin-bottom:16px}
+.cnPanel p{font-size:13.5px;line-height:2.05;color:rgba(34,29,21,.9)}
+.cnPanel .en{margin-top:12px;font-family:'EB Garamond',serif;font-size:13px;line-height:1.8;color:rgba(34,29,21,.65)}
+.footer{background:var(--blk);color:rgba(242,236,223,.4);border-top:1px solid rgba(201,162,39,.3);padding:24px 7vw;display:flex;justify-content:space-between;align-items:center;font:500 10.5px Manrope,sans-serif;letter-spacing:.2em;flex-wrap:wrap;gap:10px}
+.topBtn{background:none;border:1px solid rgba(242,236,223,.35);color:#F2ECDF;font:600 10.5px Manrope,sans-serif;letter-spacing:.24em;padding:9px 20px;cursor:pointer}
+.topBtn:hover{background:var(--gold);border-color:var(--gold);color:var(--blk)}
+
+@media (max-width:1100px){.ribbons{display:none}}
+@media (max-width:920px){
+ .booth{grid-template-columns:1fr;gap:30px;padding:66px 6vw 58px}
+ .booth.rev .lbl{order:0}
+ .chapter{padding-right:96px}
+ .cnPanel{padding:34px 24px}
+}
+</style>
+</head>
+<body>
+
+<div id="spot"></div>
+<button class="lightBtn" id="lightBtn">射灯 LIGHT · ON</button>
+
+<header class="hero" id="hero">
+  <div class="panel">
+    <div class="pSeries">The Old World Museum · Vol. V</div>
+    <h1 class="pTitle">哥特编年史</h1>
+    <div class="pSub">A Chronicle in Ten Catalogue Entries · c. 1140s — c. 1455</div>
+    <div class="pRule"></div>
+    <div class="pLat">Monumenta Gothica in unum collecta · MMXXVI</div>
+    <div class="pNote">移动光标即馆内射灯 · 展品皆可操作<br>THE SPOTLIGHT FOLLOWS YOUR POINTER · ALL EXHIBITS ARE OPERABLE</div>
+  </div>
+  <div class="cue">SCROLL · 向下参观</div>
+</header>
+
+<div class="chapter" id="chapter">
+  <span id="chLeft"><em>Cat. 00</em>词条 · Goth 与 Gothic</span>
+  <span id="chRight">词条 GLOSSARY</span>
+</div>
+<nav class="ribbons" id="ribbons"></nav>
+
+<main id="main">
+<section class="booth" id="b0" data-cat="Cat. 00" data-name="词条 · Goth 与 Gothic" data-right="词条 GLOSSARY">
+  <div class="lbl">
+    <div class="cat">Cat. 00</div>
+    <h3 class="tzh">词条 · Goth 与 Gothic</h3>
+    <div class="ten">Glossary: Goth and Gothic</div>
+    <hr class="rule">
+    <p class="dz">两个词形，四层含义，按文献年代并列如下，不构成叙事。</p>
+    <p class="de">Two word-forms, four recorded senses, listed in order of appearance.</p>
+  </div>
+  <div class="exh">
+    <div class="gloss">
+      <div class="grow"><span class="gyr">3–8 世纪</span><div class="gtx">Gothi：东日耳曼部落名，见于罗马史料。<span class="ge">A tribal name of East Germanic peoples, recorded in Roman sources.</span></div></div>
+      <div class="grow"><span class="gyr">1140s 起</span><div class="gtx">Gothic：建筑术语；文艺复兴时期意大利作者用以指称中世纪北方建筑，文献中初为贬义。<span class="ge">An architectural label applied by Renaissance Italian writers, initially pejorative.</span></div></div>
+      <div class="grow"><span class="gyr">1764</span><div class="gtx">贺拉斯·沃波尔《奥特兰托城堡》副题 “A Gothic Story”，文学类型义确立。<span class="ge">Walpole’s subtitle fixes the literary sense.</span></div></div>
+      <div class="grow"><span class="gyr">1970s 末</span><div class="gtx">gothic rock 及其后继用法；Goth 转而指称亚文化成员。<span class="ge">gothic rock and the later subculture sense.</span></div></div>
+    </div>
+    <p class="src">据《牛津英语词典》词源条；艺术史通论文献。<br><i>Sources: Oxford English Dictionary, etymological entries; standard surveys of art history.</i></p>
+  </div>
+</section>
+<div id="list"></div>
+</main>
+
+<section class="outro">
+  <div class="cnPanel">
+    <h4>辑录者按 · NOTE FROM THE COMPILER</h4>
+    <p>本编资料辑自公开出版物、博物馆藏品档案及官方机构名录，凡存疑处以“约”“传”“一说”标注，不做定论。个人学识有限，整理或有疏漏舛误，如蒙方家指正，不胜感荷，当据以修订。</p>
+    <p class="en">The materials herein are drawn from public publications, museum collection archives, and official institutional records. Where uncertain, entries are marked “c.” or “attributed” rather than asserted as fact. The compiler’s learning is limited, and errors or omissions are likely. Corrections from knowledgeable readers are most welcome and will be incorporated in revisions.</p>
+  </div>
+</section>
+
+<footer class="footer">
+  <span>OLD WORLD SERIES · VOL.05 · GOTHA · MMXXVI</span>
+  <button class="topBtn" id="topBtn">回到馆名页 ENTRANCE</button>
+</footer>
+
+<script>
+(function(){
+'use strict';
+function $(id){return document.getElementById(id);}
+function on(el,ev,fn){if(el)el.addEventListener(ev,fn);}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+var NS='http://www.w3.org/2000/svg';
+function svgEl(n,at,parent){var e=document.createElementNS(NS,n);for(var k in at)e.setAttribute(k,at[k]);if(parent)parent.appendChild(e);return e;}
+
+/* ================= 音频（石室混响） ================= */
+var AC=null,master=null,nbuf=null;
+function aInit(){
+  try{
+    if(!AC){
+      var A=window.AudioContext||window.webkitAudioContext;
+      if(!A)return false;
+      AC=new A();
+      master=AC.createGain();master.gain.value=.38;
+      var dry=AC.createGain();dry.gain.value=.8;
+      master.connect(dry);dry.connect(AC.destination);
+      var dly=AC.createDelay(1);dly.delayTime.value=.11;
+      var fb=AC.createGain();fb.gain.value=.32;
+      var wet=AC.createGain();wet.gain.value=.28;
+      master.connect(dly);dly.connect(fb);fb.connect(dly);dly.connect(wet);wet.connect(AC.destination);
+      var len=AC.sampleRate,b=AC.createBuffer(1,len,AC.sampleRate),d=b.getChannelData(0);
+      for(var i=0;i<len;i++)d[i]=Math.random()*2-1;
+      nbuf=b;
+    }
+    if(AC.state==='suspended')AC.resume();
+    return true;
+  }catch(e){return false;}
+}
+function T(f,dur,type,g,slide){
+  if(!aInit())return;
+  try{
+    var t=AC.currentTime,o=AC.createOscillator(),gn=AC.createGain();
+    o.type=type||'sine';o.frequency.setValueAtTime(Math.max(20,f),t);
+    if(slide){try{o.frequency.exponentialRampToValueAtTime(Math.max(20,slide),t+dur*.8)}catch(e){}}
+    gn.gain.setValueAtTime(.0001,t);
+    try{gn.gain.exponentialRampToValueAtTime(g||.07,t+.012)}catch(e){}
+    try{gn.gain.exponentialRampToValueAtTime(.0001,t+dur)}catch(e){}
+    o.connect(gn);gn.connect(master);o.start(t);o.stop(t+dur+.05);
+  }catch(e){}
+}
+function NZ(dur,vol,f1,ft,f2){
+  if(!aInit()||!nbuf)return;
+  try{
+    var t=AC.currentTime,s=AC.createBufferSource();s.buffer=nbuf;s.loop=true;
+    var flt=AC.createBiquadFilter();flt.type=ft||'bandpass';flt.frequency.value=f1||800;flt.Q.value=1.2;
+    if(f2){try{flt.frequency.exponentialRampToValueAtTime(f2,t+dur)}catch(e){}}
+    var g=AC.createGain();g.gain.setValueAtTime(vol,t);
+    try{g.gain.exponentialRampToValueAtTime(.0005,t+dur)}catch(e){}
+    s.connect(flt);flt.connect(g);g.connect(master);s.start(t);s.stop(t+dur+.05);
+  }catch(e){}
+}
+function sGlass(){T(1250,.18,'sine',.05);T(1870,.22,'sine',.028);}
+function sGold(){T(2300+Math.random()*800,.05,'sine',.028);}
+function sFlip(){NZ(.09,.1,900,'bandpass',2600);}
+function sThud(){T(72,.22,'sine',.16,42);NZ(.1,.1,300,'lowpass');}
+function sWater(){NZ(1.5,.13,900,'bandpass',340);}
+function sBellRing(base){
+  base=base||152;
+  if(!aInit())return;
+  var parts=[.5,1,1.2,1.5,2.0],gains=[.36,.72,.26,.2,.3],dec=[5,3.2,2.2,2.6,1.5];
+  for(var i=0;i<parts.length;i++){
+    try{
+      var t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();
+      o.type='sine';o.frequency.value=base*parts[i]*(1+(Math.random()-.5)*.004);
+      g.gain.setValueAtTime(gains[i],t);
+      g.gain.exponentialRampToValueAtTime(.0001,t+dec[i]);
+      o.connect(g);g.connect(master);o.start(t);o.stop(t+dec[i]+.1);
+    }catch(e){}
+  }
+}
+function organVoice(f){
+  if(!aInit())return function(){};
+  try{
+    var t=AC.currentTime,g=AC.createGain();
+    g.gain.setValueAtTime(.0001,t);
+    g.gain.exponentialRampToValueAtTime(.13,t+.06);
+    g.connect(master);
+    var o1=AC.createOscillator();o1.type='sine';o1.frequency.value=f;
+    var o2=AC.createOscillator();o2.type='sine';o2.frequency.value=f*2;
+    var o3=AC.createOscillator();o3.type='sine';o3.frequency.value=f*3;
+    var o4=AC.createOscillator();o4.type='sawtooth';o4.frequency.value=f;
+    var g2=AC.createGain();g2.gain.value=.38;
+    var g3=AC.createGain();g3.gain.value=.16;
+    var g4=AC.createGain();g4.gain.value=.05;
+    var lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=f*6;
+    o1.connect(g);o2.connect(g2);g2.connect(g);o3.connect(g3);g3.connect(g);
+    o4.connect(g4);g4.connect(lp);lp.connect(g);
+    o1.start(t);o2.start(t);o3.start(t);o4.start(t);
+    return function(){
+      try{
+        var t2=AC.currentTime;
+        g.gain.cancelScheduledValues(t2);
+        g.gain.setValueAtTime(Math.max(g.gain.value,.0002),t2);
+        g.gain.exponentialRampToValueAtTime(.0001,t2+.25);
+        o1.stop(t2+.3);o2.stop(t2+.3);o3.stop(t2+.3);o4.stop(t2+.3);
+      }catch(e){}
+    };
+  }catch(e){return function(){};}
+}
+
+/* ================= 机关定义 ================= */
+var SETUP={};
+
+/* Cat.01 玫瑰窗 —— 石制窗棂 + 宝石玻璃 */
+SETUP.rw=function(sec){
+  var svg=sec.querySelector('.rwSvg'),pool=sec.querySelector('.rwPool');
+  if(!svg)return;
+  var CX=160,CY=160,total=0,done=0,busyGlow=false;
+  var PAL=[['url(#gR)','#a12736'],['url(#gB)','#2f5da8'],['url(#gG)','#3e7a56'],['url(#gA)','#d4ad35'],['url(#gV)','#6a4a96'],['url(#gM)','#c07a2e']];
+  var petals=[];
+  /* 辐条（压在玻璃下层） */
+  for(var s=0;s<12;s++){
+    var sa=s*30*Math.PI/180;
+    svgEl('line',{x1:(CX+28*Math.cos(sa)).toFixed(1),y1:(CY+28*Math.sin(sa)).toFixed(1),
+      x2:(CX+141*Math.cos(sa)).toFixed(1),y2:(CY+141*Math.sin(sa)).toFixed(1),
+      stroke:'#6e655a','stroke-width':4.5},svg);
+  }
+  function addPiece(el){
+    el.setAttribute('class','glass');
+    el.setAttribute('fill','#211c15');
+    el.setAttribute('stroke','#0f0d0a');
+    el.setAttribute('stroke-width','1.1');
+    total++;
+    svg.appendChild(el);
+    on(el,'click',function(){
+      if(el.dataset.f||busyGlow)return;
+      el.dataset.f='1';
+      var c=PAL[Math.floor(Math.random()*PAL.length)];
+      el.setAttribute('fill',c[0]);
+      el.dataset.c=c[1];
+      el.style.filter='drop-shadow(0 0 5px rgba(255,240,200,.5))';
+      sGlass();done++;
+      if(done===total)glow();
+    });
+  }
+  addPiece(svgEl('circle',{cx:CX,cy:CY,r:25}));
+  for(var i=0;i<12;i++){
+    var a=i*30*Math.PI/180;
+    function P(r,ang){return (CX+r*Math.cos(ang)).toFixed(1)+','+(CY+r*Math.sin(ang)).toFixed(1);}
+    petals.push(svgEl('path',{d:'M'+P(30,a-.155)+' Q'+P(86,a-.36)+' '+P(118,a)+' Q'+P(86,a+.36)+' '+P(30,a+.155)+' Z'}));
+    addPiece(petals[i]);
+  }
+  for(var j=0;j<12;j++){
+    var b=(j*30+15)*Math.PI/180;
+    addPiece(svgEl('circle',{cx:(CX+131*Math.cos(b)).toFixed(1),cy:(CY+131*Math.sin(b)).toFixed(1),r:8.5}));
+  }
+  /* 石环压边 */
+  svgEl('circle',{cx:CX,cy:CY,r:29,fill:'none',stroke:'#6e655a','stroke-width':5},svg);
+  svgEl('circle',{cx:CX,cy:CY,r:121,fill:'none',stroke:'#6e655a','stroke-width':5},svg);
+  svgEl('circle',{cx:CX,cy:CY,r:142,fill:'none',stroke:'#6e655a','stroke-width':4},svg);
+  function glow(){
+    busyGlow=true;
+    var stops=[];
+    for(var i=0;i<12;i++){
+      var col=petals[i].dataset.c||'#C9A227';
+      stops.push(col+' '+(i*30+90)+'deg '+((i+1)*30+90)+'deg');
+    }
+    pool.style.background='radial-gradient(circle at 50% 50%,#C9A227 0 20%,transparent 46%),conic-gradient('+stops.join(',')+')';
+    pool.classList.add('on');
+  }
+};
+
+/* Cat.02 尖拱 —— 教堂剖面 + 推力箭头 */
+SETUP.arch=function(sec){
+  var svg=sec.querySelector('.archSvg'),range=sec.querySelector('.archRange'),
+      out=sec.querySelector('.archOut'),bar=sec.querySelector('.archBar');
+  if(!svg)return;
+  var dyn=svgEl('g',{},svg);
+  var CX=92,SY=132,HALF=16;
+  function draw(){
+    var rise=6+(+range.value)/100*18; /* 6..24 */
+    var R=(HALF*HALF+rise*rise)/(2*HALF);
+    var al=Math.atan2(rise,R-HALF);
+    function pt(sign,phi){
+      var OX=CX+sign*(R-HALF);
+      return [OX-sign*R*Math.cos(phi),SY-R*Math.sin(phi)];
+    }
+    /* 石拱环：外轮廓 half+5，内轮廓 half-2 */
+    function arcPts(h,r){
+      var Rr=(h*h+r*r)/(2*h),alr=Math.atan2(r,Rr-h),pts=[];
+      for(var i=0;i<=20;i++){var p=pt(-1,alr*i/20);pts.push([p[0],p[1]]);}
+      for(var j=20;j>=0;j--){var q=pt(1,alr*j/20);pts.push([q[0],q[1]]);}
+      return pts;
+    }
+    var outer=arcPts(HALF+5,rise+2.5),inner=arcPts(HALF-2.5,rise-2.2).reverse();
+    var d='M'+outer.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1);}).join(' L');
+    d+=' L'+inner.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1);}).join(' L')+' Z';
+    dyn.innerHTML='';
+    svgEl('path',{d:d,fill:'url(#stoneB)','stroke-width':.8},dyn);
+    /* 拱心石 */
+    var kx=CX,ky=SY-rise-1;
+    svgEl('path',{d:'M'+(kx-6)+','+(ky+6)+' L'+(kx-4.5)+','+(ky-7)+' L'+(kx+4.5)+','+(ky-7)+' L'+(kx+6)+','+(ky+6)+' Z',fill:'#9a9084',stroke:'#4c443c','stroke-width':.7},dyn);
+    /* 推力箭头 */
+    var L=clamp(118-rise*4.2,24,96);
+    svgEl('line',{x1:CX-HALF-3,y1:SY+4,x2:CX-HALF-3-L,y2:SY+4,stroke:'#8E1F2F','stroke-width':2.2,'marker-end':'url(#arrH)'},dyn);
+    svgEl('line',{x1:CX+HALF+3,y1:SY+4,x2:CX+HALF+3+L,y2:SY+4,stroke:'#8E1F2F','stroke-width':2.2,'marker-end':'url(#arrH)'},dyn);
+    svgEl('text',{x:CX-HALF-8-L,y:SY-3,'font-size':7.5,fill:'#8E1F2F','text-anchor':'end','font-family':'Manrope,sans-serif','letter-spacing':'.06em'},dyn).textContent='THRUST';
+    svgEl('text',{x:CX+HALF+8+L,y:SY-3,'font-size':7.5,fill:'#8E1F2F','font-family':'Manrope,sans-serif','letter-spacing':'.06em'},dyn).textContent='THRUST';
+    var k=HALF/rise;
+    bar.style.width=clamp(k/5*100,8,100)+'%';
+    var lvl=k>2.5?'高 HIGH':(k>1.2?'中 MEDIUM':'低 LOW');
+    out.textContent='矢高/半跨 rise/span = 1:'+(1/k).toFixed(2)+' · 拱脚水平推力 thrust：'+lvl;
+  }
+  on(range,'input',draw);
+  draw();
+};
+
+/* Cat.03 滴水嘴 —— 排水演示 */
+SETUP.garg=function(sec){
+  var svg=sec.querySelector('.gargSvg');
+  if(!svg)return;
+  var busy=false;
+  on(svg,'click',function(e){
+    if(e.target&&e.target.classList&&e.target.classList.contains('gargHit')===false){
+      if(e.target.tagName==='path'||e.target.tagName==='circle'||e.target.tagName==='rect'){/* fallthrough */}
+    }
+    if(busy)return;busy=true;
+    svg.classList.add('draining');
+    sWater();
+    setTimeout(function(){svg.classList.remove('draining');},2200);
+    setTimeout(function(){busy=false;},2600);
+  });
+};
+
+/* Cat.04 贴金 —— 花饰首字母 */
+SETUP.ms=function(sec){
+  var base=sec.querySelector('.msBase'),top=sec.querySelector('.msTop');
+  if(!top||!base)return;
+  var bctx=base.getContext('2d'),ctx=top.getContext('2d');
+  function fleur(x,y,s,rot){
+    bctx.save();bctx.translate(x,y);bctx.rotate(rot);
+    bctx.fillStyle='rgba(160,128,40,.85)';bctx.strokeStyle='rgba(90,70,20,.8)';bctx.lineWidth=.8;
+    for(var i=-1;i<=1;i++){
+      bctx.save();bctx.rotate(i*.55);bctx.scale(s,s);
+      bctx.beginPath();bctx.moveTo(0,0);bctx.quadraticCurveTo(3.2,-7,0,-13);bctx.quadraticCurveTo(-3.2,-7,0,0);
+      bctx.closePath();bctx.fill();bctx.stroke();bctx.restore();
+    }
+    bctx.beginPath();bctx.arc(0,1.5,2,0,7);bctx.fill();
+    bctx.restore();
+  }
+  function drawBase(){
+    var g=bctx.createLinearGradient(0,0,0,220);
+    g.addColorStop(0,'#F9F3E4');g.addColorStop(1,'#EFE2C6');
+    bctx.fillStyle=g;bctx.fillRect(0,0,360,220);
+    bctx.strokeStyle='rgba(120,100,60,.16)';bctx.lineWidth=1;
+    for(var y=40;y<=208;y+=18){bctx.beginPath();bctx.moveTo(24,y);bctx.lineTo(336,y);bctx.stroke();}
+    bctx.strokeStyle='#8a6d1a';bctx.lineWidth=2;bctx.strokeRect(8,8,344,204);
+    bctx.lineWidth=.8;bctx.strokeRect(15,15,330,190);
+    bctx.strokeStyle='rgba(138,109,26,.5)';bctx.strokeRect(19,19,322,182);
+    fleur(34,34,1,0);fleur(326,34,1,0);fleur(34,186,1,Math.PI);fleur(326,186,1,Math.PI);
+    bctx.textAlign='center';bctx.textBaseline='middle';
+    bctx.font='150px Georgia,"Noto Serif SC",serif';
+    bctx.fillStyle='rgba(90,70,20,.3)';bctx.fillText('G',181,121);
+    bctx.fillStyle='#6e655a';bctx.fillText('G',180,120);
+    bctx.strokeStyle='#3f3a30';bctx.lineWidth=1.5;bctx.strokeText('G',180,120);
+  }
+  drawBase();
+  var drawing=false,last=null;
+  function pt(e){var r=top.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*360,y:(e.clientY-r.top)/r.height*220};}
+  function gseg(x0,y0,x1,y1){
+    ctx.save();ctx.lineCap='round';
+    ctx.globalAlpha=.85;ctx.strokeStyle='#C9A227';ctx.lineWidth=9;
+    ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);ctx.stroke();
+    ctx.globalAlpha=.9;ctx.strokeStyle='rgba(255,243,196,.85)';ctx.lineWidth=2.6;
+    ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);ctx.stroke();
+    var cols=['#C9A227','#8a6d1a','#FFF3C4','#e0b84a'];
+    for(var i=0;i<3;i++){
+      var t=Math.random();
+      ctx.fillStyle=(Math.random()<.1)?'#7a3c12':cols[Math.floor(Math.random()*cols.length)];
+      ctx.fillRect(x0+(x1-x0)*t+(Math.random()-.5)*9,y0+(y1-y0)*t+(Math.random()-.5)*9,1.7,1.7);
+    }
+    ctx.restore();
+    if(Math.random()<.12)sGold();
+  }
+  on(top,'pointerdown',function(e){e.preventDefault();drawing=true;last=pt(e);try{top.setPointerCapture(e.pointerId);}catch(err){}});
+  on(top,'pointermove',function(e){if(!drawing)return;var p=pt(e);gseg(last.x,last.y,p.x,p.y);last=p;});
+  on(window,'pointerup',function(){drawing=false;});
+  on(sec.querySelector('.msReset'),'click',function(){ctx.clearRect(0,0,360,220);drawBase();sFlip();});
+};
+
+/* Cat.05 管风琴 —— 琴箱与音管 */
+SETUP.org=function(sec){
+  var svg=sec.querySelector('.orgSvg'),keysW=sec.querySelector('.orgKeys');
+  if(!keysW||!svg)return;
+  /* 雕花尖拱饰带 */
+  var band=svg.querySelector('#orgBand');
+  if(band){
+    for(var a=0;a<9;a++){
+      var x=40+a*27.5;
+      svgEl('path',{d:'M'+x+',150 L'+x+',137 Q'+(x+6.5)+',127 '+(x+13)+',137 L'+(x+13)+',150',
+        fill:'none',stroke:'rgba(0,0,0,.4)','stroke-width':1.6},band);
+      svgEl('circle',{cx:x+6.5,cy:134,r:1.2,fill:'rgba(224,209,166,.5)'},band);
+    }
+  }
+  var FREQ=[261.63,293.66,329.63,349.23,392,440,493.88,523.25];
+  var stops=[null,null,null,null,null,null,null,null],keyEls=[];
+  FREQ.forEach(function(f,i){
+    var k=document.createElement('button');k.className='okey';k.textContent='ASDFGHJK'[i];
+    keysW.appendChild(k);keyEls.push(k);
+    function press(down){
+      var pipe=svg.querySelector('#op'+i);
+      if(down){if(stops[i])return;stops[i]=organVoice(FREQ[i]);if(pipe)pipe.classList.add('lit');k.classList.add('held');}
+      else{if(stops[i]){try{stops[i]();}catch(e){}stops[i]=null;}if(pipe)pipe.classList.remove('lit');k.classList.remove('held');}
+    }
+    on(k,'pointerdown',function(e){e.preventDefault();press(true);});
+    on(k,'pointerup',function(){press(false);});
+    on(k,'pointerleave',function(){press(false);});
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.repeat)return;
+    var r=sec.getBoundingClientRect();
+    if(r.top>innerHeight||r.bottom<0)return;
+    var i='ASDFGHJK'.indexOf(e.key.toUpperCase());
+    if(i>=0&&!stops[i]){
+      stops[i]=organVoice(FREQ[i]);
+      var pipe=svg.querySelector('#op'+i);if(pipe)pipe.classList.add('lit');
+      keyEls[i].classList.add('held');
+    }
+  });
+  document.addEventListener('keyup',function(e){
+    var i='ASDFGHJK'.indexOf(e.key.toUpperCase());
+    if(i>=0&&stops[i]){
+      try{stops[i]();}catch(err){}
+      stops[i]=null;
+      var pipe=svg.querySelector('#op'+i);if(pipe)pipe.classList.remove('lit');
+      keyEls[i].classList.remove('held');
+    }
+  });
+};
+
+/* Cat.06 钟 */
+SETUP.bell=function(sec){
+  var svg=sec.querySelector('.bellSvg');
+  if(!svg)return;
+  var swing=svg.querySelector('#bellSwing');
+  on(svg,'click',function(){
+    svg.classList.remove('ringing');void svg.getBoundingClientRect();
+    svg.classList.add('ringing');
+    swing.classList.remove('swing');void swing.getBoundingClientRect();
+    swing.classList.add('swing');
+    sBellRing(148+Math.random()*26);
+    setTimeout(function(){svg.classList.remove('ringing');},2600);
+  });
+};
+
+/* Cat.07 油灯 */
+SETUP.lamp=function(sec){
+  var range=sec.querySelector('.lampRange'),halo=sec.querySelector('#lampHalo'),fl=sec.querySelector('#lampFlame');
+  if(!range)return;
+  function upd(){
+    var v=+range.value;
+    if(halo)halo.setAttribute('r',(34+v*.95).toFixed(0));
+    if(fl)fl.setAttribute('transform','scale('+(0.5+v/110).toFixed(2)+')');
+    document.documentElement.style.setProperty('--spot',(120+v*3)+'px');
+  }
+  on(range,'input',upd);
+  upd();
+};
+
+/* Cat.08 纹章盾 */
+SETUP.shield=function(sec){
+  var wrap=sec.querySelector('.shWrap');
+  if(!wrap)return;
+  on(wrap,'click',function(){wrap.classList.toggle('open');sFlip();});
+};
+
+/* Cat.09 面具 */
+SETUP.mask=function(sec){
+  var wrap=sec.querySelector('.maskWrap');
+  if(!wrap)return;
+  on(wrap,'click',function(){wrap.classList.toggle('open');sFlip();});
+};
+
+/* Cat.10 印刷机 */
+SETUP.press=function(sec){
+  var wrap=sec.querySelector('.pressWrap'),btn=sec.querySelector('.pressBtn'),
+      screw=sec.querySelector('#pressScrew'),count=sec.querySelector('.pCount');
+  if(!wrap)return;
+  var busy=false,n=0;
+  on(btn,'click',function(){
+    if(busy)return;busy=true;
+    wrap.classList.add('pressing');
+    if(screw){screw.classList.remove('spin');void screw.getBoundingClientRect();screw.classList.add('spin');}
+    setTimeout(function(){
+      sThud();
+      n++;if(count)count.textContent=n;
+      wrap.classList.add('printed');
+    },340);
+    setTimeout(function(){wrap.classList.remove('pressing');},720);
+    setTimeout(function(){busy=false;},1150);
+  });
+};
+
+/* ================= 十站数据 ================= */
+var DATA=[
+{id:'rw',yr:'c. 1230–1235',zh:'沙特尔圣母主教座堂 · 北玫瑰窗',en:'Notre-Dame de Chartres · The North Rose Window',
+ mat:'直径约 12.9 m · 彩绘玻璃、铅条与石材',matEn:'Diameter c. 12.9 m · Stained glass, lead came and stone',
+ dz:'北玫瑰窗约建于1230至1235年间，由王室出资。窗心为圣母与圣婴，周围分列十二瓣花窗与十二圆窗，题材取自《旧约》列王与先知。该窗与南玫瑰窗相对，为法国哥特式盛期玻璃工艺的存世实例。',
+ de:'The north rose window was built c. 1230–1235 under royal patronage. The central oculus shows the Virgin and Child, encircled by twelve petal-lights and twelve roundels with kings and prophets of the Old Testament. It stands opposite the south rose as a symmetrical counterpart.',
+ src:'据沙特尔主教座堂官方导览资料；法国文化部历史建筑档案。',srcEn:'Sources: official visitor documentation of Notre-Dame de Chartres; French Ministry of Culture heritage archives.',
+ cap:'示意模型 SCALE MODEL · 窗径约 12.9 m',hint:'点击窗格拼合彩玻璃 · 完成后地面呈现透射光',
+ html:'<svg class="rwSvg" viewBox="0 0 320 320"><defs><radialGradient id="stoneO" cx="50%" cy="42%" r="65%"><stop offset="0%" stop-color="#9a9084"/><stop offset="70%" stop-color="#6e655a"/><stop offset="100%" stop-color="#4c443c"/></radialGradient><radialGradient id="gR" cx="38%" cy="32%" r="85%"><stop offset="0%" stop-color="#e06074"/><stop offset="45%" stop-color="#a12736"/><stop offset="100%" stop-color="#4e0d1a"/></radialGradient><radialGradient id="gB" cx="38%" cy="32%" r="85%"><stop offset="0%" stop-color="#6f9fe0"/><stop offset="45%" stop-color="#2f5da8"/><stop offset="100%" stop-color="#12294f"/></radialGradient><radialGradient id="gG" cx="38%" cy="32%" r="85%"><stop offset="0%" stop-color="#7fbf92"/><stop offset="45%" stop-color="#3e7a56"/><stop offset="100%" stop-color="#183425"/></radialGradient><radialGradient id="gA" cx="38%" cy="32%" r="85%"><stop offset="0%" stop-color="#f0d878"/><stop offset="45%" stop-color="#d4ad35"/><stop offset="100%" stop-color="#6e5410"/></radialGradient><radialGradient id="gV" cx="38%" cy="32%" r="85%"><stop offset="0%" stop-color="#a184cc"/><stop offset="45%" stop-color="#6a4a96"/><stop offset="100%" stop-color="#2a1a44"/></radialGradient><radialGradient id="gM" cx="38%" cy="32%" r="85%"><stop offset="0%" stop-color="#e0a055"/><stop offset="45%" stop-color="#c07a2e"/><stop offset="100%" stop-color="#5e3410"/></radialGradient></defs><circle cx="160" cy="160" r="158" fill="url(#stoneO)"/><circle cx="160" cy="160" r="146" fill="#191510"/><circle cx="160" cy="160" r="142" fill="none" stroke="#6e655a" stroke-width="4"/></svg><div class="rwPool"></div>'},
+
+{id:'arch',yr:'c. 1140s',zh:'尖拱与飞扶壁',en:'The Pointed Arch and the Flying Buttress',
+ mat:'结构构件 · 石构',matEn:'Structural elements · masonry',
+ dz:'尖拱较半圆拱产生较小的水平推力；飞扶壁将拱顶侧推力经墩柱传至地面。两者的系统运用早期见于圣但尼王家修道院教堂，约1140年代，由院长叙热主持重建。',
+ de:'A pointed arch exerts less horizontal thrust than a semicircular one; flying buttresses carry lateral thrust from the vault to outer piers. Their early systematic use is recorded at the Basilica of Saint-Denis, rebuilt under Abbot Suger, c. 1140s.',
+ src:'据 Suger《圣但尼王室事务记》；圣但尼圣殿官方资料。',srcEn:'Sources: Suger, Liber de rebus in administratione sua gestis; official records of the Basilica of Saint-Denis.',
+ cap:'结构示意 DIAGRAM · 拖动滑杆改变矢高',hint:'矢高越小，拱脚水平推力越大（红色箭头）',
+ html:'<svg class="archSvg" viewBox="0 0 300 250"><defs><linearGradient id="wallG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8d847a"/><stop offset="1" stop-color="#6b625a"/></linearGradient><linearGradient id="stoneB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9a9084"/><stop offset="1" stop-color="#6b625a"/></linearGradient><marker id="arrH" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#8E1F2F"/></marker></defs><rect x="0" y="228" width="300" height="6" fill="#4a4239"/><rect x="66" y="52" width="52" height="176" fill="url(#wallG)"/><path d="M66,84 L118,84 M66,116 L118,116 M66,148 L118,148 M66,180 L118,180 M66,212 L118,212 M84,52 L84,84 M104,84 L104,116 M76,116 L76,148 M98,148 L98,180 M86,180 L86,212 M108,212 L108,228" stroke="rgba(60,54,46,.4)" stroke-width="1" fill="none"/><path d="M76,228 L76,134 A16,21 0 0 1 108,134 L108,228 Z" fill="#221d15"/><line x1="92" y1="128" x2="92" y2="228" stroke="#4a4239" stroke-width="3"/><path d="M72,58 L82,72 M80,56 L90,70 M88,56 L98,70 M96,56 L106,70 M104,58 L114,72" stroke="rgba(50,44,38,.65)" stroke-width="1.6"/><path d="M116,66 C156,52 206,62 246,92" fill="none" stroke="url(#stoneB)" stroke-width="13" stroke-linecap="round"/><path d="M116,66 C156,52 206,62 246,92" fill="none" stroke="#9a9084" stroke-width="2.4" opacity=".5"/><path d="M116,82 C158,70 206,78 246,106" fill="none" stroke="url(#stoneB)" stroke-width="5.5" stroke-linecap="round" opacity=".92"/><rect x="110" y="60" width="9" height="26" fill="#7a7268"/><rect x="242" y="88" width="10" height="18" fill="#7a7268"/><rect x="103" y="120" width="18" height="10" rx="1" fill="#7a7268"/><rect x="244" y="86" width="34" height="142" fill="url(#wallG)"/><path d="M244,116 L278,116 M244,150 L278,150 M244,184 L278,184 M244,218 L278,218" stroke="rgba(60,54,46,.4)" stroke-width="1"/><path d="M240,86 L282,86 L276,64 L246,64 Z" fill="#7a7268"/><rect x="250" y="60" width="22" height="8" fill="#8d847a"/></svg><input type="range" class="archRange" min="0" max="100" value="60"><div class="archOut"></div><div class="archBarW"><div class="archBar"></div></div>'},
+
+{id:'garg',yr:'c. 1163–1345（现存多为 19 世纪重制）',zh:'滴水嘴兽',en:'Gargoyle · Waterspout',
+ mat:'石灰岩 · 排水构件',matEn:'Limestone · drainage element',
+ dz:'滴水嘴（法语 gargouille，意为“咽喉”）为排水构件，将屋顶雨水导离墙体。巴黎圣母院现存的石像兽多为十九世纪修复师维奥莱-勒-杜克时期重制，中世纪原物存世较少。',
+ de:'A gargoyle (French gargouille, “throat”) is a waterspout carrying rainwater away from the wall. Many figures now visible on Notre-Dame de Paris are nineteenth-century replacements by the restorer Viollet-le-Duc; few medieval originals survive.',
+ src:'据巴黎圣母院官方资料；十九世纪修复工程档案。',srcEn:'Sources: official documentation of Notre-Dame de Paris; records of the nineteenth-century restoration.',
+ cap:'排水演示 DRAINAGE',hint:'点击兽首排水 · Click the figure to drain',
+ html:'<svg class="gargSvg" viewBox="0 0 300 210"><defs><linearGradient id="gargG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a89e90"/><stop offset="55%" stop-color="#7d7468"/><stop offset="100%" stop-color="#544c43"/></linearGradient><linearGradient id="waterG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a8cfe0"/><stop offset="1" stop-color="#5e8fae"/></linearGradient></defs><rect x="16" y="150" width="268" height="3" fill="#9a9084"/><rect x="16" y="153" width="268" height="13" fill="#8d847a"/><rect x="16" y="166" width="268" height="10" fill="#6b625a"/><rect x="16" y="176" width="268" height="4" fill="#4c443c"/><path d="M100,148 C82,152 64,150 56,140 C50,132 50,122 56,118 C60,124 62,132 70,137 C80,142 92,142 100,138 Z" fill="url(#gargG)" stroke="#4a4239" stroke-width="1"/><path d="M102,150 C99,137 104,127 113,123 L119,150 Z" fill="url(#gargG)" stroke="#4a4239" stroke-width="1"/><path d="M100,150 C95,118 108,96 133,91 C154,87 170,97 174,113 L178,141 L169,152 Z" fill="url(#gargG)" stroke="#4a4239" stroke-width="1"/><path d="M130,96 C119,69 96,57 71,62 C89,68 99,80 106,97 C97,88 86,84 76,87 C92,93 103,104 109,118 Z" fill="url(#gargG)" stroke="#4a4239" stroke-width="1"/><path d="M130,96 C113,77 96,71 79,74" fill="none" stroke="#4a4239" stroke-width="1" opacity=".7"/><path d="M157,148 L151,123 L162,119 L170,148 Z" fill="url(#gargG)" stroke="#4a4239" stroke-width="1"/><path d="M158,148 l4,6 l3,-6 Z M165,148 l4,6 l3,-6 Z M172,147 l4,6 l3,-6 Z" fill="#8d847a" stroke="#4a4239" stroke-width=".8"/><path d="M168,108 C178,105 187,109 192,117 L186,130 L170,126 Z" fill="url(#gargG)" stroke="#4a4239" stroke-width="1"/><path d="M188,111 C203,106 217,110 226,118 L250,126 C255,128 255,133 250,135 L227,133 C217,140 202,141 193,134 Z" fill="url(#gargG)" stroke="#4a4239" stroke-width="1"/><path d="M196,111 L191,100 L202,109 Z" fill="#7d7468" stroke="#4a4239" stroke-width=".8"/><path d="M215,124 L249,130 L247,134 L217,131 Z" fill="#14100c"/><circle cx="205" cy="119" r="2.6" fill="#3a332b"/><path d="M196,115 Q208,110 219,117" fill="none" stroke="#4a4239" stroke-width="1"/><path d="M120,110 L128,118 L124,127 M141,99 L147,108 M112,132 L120,138" fill="none" stroke="#4a4239" stroke-width="1" opacity=".55"/><path class="gFlow" d="M250,133 C250,150 253,166 251,184" fill="none" stroke="url(#waterG)" stroke-width="5" stroke-linecap="round"/><ellipse class="gFlow gPoolE" cx="251" cy="190" rx="4" ry="2.5" fill="rgba(120,165,195,.6)"/><rect class="gargHit" x="176" y="96" width="82" height="46" fill="rgba(0,0,0,0)"/></svg>'},
+
+{id:'ms',yr:'c. 1410s',zh:'彩绘手抄本 · 贴金首字母',en:'Illuminated Manuscript · Gilded Initial',
+ mat:'犊皮纸 · 蛋彩 · 金箔',matEn:'Vellum · tempera · gold leaf',
+ dz:'彩绘手抄本以蛋彩设色，饰以金箔：先起稿贴金，后施彩色。金箔经抛光反射烛光，为成本最高的工序之一。《贝里公爵的豪华时祷书》约1410年代起由林堡兄弟绘制，为存世代表。',
+ de:'Illuminated manuscripts were painted in tempera and embellished with gold leaf, applied over a ground and burnished to reflect candlelight. The Très Riches Heures du Duc de Berry, begun by the Limbourg brothers c. 1410s, is a surviving example.',
+ src:'据孔代博物馆（尚蒂伊）藏品资料，Ms. 65。',srcEn:'Source: Musée Condé, Chantilly, MS 65.',
+ cap:'贴金演示 GILDING',hint:'按住拖动上金 · 擦净见下方按钮',
+ html:'<div class="msWrap"><canvas class="msBase" width="360" height="220"></canvas><canvas class="msTop" width="360" height="220"></canvas></div><div class="msBtns"><button class="abtn msReset">RESET 擦净</button></div>'},
+
+{id:'org',yr:'rec. 1361',zh:'管风琴',en:'The Organ',
+ mat:'木质与金属音管 · 文献见 Praetorius, 1619',matEn:'Wood and metal pipes · recorded by Praetorius, 1619',
+ dz:'管风琴于中世纪进入教堂。哈尔伯施塔特主教座堂管风琴见于1361年记录，设三排手键盘，经普里托里乌斯《音乐全书》（1619）转述，为当时文献所记的大型乐器之一。',
+ de:'Organs entered churches during the Middle Ages. The organ of Halberstadt Cathedral, recorded in 1361 with three manuals and known through Praetorius’s Syntagma musicum (1619), is among the larger instruments documented in that period.',
+ src:'据 Praetorius《音乐全书》（1619）转述之哈尔伯施塔特档案。',srcEn:'Source: Halberstadt records as reported in Praetorius, Syntagma musicum (1619).',
+ cap:'八度琴键 EIGHT DIATONIC KEYS',hint:'点击琴键，或使用键盘 A S D F G H J K',
+ html:'<svg class="orgSvg" viewBox="0 0 320 260"><defs><linearGradient id="pipeG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7a5c22"/><stop offset=".38" stop-color="#e8d28a"/><stop offset=".52" stop-color="#f7ecc0"/><stop offset=".68" stop-color="#c9a54a"/><stop offset="1" stop-color="#8a6a2a"/></linearGradient><linearGradient id="woodG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5f4a34"/><stop offset="1" stop-color="#382a1c"/></linearGradient></defs><rect x="28" y="150" width="264" height="110" rx="3" fill="url(#woodG)"/><g id="orgBand"></g><path d="M128,150 L160,116 L192,150 Z" fill="url(#woodG)" stroke="rgba(0,0,0,.35)"/><path d="M156,116 L160,92 L164,116 Z" fill="#4a3826"/><circle cx="160" cy="104" r="3" fill="#C9A227" opacity=".8"/><rect x="58" y="240" width="204" height="12" fill="#2a2018"/><path class="pipe" id="op0" d="M67,230 L67,104 Q76,97 85,104 L85,230 Z" fill="url(#pipeG)" stroke="#5a431a" stroke-width=".8"/><ellipse cx="76" cy="105" rx="8.4" ry="2.8" fill="#241a08"/><path class="pipe" id="op1" d="M91,230 L91,86 Q100,79 109,86 L109,230 Z" fill="url(#pipeG)" stroke="#5a431a" stroke-width=".8"/><ellipse cx="100" cy="87" rx="8.4" ry="2.8" fill="#241a08"/><path class="pipe" id="op2" d="M115,230 L115,95 Q124,88 133,95 L133,230 Z" fill="url(#pipeG)" stroke="#5a431a" stroke-width=".8"/><ellipse cx="124" cy="96" rx="8.4" ry="2.8" fill="#241a08"/><path class="pipe" id="op3" d="M139,230 L139,70 Q148,63 157,70 L157,230 Z" fill="url(#pipeG)" stroke="#5a431a" stroke-width=".8"/><ellipse cx="148" cy="71" rx="8.4" ry="2.8" fill="#241a08"/><path class="pipe" id="op4" d="M163,230 L163,53 Q172,46 181,53 L181,230 Z" fill="url(#pipeG)" stroke="#5a431a" stroke-width=".8"/><ellipse cx="172" cy="54" rx="8.4" ry="2.8" fill="#241a08"/><path class="pipe" id="op5" d="M187,230 L187,70 Q196,63 205,70 L205,230 Z" fill="url(#pipeG)" stroke="#5a431a" stroke-width=".8"/><ellipse cx="196" cy="71" rx="8.4" ry="2.8" fill="#241a08"/><path class="pipe" id="op6" d="M211,230 L211,95 Q220,88 229,95 L229,230 Z" fill="url(#pipeG)" stroke="#5a431a" stroke-width=".8"/><ellipse cx="220" cy="96" rx="8.4" ry="2.8" fill="#241a08"/><path class="pipe" id="op7" d="M235,230 L235,104 Q244,97 253,104 L253,230 Z" fill="url(#pipeG)" stroke="#5a431a" stroke-width=".8"/><ellipse cx="244" cy="105" rx="8.4" ry="2.8" fill="#241a08"/></svg><div class="orgKeys"></div>'},
+
+{id:'bell',yr:'trad. c. 1386',zh:'钟楼机械钟与大钟',en:'The Tower Clock and the Bell',
+ mat:'锻铁机构 · 青铜钟',matEn:'Wrought-iron works · bronze bell',
+ dz:'机械钟于十三至十四世纪出现于欧洲教堂钟楼。索尔兹伯里主教座堂时钟传为1386年前后所制，为现存仍在运行的早期机械钟之一。钟声报时，钟体青铜铸造。',
+ de:'Mechanical clocks appeared in European bell towers in the thirteenth and fourteenth centuries. The clock of Salisbury Cathedral, traditionally dated c. 1386, is among the earliest mechanisms still in working order.',
+ src:'据索尔兹伯里主教座堂官方资料；年代系传统说法。',srcEn:'Source: official documentation of Salisbury Cathedral; the date is traditional.',
+ cap:'青铜钟 BRONZE BELL',hint:'点击鸣钟 · Click to toll',
+ html:'<svg class="bellSvg" viewBox="0 0 240 290"><defs><radialGradient id="bellG" cx="38%" cy="28%" r="80%"><stop offset="0" stop-color="#dcb75e"/><stop offset=".4" stop-color="#a8842f"/><stop offset=".75" stop-color="#5a431a"/><stop offset="1" stop-color="#33270e"/></radialGradient><linearGradient id="woodG2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b5136"/><stop offset="1" stop-color="#40301f"/></linearGradient><path id="bellArc" d="M96,112 A28,28 0 0 1 144,112" fill="none"/></defs><rect x="24" y="16" width="192" height="16" rx="3" fill="url(#woodG2)"/><path d="M40,20 L200,20" stroke="rgba(255,255,255,.08)" stroke-width="2"/><path d="M70,32 L70,48 L96,48 M170,32 L170,48 L144,48" fill="none" stroke="#40301f" stroke-width="7"/><g id="bellSwing"><rect x="116" y="46" width="8" height="10" fill="#2a1e0a"/><circle cx="120" cy="44" r="5" fill="#4a3512"/><path d="M112,56 L128,56 L126,66 L114,66 Z" fill="#4a3512"/><path d="M100,68 C88,86 84,126 92,164 C94,174 96,181 98,187 L86,191 Q81,201 91,205 Q120,217 149,205 Q159,201 154,191 L142,187 C144,181 146,174 148,164 C156,126 152,86 140,68 Q120,58 100,68 Z" fill="url(#bellG)" stroke="#33270e" stroke-width="1.2"/><path d="M98,187 L86,191 Q81,201 91,205 Q120,217 149,205 Q159,201 154,191 L142,187 Q120,197 98,187 Z" fill="#3a2c10" opacity=".9"/><line x1="120" y1="70" x2="120" y2="140" stroke="#241a08" stroke-width="3"/><circle cx="120" cy="188" r="7.5" fill="#241a08"/><text font-size="8" fill="#2e2208" letter-spacing=".5" font-family="EB Garamond,serif"><textPath href="#bellArc" startOffset="50%" text-anchor="middle">AVE MARIA</textPath></text><path d="M101,80 C96,104 95,140 100,166 M139,80 C144,104 145,140 140,166" fill="none" stroke="rgba(255,240,200,.14)" stroke-width="2"/></g><path class="wv wv1" d="M178,118 A52,52 0 0 1 178,182" fill="none" stroke="#C9A227" stroke-width="2.5"/><path class="wv wv2" d="M192,104 A72,72 0 0 1 192,196" fill="none" stroke="#C9A227" stroke-width="2"/></svg>'},
+
+{id:'lamp',yr:'medieval',zh:'油灯',en:'The Oil Lamp',
+ mat:'陶或金属 · 动物油 / 植物油',matEn:'Ceramic or metal · animal or vegetable oil',
+ dz:'中世纪照明以油灯与蜡烛为主。油灯多用陶或金属制成，灯芯浸于动物油或植物油中。灯焰的大小决定照明范围。',
+ de:'Medieval lighting relied chiefly on oil lamps and candles. Lamps of ceramic or metal burned animal or vegetable oils on a wick; the flame’s size determined the radius of light.',
+ src:'据考古出土灯具型录；中世纪物质文化通论文献。',srcEn:'Sources: typological catalogues of excavated lamps; surveys of medieval material culture.',
+ cap:'照明范围随灯芯变化 LIGHT RADIUS FOLLOWS THE WICK',hint:'拖动滑杆调节灯芯 · 本页光圈随之变化',
+ html:'<svg class="lampSvg" viewBox="0 0 280 190"><defs><radialGradient id="haloG" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="rgba(255,208,112,.55)"/><stop offset=".6" stop-color="rgba(255,178,80,.18)"/><stop offset="1" stop-color="rgba(255,178,80,0)"/></radialGradient><linearGradient id="terraG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c07a3e"/><stop offset=".55" stop-color="#8a4a22"/><stop offset="1" stop-color="#4e2410"/></linearGradient><radialGradient id="flameO" cx="50%" cy="78%" r="75%"><stop offset="0" stop-color="#fff8e0"/><stop offset=".35" stop-color="#FFD27A"/><stop offset=".7" stop-color="#E8912A"/><stop offset="1" stop-color="rgba(232,145,42,0)"/></radialGradient></defs><ellipse cx="140" cy="158" rx="88" ry="7" fill="rgba(0,0,0,.16)"/><circle id="lampHalo" cx="254" cy="62" r="70" fill="url(#haloG)"/><path d="M58,122 C32,116 26,96 39,87 C48,81 57,87 55,96 C53,104 46,106 44,101" fill="none" stroke="url(#terraG)" stroke-width="7" stroke-linecap="round"/><ellipse cx="130" cy="124" rx="72" ry="25" fill="url(#terraG)" stroke="#4e2410" stroke-width="1.2"/><path d="M62,116 C90,106 170,106 198,116" fill="none" stroke="rgba(255,220,180,.25)" stroke-width="3"/><path d="M198,112 L246,102 Q254,100 254,106 L254,111 Q254,117 246,118 L200,126 Z" fill="url(#terraG)" stroke="#4e2410" stroke-width="1.2"/><rect x="251" y="101" width="7" height="13" rx="2" fill="#2a1608"/><ellipse cx="126" cy="100" rx="13" ry="6" fill="#4e2410"/><ellipse cx="126" cy="97" rx="10" ry="4.5" fill="#8a4a22"/><g id="lampFlame"><path d="M254,106 C246,90 248,70 254,54 C260,70 262,90 254,106 Z" fill="url(#flameO)"/><path d="M254,106 C250,94 251,80 254,70 C257,80 258,94 254,106 Z" fill="#FFD27A"/><path d="M254,106 C252,99 253,91 254,86 C255,91 256,99 254,106 Z" fill="#fff"/></g></svg><input type="range" class="lampRange" min="20" max="100" value="60">'},
+
+{id:'shield',yr:'12th c. —',zh:'纹章盾',en:'The Heraldic Shield',
+ mat:'彩绘木盾（复原示意）',matEn:'Painted wood (reconstruction)',
+ dz:'纹章制度形成于十二世纪，用于战场与比武中的身份识别。纹章以固定术语（blazon）描述：金属色二（金 or、银 argent），底色若干（红 gules、蓝 azure、黑 sable、绿 vert 等）。',
+ de:'Heraldry took shape in the twelfth century for identification in battle and tournament. Arms are described in a fixed vocabulary (blazon) comprising two metals (or, argent) and several tinctures (gules, azure, sable, vert).',
+ src:'据 A. C. Fox-Davies《Complete Guide to Heraldry》（1909）。',srcEn:'Source: A. C. Fox-Davies, Complete Guide to Heraldry (1909).',
+ cap:'纹章盾 SHIELD',hint:'点击翻面查看术语与释义 · Click to reverse',
+ html:'<div class="shWrap"><div class="shCard"><div class="shFace shFront"><svg class="shSvg" viewBox="0 0 120 146"><defs><clipPath id="shClip"><path d="M60,6 L112,16 L112,62 C112,104 98,124 60,140 C22,124 8,104 8,62 L8,16 Z"/></clipPath><linearGradient id="shHi" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><g clip-path="url(#shClip)"><rect x="0" y="0" width="60" height="146" fill="#8E1F2F"/><rect x="60" y="0" width="60" height="146" fill="#C9A227"/><rect x="52" y="20" width="16" height="126" fill="#241F1A"/><rect x="18" y="50" width="84" height="16" fill="#241F1A"/><rect x="0" y="0" width="120" height="146" fill="url(#shHi)"/><rect x="0" y="0" width="120" height="7" fill="rgba(0,0,0,.18)"/><rect x="0" y="130" width="120" height="16" fill="rgba(0,0,0,.16)"/></g><path d="M60,6 L112,16 L112,62 C112,104 98,124 60,140 C22,124 8,104 8,62 L8,16 Z" fill="none" stroke="#C9A227" stroke-width="2.5"/></svg></div><div class="shFace shBack"><b>BLAZON 纹章描述</b><br>Per pale gules and or,<br>a cross sable.<br>红与金竖分，黑十字。<br><br><b>TINCTURES 用色</b><br>or 金 · argent 银 · gules 红<br>azure 蓝 · sable 黑<div class="note">各色“寓意”系后世传统释义，非中世纪当代文献所载。Tincture “meanings” are a later tradition, not contemporary records.</div></div></div></div>'},
+
+{id:'mask',yr:'rec. 1619',zh:'疫病医生面具',en:'The Plague-Doctor Costume',
+ mat:'皮革 · 蜡布 · 香草填充',matEn:'Leather · waxed canvas · herb packing',
+ dz:'鸟嘴医生形象通行于十七世纪，晚于哥特时期约三百年。全套服饰的发明传统上归于查理·德·洛尔姆（1619年）。鸟嘴内填干花、香草与香料，时人以为可过滤“瘴气”。此件列于本编，仅因后世多将其与哥特意象并置。',
+ de:'The beaked plague-doctor costume came into use in the seventeenth century, some three hundred years after the Gothic period. Its invention is traditionally credited to Charles de Lorme (1619). The beak was packed with dried flowers, herbs and spices, believed at the time to filter “miasma”. It is included here only because later usage associated it with the Gothic image.',
+ src:'据医学史文献；罗马与马赛瘟疫期图像与实物记录。',srcEn:'Sources: literature of medical history; pictorial and material records from the Roman and Marseilles epidemics.',
+ cap:'此形象晚于哥特时期 POST-GOTHIC, 17TH C.',hint:'点击查看喙内充填 · Click for beak contents',
+ html:'<div class="maskWrap" style="position:relative"><svg class="maskSvg" viewBox="0 0 260 280"><defs><linearGradient id="leatherG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a6138"/><stop offset=".55" stop-color="#5a3d24"/><stop offset="1" stop-color="#33220f"/></linearGradient></defs><path d="M44,280 L52,198 C58,177 84,164 130,164 C176,164 202,177 208,198 L216,280 Z" fill="#17140f"/><path d="M72,184 Q100,170 130,170 Q160,170 188,184" fill="none" stroke="#2a251c" stroke-width="3"/><path d="M116,166 L130,202 L144,166 L138,164 L130,190 L122,164 Z" fill="#d8cdb4"/><ellipse cx="130" cy="78" rx="40" ry="8" fill="rgba(0,0,0,.4)"/><ellipse cx="130" cy="116" rx="36" ry="44" fill="url(#leatherG)" stroke="#2e1e12" stroke-width="1.2"/><ellipse cx="118" cy="103" rx="13" ry="17" fill="rgba(255,255,255,.07)"/><ellipse cx="130" cy="64" rx="96" ry="15" fill="#14110c" stroke="#000" stroke-width="1"/><path d="M84,62 C84,33 100,20 130,20 C160,20 176,33 176,62 Z" fill="#1d1913" stroke="#000" stroke-width="1"/><path d="M100,30 Q130,19 160,30" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="6"/><circle cx="114" cy="110" r="13" fill="none" stroke="#3a2818" stroke-width="3"/><circle cx="146" cy="110" r="13" fill="none" stroke="#3a2818" stroke-width="3"/><circle cx="114" cy="110" r="10.5" fill="#a8c4d4" opacity=".85" stroke="#b8b0a0" stroke-width="1.5"/><circle cx="146" cy="110" r="10.5" fill="#a8c4d4" opacity=".85" stroke="#b8b0a0" stroke-width="1.5"/><circle cx="110.5" cy="106" r="3" fill="rgba(255,255,255,.55)"/><circle cx="142.5" cy="106" r="3" fill="rgba(255,255,255,.55)"/><g class="mBeakG"><path d="M130,124 C152,130 166,150 171,176 C174,192 172,204 166,206 C160,208 156,200 154,190 C150,168 140,146 126,134 Z" fill="url(#leatherG)" stroke="#2e1e12" stroke-width="1.2"/><path d="M137,132 Q150,152 155,174 M133,128 Q147,144 160,184" fill="none" stroke="#2e1e12" stroke-width="1" opacity=".55"/></g></svg><div class="mSlip"><b>喙内充填 BEAK CONTENTS</b><br>干玫瑰 rose petals · 薄荷 mint<br>丁香 cloves · 龙脑 camphor<br>醋海绵 vinegar sponge</div></div>'},
+
+{id:'press',yr:'c. 1440s — c. 1455',zh:'活字印刷机',en:'The Movable-Type Press',
+ mat:'木质印刷机 · 铅锑锡活字',matEn:'Wooden press · lead-antimony-tin type',
+ dz:'约1440年代，古腾堡在美因茨制成活字印刷系统。四十二行圣经约1455年印成，用纸与犊皮纸印制约一百八十部，为西方现存最早的活字印本之一。手抄本的时代由此收束。',
+ de:'Around the 1440s Gutenberg developed movable-type printing at Mainz. The forty-two-line Bible, printed c. 1455 in about 180 copies on paper and vellum, is among the earliest extant Western printed books. The age of the manuscript closes here.',
+ src:'据古腾堡博物馆（美因茨）藏品资料。',srcEn:'Source: Gutenberg-Museum, Mainz, collection documentation.',
+ cap:'压印演示 PRINTING',hint:'点击压印 · Click to print',
+ html:'<div class="pressWrap"><svg class="pressSvg" viewBox="0 0 300 270"><defs><linearGradient id="woodP" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b5136"/><stop offset="1" stop-color="#3f2f1f"/></linearGradient></defs><ellipse cx="150" cy="264" rx="112" ry="6" fill="rgba(0,0,0,.2)"/><rect x="70" y="214" width="160" height="12" fill="url(#woodP)"/><rect x="78" y="48" width="16" height="180" fill="url(#woodP)"/><path d="M82,58 L82,222 M90,58 L90,222" stroke="rgba(0,0,0,.22)" stroke-width="1.5"/><rect x="206" y="48" width="16" height="180" fill="url(#woodP)"/><path d="M210,58 L210,222 M218,58 L218,222" stroke="rgba(0,0,0,.22)" stroke-width="1.5"/><rect x="70" y="44" width="160" height="14" rx="2" fill="url(#woodP)"/><g id="pressScrew"><rect x="144" y="30" width="12" height="96" fill="#5a646e" stroke="#2c343c" stroke-width="1"/><path d="M143,42 L157,48 M143,56 L157,62 M143,70 L157,76 M143,84 L157,90 M143,98 L157,104 M143,112 L157,118" stroke="#2c343c" stroke-width="2"/><rect x="104" y="24" width="92" height="7" rx="3" fill="#3f2f1f"/><circle cx="104" cy="27.5" r="5" fill="#2c2117"/><circle cx="196" cy="27.5" r="5" fill="#2c2117"/></g><g id="pressPlaten"><rect x="96" y="122" width="108" height="5" fill="#6b5136"/><rect x="96" y="127" width="108" height="12" rx="2" fill="#4a3a26" stroke="#241a10" stroke-width="1"/></g><rect x="52" y="226" width="196" height="16" rx="2" fill="url(#woodP)"/><rect x="52" y="226" width="196" height="3" fill="rgba(255,255,255,.08)"/><g id="pressPaper"><path d="M118,168 L188,166 L192,224 L114,226 Z" fill="rgba(0,0,0,.15)"/><path d="M116,166 L186,164 L190,222 L112,224 Z" fill="#FBF6EA" stroke="#d8ccb0" stroke-width="1"/><text x="150" y="184" text-anchor="middle" font-family="UnifrakturMaguntia,serif" font-size="14" fill="#241d13">GOTHA</text><line x1="128" y1="192" x2="172" y2="192" stroke="#8a6d1a" stroke-width="1"/><text x="150" y="203" text-anchor="middle" font-family="Manrope,sans-serif" font-size="6" letter-spacing="1" fill="rgba(34,29,21,.6)">GOTHIC CHRONICLE · VOL. V</text><text x="150" y="213" text-anchor="middle" font-family="Manrope,sans-serif" font-size="6" fill="rgba(34,29,21,.5)">Moguntiae · c. 1455</text></g></svg><div class="msBtns"><button class="abtn pressBtn">压印 PRINT</button></div><div class="copies">印数 copies <b class="pCount">—</b></div></div>'}
+];
+
+/* ================= 渲染展台 ================= */
+var list=$('list'),booths=[];
+DATA.forEach(function(d,i){
+  var sec=document.createElement('section');
+  sec.className='booth'+(i%2?' rev':'');
+  sec.id='b'+(i+1);
+  sec.setAttribute('data-cat','Cat. '+('0'+(i+1)).slice(-2));
+  sec.setAttribute('data-name',d.zh);
+  sec.setAttribute('data-right','No. '+('0'+(i+1)).slice(-2)+' / '+DATA.length);
+  sec.innerHTML=
+   '<div class="lbl">'+
+    '<div class="cat">Cat. '+('0'+(i+1)).slice(-2)+'</div>'+
+    '<h3 class="tzh">'+d.zh+'</h3>'+
+    '<div class="ten">'+d.en+'</div>'+
+    '<div class="mat">'+d.yr+'<br>'+d.mat+'<br><i>'+d.matEn+'</i></div>'+
+    '<hr class="rule">'+
+    '<p class="dz">'+d.dz+'</p>'+
+    '<p class="de">'+d.de+'</p>'+
+    '<p class="src">'+d.src+'<br><i>'+d.srcEn+'</i></p>'+
+   '</div>'+
+   '<div class="exh">'+d.html+'<p class="cap">'+d.cap+'</p><div class="hint">'+d.hint+'</div></div>';
+  list.appendChild(sec);
+  booths.push(sec);
+});
+
+/* 统一启动机关 */
+booths.forEach(function(sec,i){
+  try{SETUP[DATA[i].id](sec,DATA[i]);}catch(e){}
+});
+
+/* ================= 射灯 ================= */
+var spot=$('spot'),lb=$('lightBtn'),spotOn=true;
+var sx=innerWidth/2,sy=innerHeight*.35,tick=false;
+function updSpot(){
+  tick=false;
+  document.documentElement.style.setProperty('--mx',sx+'px');
+  document.documentElement.style.setProperty('--my',sy+'px');
+}
+window.addEventListener('pointermove',function(e){
+  sx=e.clientX;sy=e.clientY;
+  if(!tick){tick=true;requestAnimationFrame(updSpot);}
+},{passive:true});
+on(lb,'click',function(){
+  spotOn=!spotOn;
+  spot.classList.toggle('off',!spotOn);
+  lb.textContent='射灯 LIGHT · '+(spotOn?'ON':'OFF');
+});
+
+/* ================= 导航 ================= */
+var heroH=$('hero')?$('hero').offsetHeight:600;
+var glossary=$('b0');
+var allSecs=[glossary].concat(booths);
+var rib=$('ribbons');
+allSecs.forEach(function(s){
+  var a=document.createElement('a');
+  a.className='rb';a.title=s.getAttribute('data-cat')+' '+s.getAttribute('data-name');
+  on(a,'click',function(){s.scrollIntoView({behavior:'smooth',block:'start'});});
+  if(rib)rib.appendChild(a);
+});
+var rbs=rib?[].slice.call(rib.children):[];
+var chapter=$('chapter'),chL=$('chLeft'),chR=$('chRight');
+var io=new IntersectionObserver(function(es){
+  es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});
+},{threshold:.12});
+allSecs.forEach(function(s){io.observe(s);});
+var ticking=false;
+function onScroll(){
+  if(ticking)return;ticking=true;
+  requestAnimationFrame(function(){
+    ticking=false;
+    var y=window.scrollY,cur=-1;
+    allSecs.forEach(function(s,i){if(s.getBoundingClientRect().top<=130)cur=i;});
+    if(chapter)chapter.classList.toggle('on',y>heroH-70);
+    if(cur>=0){
+      var s=allSecs[cur];
+      if(chL)chL.innerHTML='<em>'+s.getAttribute('data-cat')+'</em>'+s.getAttribute('data-name');
+      if(chR)chR.textContent=s.getAttribute('data-right');
+      rbs.forEach(function(a,i){a.classList.toggle('act',i===cur);});
+    }
+  });
+}
+window.addEventListener('scroll',onScroll,{passive:true});
+onScroll();
+on($('topBtn'),'click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+})();
+</script>
+</body>
+</html>

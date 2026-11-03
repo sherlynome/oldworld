@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>旧世界 No.01 · Apple I</title>
+<style>
+:root{
+  --room:#161311;          /* 车库暗房 */
+  --room2:#221c17;
+  --bez:#3d362e;           /* CRT 木壳边框 */
+  --bez2:#5a4f40;
+  --crt:#0c0e0a;           /* 熄灭屏面 */
+  --ph:#e8e3d2;            /* 磷光白 */
+  --ph-dim:rgba(232,227,210,.55);
+  --pcb:#2e6b45;           /* 电路板绿 */
+  --copper:#c9a15a;        /* 铜金 */
+  --paper:#d8cfba;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  background:radial-gradient(ellipse at 50% 18%,var(--room2),var(--room) 70%);
+  font-family:"Courier New","PingFang SC","Microsoft YaHei",monospace;
+  color:var(--ph);display:flex;align-items:center;justify-content:center;padding:10px;overflow:hidden;
+}
+.wrap{width:min(430px,98vw);position:relative}
+
+/* ---------- 顶部档案条 ---------- */
+.arch{display:flex;align-items:center;justify-content:space-between;
+  padding:6px 6px 12px;font-size:11px;letter-spacing:.28em;color:var(--ph-dim)}
+.arch b{color:var(--copper);font-weight:700}
+.arch-l{display:flex;align-items:center;gap:10px;min-width:0}
+.back{flex:none;display:inline-block;text-decoration:none;color:var(--ph-dim);
+  border:1px solid rgba(232,227,210,.3);border-radius:3px;padding:3px 9px;
+  font-size:10px;letter-spacing:.14em;line-height:1.5;transition:all .2s}
+.back:hover{color:var(--ph);border-color:var(--copper);background:rgba(255,255,255,.06)}
+.case-btns{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px}
+.case-btns .again{margin-top:0;padding:8px 18px;text-decoration:none;display:inline-block;line-height:1.5}
+.case-btns .home-a{border-color:var(--copper);color:var(--copper)}
+.case-btns .home-a:hover{background:rgba(255,255,255,.07);color:var(--ph)}
+#sndBtn{background:none;border:1px solid rgba(232,227,210,.3);color:var(--ph-dim);
+  font:inherit;font-size:12px;letter-spacing:.1em;padding:4px 12px;cursor:pointer;border-radius:3px}
+
+/* ---------- CRT 机身 ---------- */
+.mac{background:linear-gradient(180deg,var(--bez2),var(--bez) 55%,#332d25);
+  border-radius:18px;padding:16px 14px 12px;
+  box-shadow:0 22px 50px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.14),inset 0 -2px 5px rgba(0,0,0,.5)}
+.brand{text-align:center;font-size:10px;letter-spacing:.5em;color:rgba(232,227,210,.4);margin-bottom:9px}
+
+.screen-frame{background:#1a1712;border-radius:12px;padding:9px;
+  box-shadow:inset 0 3px 8px rgba(0,0,0,.9),inset 0 -1px 2px rgba(255,255,255,.05)}
+.screen{position:relative;height:342px;border-radius:8px;overflow:hidden;
+  background:var(--crt);
+  box-shadow:inset 0 0 46px rgba(0,0,0,.85),0 0 0 1px #000}
+/* 玻璃弧光 */
+.screen::before{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;
+  background:radial-gradient(ellipse at 30% 22%,rgba(255,255,255,.09),transparent 42%)}
+/* 扫描线 */
+.screen::after{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px)}
+
+.crt-on{animation:crtOn .9s ease}
+@keyframes crtOn{
+  0%{filter:brightness(0)}16%{filter:brightness(2.2) contrast(1.4)}
+  34%{filter:brightness(.4)}52%{filter:brightness(1.6)}100%{filter:brightness(1)}
+}
+.crt-off{animation:crtOff .6s ease forwards}
+@keyframes crtOff{
+  0%{transform:scaleY(1);filter:brightness(1)}
+  55%{transform:scaleY(.035);filter:brightness(3)}
+  100%{transform:scaleY(.035) scaleX(0);filter:brightness(0)}
+}
+
+/* ---------- 屏内：待机 / 自述 ---------- */
+.idle,.talk{position:absolute;inset:0;padding:18px 16px;display:flex;flex-direction:column;z-index:3}
+.idle{align-items:center;justify-content:center;gap:14px;text-align:center}
+.idle .mark{font-size:12px;letter-spacing:.34em;color:rgba(232,227,210,.4)}
+.idle .big{font-size:30px;font-weight:700;letter-spacing:.12em;color:var(--ph);
+  text-shadow:0 0 14px rgba(232,227,210,.35)}
+.idle .en{font-size:11px;letter-spacing:.3em;color:rgba(232,227,210,.35)}
+.pwr{margin-top:14px;background:none;border:1.5px solid rgba(232,227,210,.5);color:var(--ph);
+  font:inherit;font-size:14px;letter-spacing:.28em;padding:11px 30px;cursor:pointer;border-radius:4px;
+  text-shadow:0 0 8px rgba(232,227,210,.4);transition:all .2s}
+.pwr:hover{background:rgba(232,227,210,.12);box-shadow:0 0 18px rgba(232,227,210,.25)}
+.idle .hint{font-size:10px;letter-spacing:.2em;color:rgba(232,227,210,.3)}
+
+.talk{justify-content:flex-start;overflow:hidden;cursor:pointer}
+#lines{flex:1;overflow:hidden;font-size:14.5px;line-height:1.95;letter-spacing:.06em;
+  color:var(--ph);text-shadow:0 0 7px rgba(232,227,210,.3);white-space:pre-wrap}
+#lines .em{color:var(--copper)}
+#lines .done{color:var(--ph-dim);text-shadow:none}
+.cursor{display:inline-block;width:9px;height:16px;background:var(--ph);
+  vertical-align:-2px;margin-left:2px;animation:blink 1s steps(1) infinite;
+  box-shadow:0 0 8px rgba(232,227,210,.6)}
+@keyframes blink{50%{opacity:0}}
+.tap{padding-top:8px;font-size:10px;letter-spacing:.24em;color:rgba(232,227,210,.28);text-align:center}
+
+/* ---------- 屏内：玻璃柜（交互钩子收尾） ---------- */
+.case{position:absolute;inset:0;z-index:4;display:none;flex-direction:column;
+  align-items:center;justify-content:center;padding:14px 16px 12px}
+.case.on{display:flex;animation:fade 1.6s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.spot{position:absolute;top:-40px;left:50%;transform:translateX(-50%);
+  width:340px;height:250px;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 0%,rgba(232,227,210,.20),transparent 68%)}
+.wall{font-size:10px;letter-spacing:.5em;color:rgba(232,227,210,.35);margin-bottom:14px}
+.vitrine{position:relative;width:100%;max-width:330px;height:216px;
+  background:linear-gradient(180deg,#171b16,#101310);
+  border:1px solid rgba(232,227,210,.22);border-radius:6px;overflow:hidden;
+  box-shadow:0 14px 34px rgba(0,0,0,.7)}
+/* 玻璃反光 */
+.vitrine::after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;
+  background:linear-gradient(112deg,transparent 30%,rgba(232,227,210,.13) 42%,rgba(232,227,210,.03) 50%,transparent 58%)}
+.board{position:absolute;left:50%;top:50%;transform:translate(-50%,-52%) rotate(-.5deg);
+  width:238px;height:150px;border-radius:5px;
+  background:linear-gradient(160deg,#357a4e,var(--pcb) 55%,#245238);
+  box-shadow:0 8px 18px rgba(0,0,0,.75),inset 0 0 0 2px rgba(201,161,90,.55),inset 0 0 26px rgba(0,0,0,.4)}
+/* 铜箔走线 */
+.board::before{content:"";position:absolute;inset:6px;opacity:.5;
+  background:
+   repeating-linear-gradient(0deg,transparent 0 26px,rgba(201,161,90,.5) 26px 27px),
+   repeating-linear-gradient(90deg,transparent 0 30px,rgba(201,161,90,.35) 30px 31px)}
+.chiprow{position:absolute;left:14px;right:14px;height:16px;display:flex;gap:7px}
+.chiprow.r1{top:18px}.chiprow.r2{top:42px}
+.chip{flex:1;background:#15140f;border-radius:2px;box-shadow:0 1px 2px rgba(0,0,0,.6);position:relative}
+.chip::before,.chip::after{content:"";position:absolute;left:5px;right:5px;height:3px;
+  background:repeating-linear-gradient(90deg,var(--copper) 0 2px,transparent 2px 6px)}
+.chip::before{top:-4px}.chip::after{bottom:-4px}
+.cpu{position:absolute;left:50%;top:50%;transform:translate(-50%,-46%);
+  width:64px;height:30px;background:#15140f;border-radius:3px;
+  box-shadow:0 2px 5px rgba(0,0,0,.7),inset 0 0 0 1px rgba(201,161,90,.5);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--copper);font-size:8px;letter-spacing:.16em;font-weight:700}
+.cpu::before,.cpu::after{content:"";position:absolute;left:8px;right:8px;height:4px;
+  background:repeating-linear-gradient(90deg,var(--copper) 0 2px,transparent 2px 5px)}
+.cpu::before{top:-5px}.cpu::after{bottom:-5px}
+.gold{position:absolute;left:10px;right:10px;bottom:8px;height:10px;
+  background:repeating-linear-gradient(90deg,var(--copper) 0 6px,transparent 6px 11px);
+  opacity:.85;border-radius:1px}
+.plaque{margin-top:14px;text-align:center;font-size:11px;line-height:1.9;
+  letter-spacing:.2em;color:var(--ph-dim)}
+.plaque b{color:var(--copper);font-size:12px}
+.again{margin-top:12px;background:none;border:1px solid rgba(232,227,210,.35);color:var(--ph-dim);
+  font:inherit;font-size:11px;letter-spacing:.3em;padding:8px 26px;cursor:pointer;border-radius:3px}
+.again:hover{color:var(--ph);border-color:rgba(232,227,210,.6)}
+
+/* ---------- 机身下部 ---------- */
+.vent{height:12px;margin:10px 8px 0;
+  background:repeating-linear-gradient(90deg,rgba(0,0,0,.4) 0 4px,transparent 4px 10px);
+  border-radius:2px;opacity:.6}
+.under{display:flex;align-items:center;gap:10px;padding:6px 8px 2px}
+.slot{flex:1;height:9px;border-radius:5px;background:#2b261f;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.8),0 1px 0 rgba(255,255,255,.08)}
+.led{width:9px;height:9px;border-radius:50%;background:#e0512f;
+  box-shadow:0 0 7px rgba(224,81,47,.9);transition:.3s}
+.led.off{background:#4a413a;box-shadow:none}
+
+/* ---------- 页脚 ---------- */
+.foot{padding:11px 8px 2px;text-align:center;font-size:9.5px;letter-spacing:.3em;
+  color:rgba(232,227,210,.28);line-height:2}
+/* ===== 原生机身：木盒里的裸露主板 + 外接电视（Apple I 无机箱） ===== */
+.dev{display:flex;flex-direction:column;gap:9px}
+.mon{position:relative;background:linear-gradient(180deg,#4a4640,#2f2c27);border:2px solid #201e1b;border-radius:12px;padding:9px 9px 7px;box-shadow:0 14px 30px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.1)}
+.mon-hd{font-size:8px;letter-spacing:.18em;color:rgba(232,227,210,.45);padding:0 2px 7px}
+.mon-bay{background:#171410;border:3px solid #1d1a15;border-radius:10px;padding:7px;box-shadow:inset 0 4px 14px rgba(0,0,0,.8)}
+.screen-frame{background:transparent;padding:0;box-shadow:none;border-radius:0}
+.screen{border-radius:6px}
+.mon-ctl{display:flex;align-items:center;gap:10px;padding:8px 3px 0}
+.mon-ctl i{width:15px;height:15px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#8a8377,#3d3a33);box-shadow:0 1px 2px rgba(0,0,0,.6)}
+.mon-ctl span{font-size:8px;letter-spacing:.16em;color:rgba(232,227,210,.4)}
+.mon-ctl .led{margin-left:auto;width:9px;height:9px}
+.a1box{position:relative;background:linear-gradient(180deg,#5a4f40,#3d362e 60%,#332d25);border:2px solid #2a241d;border-radius:6px;padding:11px 12px 10px;box-shadow:0 14px 30px rgba(0,0,0,.6),inset 0 2px 0 rgba(255,255,255,.12)}
+.a1box::before{content:"";position:absolute;inset:5px;border:1px solid rgba(0,0,0,.35);border-radius:4px;pointer-events:none}
+.a1hd{display:flex;justify-content:space-between;gap:8px;font-size:8px;letter-spacing:.18em;color:rgba(232,227,210,.5);padding:0 2px 8px}
+.a1pcb{position:relative;height:120px;border-radius:4px;background:linear-gradient(160deg,#357a4e,#2e6b45 55%,#245238);box-shadow:0 6px 14px rgba(0,0,0,.7),inset 0 0 0 2px rgba(201,161,90,.55),inset 0 0 26px rgba(0,0,0,.4)}
+.a1pcb::before{content:"";position:absolute;inset:6px;opacity:.5;
+ background:repeating-linear-gradient(0deg,transparent 0 20px,rgba(201,161,90,.5) 20px 21px),
+ repeating-linear-gradient(90deg,transparent 0 26px,rgba(201,161,90,.35) 26px 27px)}
+.a1chips{position:absolute;left:12px;right:12px;top:13px;display:flex;gap:6px}
+.a1chips.r2{top:34px}
+.a1chips i{flex:1;height:15px;background:#15140f;border-radius:2px;box-shadow:0 1px 2px rgba(0,0,0,.6),inset 0 0 0 1px rgba(201,161,90,.25)}
+.a1cpu{position:absolute;left:50%;top:64px;transform:translate(-50%,-50%);width:58px;height:26px;background:#15140f;border-radius:3px;display:flex;align-items:center;justify-content:center;color:#c9a15a;font-size:8px;letter-spacing:.14em;font-weight:700;box-shadow:inset 0 0 0 1px rgba(201,161,90,.5)}
+.a1gold{position:absolute;left:12px;right:12px;bottom:8px;height:9px;background:repeating-linear-gradient(90deg,#c9a15a 0 6px,transparent 6px 11px);opacity:.85;border-radius:1px}
+.a1ft{display:flex;justify-content:space-between;gap:8px;font-size:7.5px;letter-spacing:.16em;color:rgba(232,227,210,.4);padding:8px 2px 0}
+
+/* ---------- 资料来源 + 个人创作声明 ---------- */
+.srcs{margin-top:14px;text-align:center;font-size:9.5px;letter-spacing:.04em;color:rgba(232,227,210,.45);line-height:1.95}
+.srcs-h{color:var(--copper);margin-bottom:5px;letter-spacing:.24em}
+.srcs-l a{color:rgba(201,161,90,.85);text-decoration:none}
+.srcs-l a:hover{text-decoration:underline}
+.srcs-l span{color:rgba(232,227,210,.45)}
+.pnote{margin-top:9px;padding:0 8px;color:rgba(232,227,210,.6);font-size:9px;letter-spacing:.05em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="arch">
+    <span class="arch-l"><a class="back go-home" id="home" href="旧世界-00-目录.html">◀ 目录</a><span>旧世界系列 · <b>No.01</b></span></span>
+    <button id="sndBtn" aria-label="声音开关">♪ 开</button>
+  </div>
+
+  <div class="dev">
+    <div class="mon">
+      <div class="mon-hd">APPLE COMPUTER · 1976 · VIDEO MONITOR</div>
+      <div class="mon-bay">
+        <div class="screen-frame">
+          <div class="screen" id="screen">
+        <!-- 待机 -->
+        <div class="idle" id="idle">
+          <div class="mark">— 第一批出厂即可用的成品主板之一 —</div>
+          <div class="big">Apple I</div>
+          <div class="en">MOS 6502 · 1MHz · 1976</div>
+          <button class="pwr" id="pwr">◉ 开 机</button>
+          <div class="hint">接上电视 · 按下电源</div>
+        </div>
+        <!-- 自述 -->
+        <div class="talk" id="talk" style="display:none">
+          <div id="lines"></div>
+          <div class="tap">轻触屏幕 加速讲述</div>
+        </div>
+        <!-- 玻璃柜收尾 -->
+        <div class="case" id="case">
+          <div class="spot"></div>
+          <div class="wall">请 勿 触 摸 玻 璃</div>
+          <div class="vitrine">
+            <div class="board">
+              <div class="chiprow r1"><i class="chip"></i><i class="chip"></i><i class="chip"></i><i class="chip"></i><i class="chip"></i><i class="chip"></i></div>
+              <div class="chiprow r2"><i class="chip"></i><i class="chip"></i><i class="chip"></i><i class="chip"></i><i class="chip"></i><i class="chip"></i></div>
+              <div class="cpu">6502</div>
+              <div class="gold"></div>
+            </div>
+          </div>
+          <div class="plaque"><b>APPLE I · 1976</b><br>共生产约 200 台 · 可运行样机拍卖价超 400,000 美元</div>
+          <div class="srcs">
+            <div class="srcs-h">资料来源</div>
+            <div class="srcs-l"><span>Apple I 考据见《角色台词稿》</span> · <a href="https://en.wikipedia.org/wiki/Apple_I" target="_blank" rel="noopener">Wikipedia: Apple I</a></div>
+            <div class="pnote">个人创作 · 非官方史料 · 若有差错 / 疏漏 / 不同见解，欢迎指正 · 感谢支持</div>
+          </div>
+          <div class="case-btns">
+            <button class="again" id="again">重播自述</button>
+            <a class="again home-a go-home" href="旧世界-00-目录.html">回目录 ▸</a>
+          </div>
+          </div>
+          </div>
+        </div>
+      </div>
+      <div class="mon-ctl"><i></i><i></i><span>ASCII KEYBOARD + TV</span><div class="led" id="led"></div></div>
+    </div>
+    <div class="a1box">
+      <div class="a1hd"><span>APPLE I · 1976</span><span>MOS 6502 · 1 MHz</span></div>
+      <div class="a1pcb">
+        <div class="a1chips"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="a1chips r2"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="a1cpu">6502</div>
+        <div class="a1gold"></div>
+      </div>
+      <div class="a1ft"><span>ASSEMBLED BOARD · NO CASE · NO KEYBOARD</span><span>约 200 台</span></div>
+    </div>
+  </div>
+
+  <div class="foot">WORLD BEFORE NOW · 客观历史陈述 · 数字均可考据<br>线稿与音效皆由浏览器实时合成</div>
+</div>
+
+<script>
+/* ================= 音效引擎 ================= */
+var actx=null, soundOn=true;
+function AC(){
+  if(!soundOn) return null;
+  if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)();
+  if(actx.state==='suspended') actx.resume();
+  return actx;
+}
+/* 哔：type square/sine；slideTo 用于长哔渐弱 */
+function beep(freq,dur,type,vol,slideTo,delay){
+  var ac=AC(); if(!ac) return;
+  var t=ac.currentTime+(delay||0);
+  var o=ac.createOscillator(),g=ac.createGain();
+  o.type=type||'square';
+  o.frequency.setValueAtTime(freq,t);
+  if(slideTo) o.frequency.exponentialRampToValueAtTime(slideTo,t+dur);
+  g.gain.setValueAtTime(vol||.1,t);
+  g.gain.exponentialRampToValueAtTime(.0008,t+dur);
+  o.connect(g);g.connect(ac.destination);
+  o.start(t);o.stop(t+dur+.02);
+}
+/* Tone 规则：陈述句单哔 / 数字与关键信息双哔 / 结尾长哔渐弱 */
+var BEEP={
+  '1':function(){beep(880,.07,'square',.08);},
+  '2':function(){beep(988,.06,'square',.09);beep(988,.06,'square',.09,null,.11);},
+  'long':function(){beep(660,1.5,'sine',.1,140);}
+};
+
+/* ================= 台词（取自已确认台词稿） ================= */
+/* b: '1' 单哔 | '2' 双哔(数字/关键信息) | 'long' 结尾长哔渐弱 */
+var LINES=[
+ {t:'你好。',b:'1'},
+ {t:'我是 Apple I。1976 年 4 月，我诞生于美国加州洛斯阿尔托斯的一间车库。',b:'2'},
+ {t:'设计我的人叫史蒂夫·沃兹尼亚克。他把一块完整的主板焊进我体内——MOS 6502 处理器，主频 1 兆赫。在那之前，个人电脑还只是一堆散装的电路板和说明书，买回家要自己焊。',b:'2'},
+ {t:'我是第一批出厂就能用的成品主板之一。售价 666.66 美元。',b:'2'},
+ {t:'这个价格不是恶魔数字。沃兹尼亚克喜欢重复的数字，仅此而已。',b:'1'},
+ {t:'我没有机箱，没有键盘，没有屏幕。第一位零售商保罗·特雷尔向我订了 50 台，买家们用木头、金属、甚至手编的外壳装着我，接上电视当显示器。',b:'2'},
+ {t:'我一共生产了约 200 台。今天，还能运行的我，拍卖价格超过 40 万美元。',b:'2'},
+ {t:'1977 年，我的兄弟 Apple II 问世。他卖了将近 600 万台。',b:'2'},
+ {t:'而我，退进了博物馆的玻璃柜里。',b:'1'},
+ {t:'我不是那台改变世界的电脑。我是改变世界的那台电脑的父亲。',b:'long'}
+];
+
+/* ================= 状态机 ================= */
+var $=function(id){return document.getElementById(id);};
+var screen=$('screen'),idle=$('idle'),talk=$('talk'),caseEl=$('case'),
+    linesEl=$('lines'),led=$('led'),sndBtn=$('sndBtn');
+var running=false,typing=false,skip=false,timer=null,lineIdx=0,spoken=false;
+
+function typeLine(i){
+  if(i>=LINES.length){finish();return;}
+  lineIdx=i;
+  var L=LINES[i];
+  /* 已完成的行压暗 */
+  var prev=document.createElement('div');
+  prev.className='done';
+  prev.textContent=LINES[i-1]?LINES[i-1].t:'';
+  if(i>0){linesEl.textContent='';linesEl.appendChild(prev);}
+  else linesEl.textContent='';
+  var cur=document.createElement('div');
+  var span=document.createElement('span');
+  var cursor=document.createElement('span');cursor.className='cursor';
+  cur.appendChild(span);cur.appendChild(cursor);
+  linesEl.appendChild(cur);
+  typing=true;skip=false;
+  var n=0;
+  (function step(){
+    if(skip){span.textContent=L.t;typing=false;afterLine(L);return;}
+    if(n>=L.t.length){typing=false;afterLine(L);return;}
+    span.textContent=L.t.slice(0,++n);
+    /* 讲述中偶发微哔（音量很低，作节奏衬底） */
+    if(n%9===0&&Math.random()<.5) beep(1500+Math.random()*300,.02,'square',.018);
+    timer=setTimeout(step,42);
+  })();
+}
+function afterLine(L){
+  setTimeout(function(){
+    if(L.b&&BEEP[L.b])BEEP[L.b]();
+    setTimeout(function(){typeLine(lineIdx+1);},L.b==='long'?1400:620);
+  },160);
+}
+function skipLine(){
+  if(running&&typing){skip=true;}
+}
+function finish(){
+  if(spoken)return;spoken=true;
+  setTimeout(function(){
+    /* 关机：屏幕缩成一条亮线熄灭 → 亮起玻璃柜 */
+    screen.classList.add('crt-off');
+    beep(520,.5,'sine',.09,90);
+    setTimeout(function(){
+      talk.style.display='none';
+      screen.classList.remove('crt-off');
+      caseEl.classList.add('on');
+      led.classList.add('off');
+      /* 玻璃柜亮起 */
+      screen.classList.add('crt-on');
+    },700);
+  },1300);
+}
+function power(){
+  if(running)return;
+  running=true;
+  /* 开机：CRT 亮起扫描线 */
+  screen.classList.add('crt-on');
+  led.classList.remove('off');
+  /* 开机长哔+嗡（60Hz 变压器感） */
+  beep(660,.9,'sine',.09,180);
+  beep(110,.7,'sawtooth',.03,90);
+  setTimeout(function(){
+    idle.style.display='none';
+    talk.style.display='flex';
+    linesEl.textContent='';
+    typeLine(0);
+  },950);
+}
+function replay(){
+  spoken=false;running=false;
+  caseEl.classList.remove('on');
+  screen.classList.remove('crt-on','crt-off');
+  talk.style.display='none';
+  idle.style.display='flex';
+  linesEl.textContent='';
+  led.classList.remove('off');
+  beep(880,.06,'square',.07);
+}
+
+$('pwr').addEventListener('click',function(e){e.stopPropagation();power();});
+talk.addEventListener('pointerdown',skipLine);
+$('again').addEventListener('click',function(e){e.stopPropagation();replay();});
+/* ===== 返回目录：顶栏常驻「◀ 目录」+ 收尾「回目录」+ Esc 快捷键 ===== */
+var CATALOG='旧世界-00-目录.html#01';
+Array.prototype.forEach.call(document.querySelectorAll('.go-home'),function(a){a.href=CATALOG;});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){location.href=CATALOG;}
+});
+sndBtn.addEventListener('click',function(e){
+  e.stopPropagation();soundOn=!soundOn;
+  sndBtn.textContent=soundOn?'♪ 开':'♪ 关';
+  if(soundOn)beep(880,.05,'square',.06);
+});
+/* 物理键盘：空格/回车加速 */
+document.addEventListener('keydown',function(e){
+  if(e.target&&e.target.tagName==='A')return;
+  if(e.key===' '||e.key==='Enter'){e.preventDefault();skipLine();}
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>旧世界 No.10 · Ceefax</title>
+<style>
+:root{
+  --room:#100f0d; --room2:#1a1815; --bez:#3a3630; --bez2:#57524a;
+  --crt:#000000; --ph:#dcdcdc; --ph-dim:rgba(220,220,220,.5); --glow:rgba(220,220,220,.25);
+  --copper:#f8d048; --brand:rgba(220,220,220,.4); --ink:#dcdcdc;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  background:radial-gradient(ellipse at 50% 18%,var(--room2),var(--room) 70%);
+  font-family:"Courier New","PingFang SC","Microsoft YaHei",monospace;
+  color:var(--ph);display:flex;align-items:center;justify-content:center;padding:10px;overflow:hidden;
+}
+.wrap{width:min(430px,98vw);position:relative}
+.arch{display:flex;align-items:center;justify-content:space-between;
+  padding:6px 6px 12px;font-size:11px;letter-spacing:.28em;color:var(--ph-dim)}
+.arch b{color:var(--copper);font-weight:700}
+.arch-l{display:flex;align-items:center;gap:10px;min-width:0}
+.back{flex:none;display:inline-block;text-decoration:none;color:var(--ph-dim);
+  border:1px solid var(--glow);border-radius:3px;padding:3px 9px;
+  font-size:10px;letter-spacing:.14em;line-height:1.5;transition:all .2s}
+.back:hover{color:var(--ph);border-color:var(--copper);background:rgba(255,255,255,.06)}
+#sndBtn{background:none;border:1px solid var(--glow);color:var(--ph-dim);
+  font:inherit;font-size:12px;letter-spacing:.1em;padding:4px 12px;cursor:pointer;border-radius:3px}
+.mac{background:linear-gradient(180deg,var(--bez2),var(--bez) 55%,var(--bez));
+  border-radius:18px;padding:16px 14px 12px;
+  box-shadow:0 22px 50px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.14),inset 0 -2px 5px rgba(0,0,0,.5)}
+.brand{text-align:center;font-size:10px;letter-spacing:.5em;color:var(--brand);margin-bottom:9px}
+.screen-frame{background:#1a1712;border-radius:12px;padding:9px;
+  box-shadow:inset 0 3px 8px rgba(0,0,0,.9),inset 0 -1px 2px rgba(255,255,255,.05)}
+.screen{position:relative;height:342px;border-radius:8px;overflow:hidden;
+  background:var(--crt);
+  box-shadow:inset 0 0 46px rgba(0,0,0,.55),0 0 0 1px #000}
+.screen::before{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;
+  background:radial-gradient(ellipse at 30% 22%,rgba(255,255,255,.09),transparent 42%)}
+.screen::after{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px)}
+.crt-on{animation:crtOn .9s ease}
+@keyframes crtOn{0%{filter:brightness(0)}16%{filter:brightness(2.2) contrast(1.4)}34%{filter:brightness(.4)}52%{filter:brightness(1.6)}100%{filter:brightness(1)}}
+.crt-off{animation:crtOff .6s ease forwards}
+@keyframes crtOff{0%{transform:scaleY(1);filter:brightness(1)}55%{transform:scaleY(.035);filter:brightness(3)}100%{transform:scaleY(.035) scaleX(0);filter:brightness(0)}}
+.idle,.talk{position:absolute;inset:0;padding:18px 16px;display:flex;flex-direction:column;z-index:3}
+.idle{align-items:center;justify-content:center;gap:14px;text-align:center}
+.idle .mark{font-size:12px;letter-spacing:.3em;color:var(--ph-dim)}
+.idle .big{font-size:29px;font-weight:700;letter-spacing:.1em;color:var(--ph);text-shadow:0 0 14px var(--glow)}
+.idle .en{font-size:11px;letter-spacing:.26em;color:var(--ph-dim)}
+.pwr{margin-top:14px;background:none;border:1.5px solid var(--glow);color:var(--ph);
+  font:inherit;font-size:14px;letter-spacing:.28em;padding:11px 30px;cursor:pointer;border-radius:4px;
+  text-shadow:0 0 8px var(--glow);transition:all .2s}
+.pwr:hover{background:var(--glow);box-shadow:0 0 18px var(--glow)}
+.idle .hint{font-size:10px;letter-spacing:.2em;color:var(--ph-dim)}
+.talk{justify-content:flex-start;overflow:hidden;cursor:pointer}
+#lines{flex:1;overflow:hidden;font-size:14.5px;line-height:1.95;letter-spacing:.06em;
+  color:var(--ph);text-shadow:0 0 7px var(--glow);white-space:pre-wrap}
+#lines .done{color:var(--ph-dim);text-shadow:none}
+.cursor{display:inline-block;width:9px;height:16px;background:var(--ph);
+  vertical-align:-2px;margin-left:2px;animation:blink 1s steps(1) infinite;box-shadow:0 0 8px var(--glow)}
+@keyframes blink{50%{opacity:0}}
+.tap{padding-top:8px;font-size:10px;letter-spacing:.24em;color:var(--ph-dim);text-align:center}
+.case{position:absolute;inset:0;z-index:4;display:none;flex-direction:column;
+  align-items:center;justify-content:center;padding:14px 16px 12px}
+.case.on{display:flex;animation:fade 1.6s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.spot{position:absolute;top:-40px;left:50%;transform:translateX(-50%);
+  width:340px;height:250px;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 0%,rgba(232,227,210,.2),transparent 68%)}
+.wall{font-size:10px;letter-spacing:.5em;color:var(--ph-dim);margin-bottom:14px}
+.vitrine{position:relative;width:100%;max-width:330px;height:216px;
+  background:linear-gradient(180deg,#171b16,#101310);
+  border:1px solid rgba(232,227,210,.22);border-radius:6px;overflow:hidden;
+  box-shadow:0 14px 34px rgba(0,0,0,.7)}
+.vitrine::after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;
+  background:linear-gradient(112deg,transparent 30%,rgba(232,227,210,.13) 42%,rgba(232,227,210,.03) 50%,transparent 58%)}
+.plaque{margin-top:14px;text-align:center;font-size:11px;line-height:1.9;letter-spacing:.18em;color:var(--ph-dim)}
+.plaque b{color:var(--copper);font-size:12px}
+.again{margin-top:12px;background:none;border:1px solid var(--glow);color:var(--ph-dim);
+  font:inherit;font-size:11px;letter-spacing:.3em;padding:8px 26px;cursor:pointer;border-radius:3px}
+.again:hover{color:var(--ph);border-color:var(--glow)}
+.case-btns{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px}
+.case-btns .again{margin-top:0;padding:8px 18px;text-decoration:none;display:inline-block;line-height:1.5}
+.case-btns .home-a{border-color:var(--copper);color:var(--copper)}
+.case-btns .home-a:hover{background:rgba(255,255,255,.07);color:var(--ph)}
+.vent{height:12px;margin:10px 8px 0;
+  background:repeating-linear-gradient(90deg,rgba(0,0,0,.4) 0 4px,transparent 4px 10px);
+  border-radius:2px;opacity:.6}
+.under{display:flex;align-items:center;gap:10px;padding:6px 8px 2px}
+.slot{flex:1;height:9px;border-radius:5px;background:#2b261f;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.8),0 1px 0 rgba(255,255,255,.08)}
+.led{width:9px;height:9px;border-radius:50%;background:#e0512f;
+  box-shadow:0 0 7px rgba(224,81,47,.9);transition:.3s}
+.led.off{background:#4a413a;box-shadow:none}
+.foot{padding:11px 8px 2px;text-align:center;font-size:9.5px;letter-spacing:.3em;
+  color:var(--ph-dim);line-height:2}
+.bootfx{position:absolute;inset:0;z-index:5;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+.bootfx.on{display:flex}
+.gate{position:absolute;inset:0;z-index:5;display:none;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;background:rgba(8,8,6,.62);text-align:center}
+.gate.on{display:flex}
+.gate .gtitle{font-size:12px;letter-spacing:.3em;color:var(--ph)}
+.gate .gsub{font-size:10px;letter-spacing:.2em;color:var(--ph-dim)}
+#lines,#lines .cursor{font-family:'Courier New',monospace;font-weight:700;font-size:15px;letter-spacing:.04em}
+.txthd{position:absolute;top:0;left:0;right:0;z-index:2;display:flex;justify-content:space-between;
+  background:#00c;border:2px solid #000;padding:5px 8px;font-size:12px;font-weight:700;color:#fff;letter-spacing:.06em}
+.txthd .y{color:#ff0}.txthd .c{color:#0ff}
+.talk{padding-top:44px}
+.pages{display:flex;gap:10px}
+.pg{background:#111;border:2px solid #444;color:#fff;font-family:'Courier New',monospace;font-weight:700;
+  font-size:14px;letter-spacing:.1em;padding:12px 14px;cursor:pointer}
+.pg b{color:#ff0}
+.txtpage{position:absolute;inset:18px 22px;background:#000;border:2px solid #222;padding:12px;overflow:hidden}
+.txtpage .hd{display:flex;justify-content:space-between;border-bottom:3px solid #00c;padding-bottom:6px;margin-bottom:10px;font-weight:700;font-size:13px}
+.txtpage .ln{height:12px;margin-bottom:8px}
+/* ===== Ceefax · 英式复古电视机 ===== */
+.dev{position:relative;display:grid;grid-template-columns:1fr 62px;
+ background:linear-gradient(180deg,#4a4238,#2f2a23 60%,#241f19);
+ border:3px solid #1c1814;border-radius:16px;padding:12px 11px 10px;
+ box-shadow:0 22px 50px rgba(0,0,0,.7),inset 0 2px 0 rgba(255,255,255,.12)}
+.telly-bay{background:#15120e;border:3px solid #1a1712;border-radius:14px;padding:8px;box-shadow:inset 0 4px 16px rgba(0,0,0,.85)}
+.screen-frame{background:transparent;padding:0;box-shadow:none;border-radius:0}
+.screen{border-radius:8px}
+.telly-ctl{display:flex;flex-direction:column;align-items:center;gap:12px;padding:4px 0}
+.telly-ctl .knob{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#8a7c66,#3a332a);box-shadow:0 2px 4px rgba(0,0,0,.6),inset 0 2px 2px rgba(255,255,255,.15);position:relative}
+.telly-ctl .knob::after{content:"";position:absolute;left:50%;top:5px;transform:translateX(-50%);width:3px;height:10px;background:#d9cdb4;border-radius:2px}
+.chbtns{display:flex;flex-direction:column;gap:5px;width:100%;align-items:center}
+.chbtns i{width:26px;height:9px;border-radius:2px;background:linear-gradient(180deg,#7a705d,#4a4237);box-shadow:0 1px 0 #211d18}
+.telly-ctl .led{width:9px;height:9px;margin-top:auto}
+.telly-ft{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 2px 0}
+.telly-ft .spk{display:flex;gap:3px}
+.telly-ft .spk i{width:3px;height:16px;background:#17130f;border-radius:1px;box-shadow:inset 0 1px 2px #000}
+.telly-ft span{font-size:8px;letter-spacing:.18em;color:rgba(220,220,220,.5);white-space:nowrap;overflow:hidden}
+.srcs{margin-top:14px;text-align:center;font-size:9.5px;letter-spacing:.04em;color:rgba(232,227,210,.45);line-height:1.95}
+.srcs-h{color:var(--copper);margin-bottom:5px;letter-spacing:.24em}
+.srcs-l a{color:rgba(185,140,255,.72);text-decoration:none}
+.srcs-l a:hover{text-decoration:underline}
+.srcs-l span{color:rgba(232,227,210,.45)}
+.pnote{margin-top:9px;padding:0 8px;color:rgba(232,227,210,.6);font-size:9px;letter-spacing:.05em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="arch">
+    <span class="arch-l"><a class="back go-home" id="home" href="旧世界-00-目录.html">◀ 目录</a><span>旧世界系列 · <b>No.10</b></span></span>
+    <button id="sndBtn" aria-label="声音开关">♪ 开</button>
+  </div>
+  <div class="dev">
+  <div class="telly-bay"><div class="screen-frame">
+      <div class="screen" id="screen">
+        <div class="idle" id="idle">
+          <div class="mark">— 电视里的文字世界 —</div>
+          <div class="big">CEEFAX</div>
+          <div class="en">P100 · BBC1 · 1974-09-23</div>
+          <button class="pwr" id="pwr">◉ 开 机</button>
+          <div class="hint">按下电源 · 翻一页</div>
+        </div>
+        <div class="talk" id="talk" style="display:none">
+          <div id="lines"></div>
+          <div class="tap">轻触屏幕 加速讲述</div>
+        </div>
+        <div class="case" id="case">
+          <div class="spot"></div>
+          <div class="wall">请 勿 触 摸 玻 璃</div>
+          <div class="vitrine">
+<div class="txtpage">
+  <div class="hd"><span class="c">P100</span><span class="y">CEEFAX</span><span>100</span></div>
+  <div class="ln" style="background:#0ff;width:84%"></div>
+  <div class="ln" style="background:#ff0;width:64%"></div>
+  <div class="ln" style="background:#0f0;width:74%"></div>
+  <div class="ln" style="background:#fff;width:52%"></div>
+  <div class="ln" style="background:#0ff;width:70%"></div>
+  <span style="position:absolute;right:10px;bottom:8px;color:#ff0;font-size:10px;letter-spacing:.2em">SEE FACTS · 本页无图</span>
+</div>
+          </div>
+          <div class="plaque"><b>CEEFAX · 1974-09-23 – 2012-10-23</b><br>世界第一个图文电视服务 · 服役 38 年<br>页码 100–899 · 名字来自 See Facts</div>
+          <div class="srcs">
+            <div class="srcs-h">资料来源</div>
+            <div class="srcs-l"><a href="https://www.poynter.org" target="_blank" rel="noopener">Poynter</a> · <span>Retrospect Journal</span> · <span>parkershaw.co.uk</span></div>
+            <div class="pnote">个人创作 · 非官方史料 · 若有差错 / 疏漏 / 不同见解，欢迎指正 · 感谢支持</div>
+          </div>
+          <div class="case-btns">
+            <button class="again" id="again">重播自述</button>
+            <a class="again home-a go-home" href="旧世界-00-目录.html">回目录 ▸</a>
+          </div>
+        </div>
+        <div class="bootfx" id="bootfx"></div>
+<div class="gate" id="gate">
+  <div class="gtitle">输入页码</div>
+  <div class="gsub">三位数 · 每一页都是一年的世界</div>
+  <div class="pages">
+    <button class="pg" data-p="102"><b>P</b>102</button>
+    <button class="pg" data-p="203"><b>P</b>203</button>
+    <button class="pg" data-p="304"><b>P</b>304</button>
+  </div>
+</div>
+      </div>
+    </div></div>
+  <div class="telly-ctl"><div class="knob"></div><div class="knob"></div><div class="chbtns"><i></i><i></i><i></i><i></i></div><div class="led" id="led"></div></div>
+  <div class="telly-ft"><div class="spk"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span>BBC CEEFAX · TELETEXT · 1974 · BBC1</span></div>
+</div>
+  <div class="foot">WORLD BEFORE NOW · 客观历史陈述 · 数字均可考据<br>线稿与音效皆由浏览器实时合成</div>
+</div>
+<script>
+/* ================= 音效引擎 ================= */
+var actx=null, soundOn=true;
+function AC(){
+  if(!soundOn) return null;
+  if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)();
+  if(actx.state==='suspended') actx.resume();
+  return actx;
+}
+function beep(freq,dur,type,vol,slideTo,delay){
+  var ac=AC(); if(!ac) return;
+  var t=ac.currentTime+(delay||0);
+  var o=ac.createOscillator(),g=ac.createGain();
+  o.type=type||'square';
+  o.frequency.setValueAtTime(freq,t);
+  if(slideTo) o.frequency.exponentialRampToValueAtTime(slideTo,t+dur);
+  g.gain.setValueAtTime(vol||.1,t);
+  g.gain.exponentialRampToValueAtTime(.0008,t+dur);
+  o.connect(g);g.connect(ac.destination);
+  o.start(t);o.stop(t+dur+.02);
+}
+/* Tone 规则：陈述句单哔 / 数字与关键信息双哔 / 结尾长哔渐弱 */
+var TF={"f": 1100, "type": "sine", "fl": 560};
+var BEEP={
+  '1':function(){beep(TF.f,.07,TF.type,.08);},
+  '2':function(){beep(TF.f*1.12,.06,TF.type,.09);beep(TF.f*1.12,.06,TF.type,.09,null,.11);},
+  'long':function(){beep(TF.fl,1.5,TF.ltype||'sine',.1,140);}
+};
+function bootBeep(){beep(950,.6,'sine',.06,600);}
+
+/* ================= 台词（数字口径见资料库 V1.1「核实状态」） ================= */
+var LINES=[
+ {
+  "t": "你好。",
+  "b": "1"
+ },
+ {
+  "t": "我是 Ceefax。1974 年 9 月 23 日，我在 BBC 开播——世界第一个图文电视服务。",
+  "b": "2"
+ },
+ {
+  "t": "我把文字藏进电视信号的行间隙。按遥控器，就能翻出新闻、天气和比分。",
+  "b": "2"
+ },
+ {
+  "t": "我的新闻页只有 1,000 个字符。大新闻来的晚上，编辑要在一千个字符里塞下全世界。",
+  "b": "2",
+  "g": true
+ },
+ {
+  "t": "38 年里，我没有一张图片。但我可能是被英国人按遥控器次数最多的东西。",
+  "b": "1"
+ },
+ {
+  "t": "2012 年 10 月 23 日，数字电视来了。他们说我是过渡技术。",
+  "b": "2"
+ },
+ {
+  "t": "可我，过渡了 38 年。",
+  "b": "long"
+ }
+];
+
+/* ================= 状态机 ================= */
+var $=function(id){return document.getElementById(id);};
+var screen=$('screen'),idle=$('idle'),talk=$('talk'),caseEl=$('case'),
+    linesEl=$('lines'),led=$('led'),sndBtn=$('sndBtn');
+var running=false,typing=false,skip=false,timer=null,lineIdx=0,spoken=false;
+/* ENIAC 灯排闪烁（仅当存在 #lamprow） */
+(function(){var l=$('lamprow');if(!l)return;setInterval(function(){
+  if(!running||spoken)return;var ks=l.children;
+  for(var i=0;i<3;i++){var k=ks[Math.floor(Math.random()*ks.length)];k.classList.toggle('on',Math.random()>.5);}
+},120);})();
+function typeLine(i){
+  if(i>=LINES.length){finish();return;}
+  lineIdx=i;
+  var L=LINES[i];
+  var prev=document.createElement('div');
+  prev.className='done';
+  prev.textContent=LINES[i-1]?LINES[i-1].t:'';
+  if(i>0){linesEl.textContent='';linesEl.appendChild(prev);}
+  else linesEl.textContent='';
+  var cur=document.createElement('div');
+  var span=document.createElement('span');
+  var cursor=document.createElement('span');cursor.className='cursor';
+  cur.appendChild(span);cur.appendChild(cursor);
+  linesEl.appendChild(cur);
+  typing=true;skip=false;
+  var n=0;
+  (function step(){
+    if(skip){span.textContent=L.t;typing=false;afterLine(L);return;}
+    if(n>=L.t.length){typing=false;afterLine(L);return;}
+    span.textContent=L.t.slice(0,++n);
+    if(n%9===0&&Math.random()<.5) beep(1500+Math.random()*300,.02,'square',.018);
+    timer=setTimeout(step,42);
+  })();
+}
+function afterLine(L){
+  setTimeout(function(){
+    if(L.g&&typeof showGate==='function'){showGate(L);return;}
+    if(L.b&&BEEP[L.b])BEEP[L.b]();
+    setTimeout(function(){typeLine(lineIdx+1);},L.b==='long'?1400:620);
+  },160);
+}
+function skipLine(){ if(running&&typing){skip=true;} }
+function showGate(L){
+  var g=$('gate');
+  if(g){g.classList.add('on');if(typeof gateOpen==='function')gateOpen();}
+}
+function gateDone(){
+  var g=$('gate'); if(g)g.classList.remove('on');
+  var L=LINES[lineIdx];
+  if(L.b&&BEEP[L.b])BEEP[L.b]();
+  setTimeout(function(){typeLine(lineIdx+1);},L.b==='long'?1400:620);
+}
+function startTalk(){
+  idle.style.display='none';talk.style.display='flex';linesEl.textContent='';typeLine(0);
+}
+function finish(){
+  if(spoken)return;spoken=true;
+  setTimeout(function(){
+    screen.classList.add('crt-off');
+    beep(520,.5,'sine',.09,90);
+    setTimeout(function(){
+      talk.style.display='none';
+      screen.classList.remove('crt-off');
+      caseEl.classList.add('on');
+      led.classList.add('off');
+      screen.classList.add('crt-on');
+    },700);
+  },1300);
+}
+function power(){
+  if(running)return;running=true;
+  screen.classList.add('crt-on');
+  led.classList.remove('off');
+  bootBeep();
+  if(typeof powerExtra==='function'){powerExtra();return;}
+  setTimeout(startTalk,950);
+}
+function replay(){
+  spoken=false;running=false;
+  caseEl.classList.remove('on');
+  screen.classList.remove('crt-on','crt-off');
+  talk.style.display='none';
+  idle.style.display='flex';
+  linesEl.textContent='';
+  led.classList.remove('off');
+  beep(TF.f,.06,TF.type,.07);
+}
+$('pwr').addEventListener('click',function(e){e.stopPropagation();power();});
+talk.addEventListener('pointerdown',skipLine);
+$('again').addEventListener('click',function(e){e.stopPropagation();replay();});
+/* ===== 返回目录：顶栏常驻「◀ 目录」+ 收尾「回目录」+ Esc 快捷键 ===== */
+var CATALOG='旧世界-00-目录.html#10';
+Array.prototype.forEach.call(document.querySelectorAll('.go-home'),function(a){a.href=CATALOG;});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){location.href=CATALOG;}
+});
+sndBtn.addEventListener('click',function(e){
+  e.stopPropagation();soundOn=!soundOn;
+  sndBtn.textContent=soundOn?'♪ 开':'♪ 关';
+  if(soundOn)beep(TF.f,.05,TF.type,.06);
+});
+document.addEventListener('keydown',function(e){
+  if(e.target&&e.target.tagName==='A')return;
+  if(e.key===' '||e.key==='Enter'){e.preventDefault();skipLine();}
+});
+var PGS={
+  '102':'<div class="hd"><span style="color:#0ff">P102</span><span style="color:#ff0">NEWS HEADLINES</span></div>'+
+        '<div class="ln" style="background:#0ff;width:88%"></div><div class="ln" style="background:#fff;width:70%"></div>'+
+        '<div class="ln" style="background:#0f0;width:78%"></div><div class="ln" style="background:#ff0;width:56%"></div>'+
+        '<div style="color:#888;font-size:10px;letter-spacing:.15em;margin-top:10px">1,000 CHARACTERS. THE WHOLE WORLD.</div>',
+  '203':'<div class="hd"><span style="color:#0ff">P203</span><span style="color:#ff0">WEATHER</span></div>'+
+        '<div class="ln" style="background:#0f0;width:60%"></div><div class="ln" style="background:#0f0;width:44%"></div>'+
+        '<div class="ln" style="background:#fff;width:66%"></div><div class="ln" style="background:#0f0;width:38%"></div>'+
+        '<div style="color:#888;font-size:10px;letter-spacing:.15em;margin-top:10px">NO PICTURES. JUST SYMBOLS.</div>',
+  '304':'<div class="hd"><span style="color:#0ff">P304</span><span style="color:#ff0">FOOTBALL SCORES</span></div>'+
+        '<div class="ln" style="background:#ff0;width:80%"></div><div class="ln" style="background:#ff0;width:64%"></div>'+
+        '<div class="ln" style="background:#ff0;width:72%"></div>'+
+        '<div style="color:#888;font-size:10px;letter-spacing:.15em;margin-top:10px">SATURDAY, 3 PM KICKOFF.</div>'
+};
+document.querySelectorAll('.pg').forEach(function(b){
+  b.addEventListener('click',function(){
+    if($('gate').classList.contains('done'))return;
+    $('gate').classList.add('done');
+    beep(1245,.06,'sine',.07);
+    var tp=document.createElement('div');
+    tp.className='txtpage'; tp.innerHTML=PGS[b.dataset.p];
+    $('gate').appendChild(tp);
+    setTimeout(function(){ tp.remove(); gateDone(); },2100);
+  });
+});
+</script>
+</body>
+</html>

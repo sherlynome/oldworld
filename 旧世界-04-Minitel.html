@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>旧世界 No.04 · Minitel</title>
+<style>
+:root{
+  --room:#161311; --room2:#211d16; --bez:#b8ae95; --bez2:#d8cfba;
+  --crt:#140f08; --ph:#f5a623; --ph-dim:rgba(245,166,35,.5); --glow:rgba(245,166,35,.35);
+  --copper:#b5722a; --brand:rgba(84,70,46,.55); --ink:#f5a623;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  background:radial-gradient(ellipse at 50% 18%,var(--room2),var(--room) 70%);
+  font-family:"Courier New","PingFang SC","Microsoft YaHei",monospace;
+  color:var(--ph);display:flex;align-items:center;justify-content:center;padding:10px;overflow:hidden;
+}
+.wrap{width:min(430px,98vw);position:relative}
+.arch{display:flex;align-items:center;justify-content:space-between;
+  padding:6px 6px 12px;font-size:11px;letter-spacing:.28em;color:var(--ph-dim)}
+.arch b{color:var(--copper);font-weight:700}
+.arch-l{display:flex;align-items:center;gap:10px;min-width:0}
+.back{flex:none;display:inline-block;text-decoration:none;color:var(--ph-dim);
+  border:1px solid var(--glow);border-radius:3px;padding:3px 9px;
+  font-size:10px;letter-spacing:.14em;line-height:1.5;transition:all .2s}
+.back:hover{color:var(--ph);border-color:var(--copper);background:rgba(255,255,255,.06)}
+#sndBtn{background:none;border:1px solid var(--glow);color:var(--ph-dim);
+  font:inherit;font-size:12px;letter-spacing:.1em;padding:4px 12px;cursor:pointer;border-radius:3px}
+.mac{background:linear-gradient(180deg,var(--bez2),var(--bez) 55%,var(--bez));
+  border-radius:18px;padding:16px 14px 12px;
+  box-shadow:0 22px 50px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.14),inset 0 -2px 5px rgba(0,0,0,.5)}
+.brand{text-align:center;font-size:10px;letter-spacing:.5em;color:var(--brand);margin-bottom:9px}
+.screen-frame{background:#1a1712;border-radius:12px;padding:9px;
+  box-shadow:inset 0 3px 8px rgba(0,0,0,.9),inset 0 -1px 2px rgba(255,255,255,.05)}
+.screen{position:relative;height:342px;border-radius:8px;overflow:hidden;
+  background:var(--crt);
+  box-shadow:inset 0 0 46px rgba(0,0,0,.55),0 0 0 1px #000}
+.screen::before{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;
+  background:radial-gradient(ellipse at 30% 22%,rgba(255,255,255,.09),transparent 42%)}
+.screen::after{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px)}
+.crt-on{animation:crtOn .9s ease}
+@keyframes crtOn{0%{filter:brightness(0)}16%{filter:brightness(2.2) contrast(1.4)}34%{filter:brightness(.4)}52%{filter:brightness(1.6)}100%{filter:brightness(1)}}
+.crt-off{animation:crtOff .6s ease forwards}
+@keyframes crtOff{0%{transform:scaleY(1);filter:brightness(1)}55%{transform:scaleY(.035);filter:brightness(3)}100%{transform:scaleY(.035) scaleX(0);filter:brightness(0)}}
+.idle,.talk{position:absolute;inset:0;padding:18px 16px;display:flex;flex-direction:column;z-index:3}
+.idle{align-items:center;justify-content:center;gap:14px;text-align:center}
+.idle .mark{font-size:12px;letter-spacing:.3em;color:var(--ph-dim)}
+.idle .big{font-size:29px;font-weight:700;letter-spacing:.1em;color:var(--ph);text-shadow:0 0 14px var(--glow)}
+.idle .en{font-size:11px;letter-spacing:.26em;color:var(--ph-dim)}
+.pwr{margin-top:14px;background:none;border:1.5px solid var(--glow);color:var(--ph);
+  font:inherit;font-size:14px;letter-spacing:.28em;padding:11px 30px;cursor:pointer;border-radius:4px;
+  text-shadow:0 0 8px var(--glow);transition:all .2s}
+.pwr:hover{background:var(--glow);box-shadow:0 0 18px var(--glow)}
+.idle .hint{font-size:10px;letter-spacing:.2em;color:var(--ph-dim)}
+.talk{justify-content:flex-start;overflow:hidden;cursor:pointer}
+#lines{flex:1;overflow:hidden;font-size:14.5px;line-height:1.95;letter-spacing:.06em;
+  color:var(--ph);text-shadow:0 0 7px var(--glow);white-space:pre-wrap}
+#lines .done{color:var(--ph-dim);text-shadow:none}
+.cursor{display:inline-block;width:9px;height:16px;background:var(--ph);
+  vertical-align:-2px;margin-left:2px;animation:blink 1s steps(1) infinite;box-shadow:0 0 8px var(--glow)}
+@keyframes blink{50%{opacity:0}}
+.tap{padding-top:8px;font-size:10px;letter-spacing:.24em;color:var(--ph-dim);text-align:center}
+.case{position:absolute;inset:0;z-index:4;display:none;flex-direction:column;
+  align-items:center;justify-content:center;padding:14px 16px 12px}
+.case.on{display:flex;animation:fade 1.6s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.spot{position:absolute;top:-40px;left:50%;transform:translateX(-50%);
+  width:340px;height:250px;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 0%,rgba(232,227,210,.2),transparent 68%)}
+.wall{font-size:10px;letter-spacing:.5em;color:var(--ph-dim);margin-bottom:14px}
+.vitrine{position:relative;width:100%;max-width:330px;height:216px;
+  background:linear-gradient(180deg,#171b16,#101310);
+  border:1px solid rgba(232,227,210,.22);border-radius:6px;overflow:hidden;
+  box-shadow:0 14px 34px rgba(0,0,0,.7)}
+.vitrine::after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;
+  background:linear-gradient(112deg,transparent 30%,rgba(232,227,210,.13) 42%,rgba(232,227,210,.03) 50%,transparent 58%)}
+.plaque{margin-top:14px;text-align:center;font-size:11px;line-height:1.9;letter-spacing:.18em;color:var(--ph-dim)}
+.plaque b{color:var(--copper);font-size:12px}
+.again{margin-top:12px;background:none;border:1px solid var(--glow);color:var(--ph-dim);
+  font:inherit;font-size:11px;letter-spacing:.3em;padding:8px 26px;cursor:pointer;border-radius:3px}
+.again:hover{color:var(--ph);border-color:var(--glow)}
+.case-btns{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px}
+.case-btns .again{margin-top:0;padding:8px 18px;text-decoration:none;display:inline-block;line-height:1.5}
+.case-btns .home-a{border-color:var(--copper);color:var(--copper)}
+.case-btns .home-a:hover{background:rgba(255,255,255,.07);color:var(--ph)}
+.vent{height:12px;margin:10px 8px 0;
+  background:repeating-linear-gradient(90deg,rgba(0,0,0,.4) 0 4px,transparent 4px 10px);
+  border-radius:2px;opacity:.6}
+.under{display:flex;align-items:center;gap:10px;padding:6px 8px 2px}
+.slot{flex:1;height:9px;border-radius:5px;background:#2b261f;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.8),0 1px 0 rgba(255,255,255,.08)}
+.led{width:9px;height:9px;border-radius:50%;background:#e0512f;
+  box-shadow:0 0 7px rgba(224,81,47,.9);transition:.3s}
+.led.off{background:#4a413a;box-shadow:none}
+.foot{padding:11px 8px 2px;text-align:center;font-size:9.5px;letter-spacing:.3em;
+  color:var(--ph-dim);line-height:2}
+.bootfx{position:absolute;inset:0;z-index:5;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+.bootfx.on{display:flex}
+.gate{position:absolute;inset:0;z-index:5;display:none;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;background:rgba(8,8,6,.62);text-align:center}
+.gate.on{display:flex}
+.gate .gtitle{font-size:12px;letter-spacing:.3em;color:var(--ph)}
+.gate .gsub{font-size:10px;letter-spacing:.2em;color:var(--ph-dim)}
+.mkey{position:absolute;bottom:8px;left:14px;right:14px;z-index:2;display:flex;gap:5px;justify-content:center}
+.mkey i{flex:1;height:13px;background:rgba(84,70,46,.5);border-radius:2px;box-shadow:inset 0 1px 2px rgba(0,0,0,.35)}
+.talk{padding-bottom:34px}
+.svc{display:flex;flex-direction:column;gap:9px;width:78%}
+.svc button{background:#1d160c;border:1px solid rgba(245,166,35,.5);color:#f5a623;font-family:inherit;
+  font-size:13px;letter-spacing:.2em;padding:11px 8px;border-radius:4px;cursor:pointer}
+.svc button:hover{background:#2a2010}
+.stub{min-height:34px;font-size:12px;letter-spacing:.12em;color:#f5a623}
+.mini{position:absolute;inset:18px 22px;background:#0d0a06;border:1px solid rgba(245,166,35,.4);border-radius:4px;padding:12px;overflow:hidden}
+.mini .hd{display:flex;justify-content:space-between;font-size:10px;letter-spacing:.15em;color:rgba(245,166,35,.7);border-bottom:1px solid rgba(245,166,35,.3);padding-bottom:6px;margin-bottom:8px}
+.mini .rows{display:flex;flex-direction:column;gap:7px}
+.mini .rows i{height:8px;background:rgba(245,166,35,.28);border-radius:1px}
+.mini .rows i:nth-child(2){width:72%}.mini .rows i:nth-child(3){width:88%}.mini .rows i:nth-child(4){width:56%}
+/* ===== Minitel · 一体化楔形终端 ===== */
+.dev{position:relative;background:linear-gradient(180deg,#d9d0bb,#b9af96 55%,#a79d84);
+ border:2px solid #8a8069;border-radius:14px 14px 9px 9px;padding:11px 10px 9px;
+ box-shadow:0 22px 50px rgba(0,0,0,.6),inset 0 2px 0 rgba(255,255,255,.5),inset 0 -3px 8px rgba(0,0,0,.22)}
+.mini-hd{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:8.5px;letter-spacing:.16em;color:#5b5240;padding:0 3px 8px;white-space:nowrap;overflow:hidden}
+.mini-hd b{font-size:13px;letter-spacing:.22em;color:#463e2f}
+.mini-bay{background:#2b251a;border:3px solid #6f6650;border-radius:16px 16px 8px 8px;padding:8px;box-shadow:inset 0 4px 14px rgba(0,0,0,.75)}
+.screen-frame{background:transparent;padding:0;box-shadow:none;border-radius:0}
+.screen{border-radius:6px}
+.mini-kbd{margin-top:9px;background:#c4baa0;border-radius:5px;padding:8px 7px;box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 2px 4px rgba(0,0,0,.18)}
+.krow{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin-bottom:4px}
+.krow:last-child{margin-bottom:0}
+.krow i{height:13px;border-radius:2px;background:linear-gradient(180deg,#e7dec7,#cac0a7);box-shadow:0 1.5px 0 #9a9079,inset 0 1px 0 rgba(255,255,255,.6)}
+.mini-ft{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 3px 0;font-size:8px;letter-spacing:.14em;color:#5b5240}
+.mini-ft .led{width:9px;height:9px;flex:0 0 9px}
+.talk{padding-bottom:14px!important}
+.srcs{margin-top:14px;text-align:center;font-size:9.5px;letter-spacing:.04em;color:rgba(232,227,210,.45);line-height:1.95}
+.srcs-h{color:var(--copper);margin-bottom:5px;letter-spacing:.24em}
+.srcs-l a{color:rgba(185,140,255,.72);text-decoration:none}
+.srcs-l a:hover{text-decoration:underline}
+.srcs-l span{color:rgba(232,227,210,.45)}
+.pnote{margin-top:9px;padding:0 8px;color:rgba(232,227,210,.6);font-size:9px;letter-spacing:.05em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="arch">
+    <span class="arch-l"><a class="back go-home" id="home" href="旧世界-00-目录.html">◀ 目录</a><span>旧世界系列 · <b>No.04</b></span></span>
+    <button id="sndBtn" aria-label="声音开关">♪ 开</button>
+  </div>
+  <div class="dev">
+  <div class="mini-hd"><b>MINITEL</b><span>MINITEL 1 · PTT · FRANCE</span></div>
+  <div class="mini-bay"><div class="screen-frame">
+      <div class="screen" id="screen">
+        <div class="idle" id="idle">
+          <div class="mark">— 比互联网早到场的法国 —</div>
+          <div class="big">Minitel</div>
+          <div class="en">1982 · PTT · 免费发放</div>
+          <button class="pwr" id="pwr">◉ 开 机</button>
+          <div class="hint">按下电源 · 拨 3615</div>
+        </div>
+        <div class="talk" id="talk" style="display:none">
+          <div id="lines"></div>
+          <div class="tap">轻触屏幕 加速讲述</div>
+        </div>
+        <div class="case" id="case">
+          <div class="spot"></div>
+          <div class="wall">请 勿 触 摸 玻 璃</div>
+          <div class="vitrine">
+<div class="mini">
+  <div class="hd"><span>MINITEL 1</span><span>3615</span></div>
+  <div class="rows"><i></i><i></i><i></i><i></i><i></i></div>
+  <span style="position:absolute;right:12px;bottom:8px;color:rgba(245,166,35,.8);font-size:10px;letter-spacing:.2em">ANNUAIRE ELECTRONIQUE</span>
+</div>
+          </div>
+          <div class="plaque"><b>MINITEL · 1982 – 2012</b><br>峰值约 900 万台终端 · 约 2,500 万用户<br>取代纸质黄页 · 服务关闭于 2012-06-30</div>
+          <div class="srcs">
+            <div class="srcs-h">资料来源</div>
+            <div class="srcs-l"><a href="https://historyofinformation.com" target="_blank" rel="noopener">History of Information</a> · <a href="https://www.cloudflare.tv" target="_blank" rel="noopener">Cloudflare TV</a> · <a href="https://en.wikipedia.org/wiki/Minitel" target="_blank" rel="noopener">Wikipedia: Minitel</a></div>
+            <div class="pnote">个人创作 · 非官方史料 · 若有差错 / 疏漏 / 不同见解，欢迎指正 · 感谢支持</div>
+          </div>
+          <div class="case-btns">
+            <button class="again" id="again">重播自述</button>
+            <a class="again home-a go-home" href="旧世界-00-目录.html">回目录 ▸</a>
+          </div>
+        </div>
+        <div class="bootfx" id="bootfx"></div>
+<div class="gate" id="gate">
+  <div class="gtitle">输入服务代码</div>
+  <div class="gsub">拨一个 3615 号码 · 听听法国人都在用什么</div>
+  <div class="svc">
+    <button data-s="annu">3611 · ANNUAIRE 白页</button>
+    <button data-s="mess">3615 · MESSAGERIE 粉红消息</button>
+    <button data-s="tel">3615 · TELETEL 服务器</button>
+  </div>
+  <div class="stub" id="stub"></div>
+</div>
+      </div>
+    </div></div>
+  <div class="mini-kbd"><div class="krow"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="krow"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="krow"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="krow"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+  <div class="mini-ft"><span>3615 · ANNUAIRE ÉLECTRONIQUE</span><div class="led" id="led"></div></div>
+</div>
+  <div class="foot">WORLD BEFORE NOW · 客观历史陈述 · 数字均可考据<br>线稿与音效皆由浏览器实时合成</div>
+</div>
+<script>
+/* ================= 音效引擎 ================= */
+var actx=null, soundOn=true;
+function AC(){
+  if(!soundOn) return null;
+  if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)();
+  if(actx.state==='suspended') actx.resume();
+  return actx;
+}
+function beep(freq,dur,type,vol,slideTo,delay){
+  var ac=AC(); if(!ac) return;
+  var t=ac.currentTime+(delay||0);
+  var o=ac.createOscillator(),g=ac.createGain();
+  o.type=type||'square';
+  o.frequency.setValueAtTime(freq,t);
+  if(slideTo) o.frequency.exponentialRampToValueAtTime(slideTo,t+dur);
+  g.gain.setValueAtTime(vol||.1,t);
+  g.gain.exponentialRampToValueAtTime(.0008,t+dur);
+  o.connect(g);g.connect(ac.destination);
+  o.start(t);o.stop(t+dur+.02);
+}
+/* Tone 规则：陈述句单哔 / 数字与关键信息双哔 / 结尾长哔渐弱 */
+var TF={"f": 1245, "type": "sine", "fl": 600};
+var BEEP={
+  '1':function(){beep(TF.f,.07,TF.type,.08);},
+  '2':function(){beep(TF.f*1.12,.06,TF.type,.09);beep(TF.f*1.12,.06,TF.type,.09,null,.11);},
+  'long':function(){beep(TF.fl,1.5,TF.ltype||'sine',.1,140);}
+};
+function bootBeep(){beep(440,.4,'sine',.07);beep(330,.6,'sine',.06,220,null,.3);}
+
+/* ================= 台词（数字口径见资料库 V1.1「核实状态」） ================= */
+var LINES=[
+ {
+  "t": "你好。",
+  "b": "1"
+ },
+ {
+  "t": "我是 Minitel。1982 年，法国邮电总局把我铺向全国——比你们说的互联网，早到了一截。",
+  "b": "2"
+ },
+ {
+  "t": "我免费。政府算过账：给我发一台终端，比印一本黄页便宜。",
+  "b": "2"
+ },
+ {
+  "t": "高峰期，法国有约 900 万台终端、约 2,500 万用户。",
+  "b": "2",
+  "g": true
+ },
+ {
+  "t": "官方给我配的全是正经服务。法国人却最先拿我谈恋爱——那个聊天服务，叫「粉红消息」。",
+  "b": "2"
+ },
+ {
+  "t": "2012 年 6 月 30 日，我退休。那一年，你们的互联网才刚刚嫌手机屏幕不够大。",
+  "b": "2"
+ },
+ {
+  "t": "我是过渡技术。",
+  "b": "1"
+ },
+ {
+  "t": "可我，过渡了三十年。",
+  "b": "long"
+ }
+];
+
+/* ================= 状态机 ================= */
+var $=function(id){return document.getElementById(id);};
+var screen=$('screen'),idle=$('idle'),talk=$('talk'),caseEl=$('case'),
+    linesEl=$('lines'),led=$('led'),sndBtn=$('sndBtn');
+var running=false,typing=false,skip=false,timer=null,lineIdx=0,spoken=false;
+/* ENIAC 灯排闪烁（仅当存在 #lamprow） */
+(function(){var l=$('lamprow');if(!l)return;setInterval(function(){
+  if(!running||spoken)return;var ks=l.children;
+  for(var i=0;i<3;i++){var k=ks[Math.floor(Math.random()*ks.length)];k.classList.toggle('on',Math.random()>.5);}
+},120);})();
+function typeLine(i){
+  if(i>=LINES.length){finish();return;}
+  lineIdx=i;
+  var L=LINES[i];
+  var prev=document.createElement('div');
+  prev.className='done';
+  prev.textContent=LINES[i-1]?LINES[i-1].t:'';
+  if(i>0){linesEl.textContent='';linesEl.appendChild(prev);}
+  else linesEl.textContent='';
+  var cur=document.createElement('div');
+  var span=document.createElement('span');
+  var cursor=document.createElement('span');cursor.className='cursor';
+  cur.appendChild(span);cur.appendChild(cursor);
+  linesEl.appendChild(cur);
+  typing=true;skip=false;
+  var n=0;
+  (function step(){
+    if(skip){span.textContent=L.t;typing=false;afterLine(L);return;}
+    if(n>=L.t.length){typing=false;afterLine(L);return;}
+    span.textContent=L.t.slice(0,++n);
+    if(n%9===0&&Math.random()<.5) beep(1500+Math.random()*300,.02,'square',.018);
+    timer=setTimeout(step,42);
+  })();
+}
+function afterLine(L){
+  setTimeout(function(){
+    if(L.g&&typeof showGate==='function'){showGate(L);return;}
+    if(L.b&&BEEP[L.b])BEEP[L.b]();
+    setTimeout(function(){typeLine(lineIdx+1);},L.b==='long'?1400:620);
+  },160);
+}
+function skipLine(){ if(running&&typing){skip=true;} }
+function showGate(L){
+  var g=$('gate');
+  if(g){g.classList.add('on');if(typeof gateOpen==='function')gateOpen();}
+}
+function gateDone(){
+  var g=$('gate'); if(g)g.classList.remove('on');
+  var L=LINES[lineIdx];
+  if(L.b&&BEEP[L.b])BEEP[L.b]();
+  setTimeout(function(){typeLine(lineIdx+1);},L.b==='long'?1400:620);
+}
+function startTalk(){
+  idle.style.display='none';talk.style.display='flex';linesEl.textContent='';typeLine(0);
+}
+function finish(){
+  if(spoken)return;spoken=true;
+  setTimeout(function(){
+    screen.classList.add('crt-off');
+    beep(520,.5,'sine',.09,90);
+    setTimeout(function(){
+      talk.style.display='none';
+      screen.classList.remove('crt-off');
+      caseEl.classList.add('on');
+      led.classList.add('off');
+      screen.classList.add('crt-on');
+    },700);
+  },1300);
+}
+function power(){
+  if(running)return;running=true;
+  screen.classList.add('crt-on');
+  led.classList.remove('off');
+  bootBeep();
+  if(typeof powerExtra==='function'){powerExtra();return;}
+  setTimeout(startTalk,950);
+}
+function replay(){
+  spoken=false;running=false;
+  caseEl.classList.remove('on');
+  screen.classList.remove('crt-on','crt-off');
+  talk.style.display='none';
+  idle.style.display='flex';
+  linesEl.textContent='';
+  led.classList.remove('off');
+  beep(TF.f,.06,TF.type,.07);
+}
+$('pwr').addEventListener('click',function(e){e.stopPropagation();power();});
+talk.addEventListener('pointerdown',skipLine);
+$('again').addEventListener('click',function(e){e.stopPropagation();replay();});
+/* ===== 返回目录：顶栏常驻「◀ 目录」+ 收尾「回目录」+ Esc 快捷键 ===== */
+var CATALOG='旧世界-00-目录.html#04';
+Array.prototype.forEach.call(document.querySelectorAll('.go-home'),function(a){a.href=CATALOG;});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){location.href=CATALOG;}
+});
+sndBtn.addEventListener('click',function(e){
+  e.stopPropagation();soundOn=!soundOn;
+  sndBtn.textContent=soundOn?'♪ 开':'♪ 关';
+  if(soundOn)beep(TF.f,.05,TF.type,.06);
+});
+document.addEventListener('keydown',function(e){
+  if(e.target&&e.target.tagName==='A')return;
+  if(e.key===' '||e.key==='Enter'){e.preventDefault();skipLine();}
+});
+var SVCS={
+  annu:'白页连上了。全法国的电话号码，都在这块 9 英寸的屏幕里。',
+  mess:'粉红消息。官方没设计这个功能——法国人自己找来的。',
+  tel:'服务器应答中。这是世界上第一批「上网冲浪」的人。'
+};
+document.querySelectorAll('.svc button').forEach(function(b){
+  b.addEventListener('click',function(){
+    if($('gate').classList.contains('done'))return;
+    $('gate').classList.add('done');
+    beep(1046,.08,'sine',.08);beep(1568,.12,'sine',.08,null,.1);
+    $('stub').textContent=SVCS[b.dataset.s];
+    setTimeout(gateDone,1900);
+  });
+});
+</script>
+</body>
+</html>

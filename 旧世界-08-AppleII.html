@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>旧世界 No.08 · Apple II</title>
+<style>
+:root{
+  --room:#151310; --room2:#211d16; --bez:#b9af93; --bez2:#dcd3b8;
+  --crt:#0a0a0c; --ph:#e8e3d2; --ph-dim:rgba(232,227,210,.55); --glow:rgba(232,227,210,.32);
+  --copper:#c9a15a; --brand:rgba(80,72,54,.6); --ink:#e8e3d2;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  background:radial-gradient(ellipse at 50% 18%,var(--room2),var(--room) 70%);
+  font-family:"Courier New","PingFang SC","Microsoft YaHei",monospace;
+  color:var(--ph);display:flex;align-items:center;justify-content:center;padding:10px;overflow:hidden;
+}
+.wrap{width:min(430px,98vw);position:relative}
+.arch{display:flex;align-items:center;justify-content:space-between;
+  padding:6px 6px 12px;font-size:11px;letter-spacing:.28em;color:var(--ph-dim)}
+.arch b{color:var(--copper);font-weight:700}
+.arch-l{display:flex;align-items:center;gap:10px;min-width:0}
+.back{flex:none;display:inline-block;text-decoration:none;color:var(--ph-dim);
+  border:1px solid var(--glow);border-radius:3px;padding:3px 9px;
+  font-size:10px;letter-spacing:.14em;line-height:1.5;transition:all .2s}
+.back:hover{color:var(--ph);border-color:var(--copper);background:rgba(255,255,255,.06)}
+#sndBtn{background:none;border:1px solid var(--glow);color:var(--ph-dim);
+  font:inherit;font-size:12px;letter-spacing:.1em;padding:4px 12px;cursor:pointer;border-radius:3px}
+.mac{background:linear-gradient(180deg,var(--bez2),var(--bez) 55%,var(--bez));
+  border-radius:18px;padding:16px 14px 12px;
+  box-shadow:0 22px 50px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.14),inset 0 -2px 5px rgba(0,0,0,.5)}
+.brand{text-align:center;font-size:10px;letter-spacing:.5em;color:var(--brand);margin-bottom:9px}
+.screen-frame{background:#1a1712;border-radius:12px;padding:9px;
+  box-shadow:inset 0 3px 8px rgba(0,0,0,.9),inset 0 -1px 2px rgba(255,255,255,.05)}
+.screen{position:relative;height:342px;border-radius:8px;overflow:hidden;
+  background:var(--crt);
+  box-shadow:inset 0 0 46px rgba(0,0,0,.55),0 0 0 1px #000}
+.screen::before{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;
+  background:radial-gradient(ellipse at 30% 22%,rgba(255,255,255,.09),transparent 42%)}
+.screen::after{content:"";position:absolute;inset:0;z-index:6;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px)}
+.crt-on{animation:crtOn .9s ease}
+@keyframes crtOn{0%{filter:brightness(0)}16%{filter:brightness(2.2) contrast(1.4)}34%{filter:brightness(.4)}52%{filter:brightness(1.6)}100%{filter:brightness(1)}}
+.crt-off{animation:crtOff .6s ease forwards}
+@keyframes crtOff{0%{transform:scaleY(1);filter:brightness(1)}55%{transform:scaleY(.035);filter:brightness(3)}100%{transform:scaleY(.035) scaleX(0);filter:brightness(0)}}
+.idle,.talk{position:absolute;inset:0;padding:18px 16px;display:flex;flex-direction:column;z-index:3}
+.idle{align-items:center;justify-content:center;gap:14px;text-align:center}
+.idle .mark{font-size:12px;letter-spacing:.3em;color:var(--ph-dim)}
+.idle .big{font-size:29px;font-weight:700;letter-spacing:.1em;color:var(--ph);text-shadow:0 0 14px var(--glow)}
+.idle .en{font-size:11px;letter-spacing:.26em;color:var(--ph-dim)}
+.pwr{margin-top:14px;background:none;border:1.5px solid var(--glow);color:var(--ph);
+  font:inherit;font-size:14px;letter-spacing:.28em;padding:11px 30px;cursor:pointer;border-radius:4px;
+  text-shadow:0 0 8px var(--glow);transition:all .2s}
+.pwr:hover{background:var(--glow);box-shadow:0 0 18px var(--glow)}
+.idle .hint{font-size:10px;letter-spacing:.2em;color:var(--ph-dim)}
+.talk{justify-content:flex-start;overflow:hidden;cursor:pointer}
+#lines{flex:1;overflow:hidden;font-size:14.5px;line-height:1.95;letter-spacing:.06em;
+  color:var(--ph);text-shadow:0 0 7px var(--glow);white-space:pre-wrap}
+#lines .done{color:var(--ph-dim);text-shadow:none}
+.cursor{display:inline-block;width:9px;height:16px;background:var(--ph);
+  vertical-align:-2px;margin-left:2px;animation:blink 1s steps(1) infinite;box-shadow:0 0 8px var(--glow)}
+@keyframes blink{50%{opacity:0}}
+.tap{padding-top:8px;font-size:10px;letter-spacing:.24em;color:var(--ph-dim);text-align:center}
+.case{position:absolute;inset:0;z-index:4;display:none;flex-direction:column;
+  align-items:center;justify-content:center;padding:14px 16px 12px}
+.case.on{display:flex;animation:fade 1.6s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.spot{position:absolute;top:-40px;left:50%;transform:translateX(-50%);
+  width:340px;height:250px;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 0%,rgba(232,227,210,.2),transparent 68%)}
+.wall{font-size:10px;letter-spacing:.5em;color:var(--ph-dim);margin-bottom:14px}
+.vitrine{position:relative;width:100%;max-width:330px;height:216px;
+  background:linear-gradient(180deg,#171b16,#101310);
+  border:1px solid rgba(232,227,210,.22);border-radius:6px;overflow:hidden;
+  box-shadow:0 14px 34px rgba(0,0,0,.7)}
+.vitrine::after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;
+  background:linear-gradient(112deg,transparent 30%,rgba(232,227,210,.13) 42%,rgba(232,227,210,.03) 50%,transparent 58%)}
+.plaque{margin-top:14px;text-align:center;font-size:11px;line-height:1.9;letter-spacing:.18em;color:var(--ph-dim)}
+.plaque b{color:var(--copper);font-size:12px}
+.again{margin-top:12px;background:none;border:1px solid var(--glow);color:var(--ph-dim);
+  font:inherit;font-size:11px;letter-spacing:.3em;padding:8px 26px;cursor:pointer;border-radius:3px}
+.again:hover{color:var(--ph);border-color:var(--glow)}
+.case-btns{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px}
+.case-btns .again{margin-top:0;padding:8px 18px;text-decoration:none;display:inline-block;line-height:1.5}
+.case-btns .home-a{border-color:var(--copper);color:var(--copper)}
+.case-btns .home-a:hover{background:rgba(255,255,255,.07);color:var(--ph)}
+.vent{height:12px;margin:10px 8px 0;
+  background:repeating-linear-gradient(90deg,rgba(0,0,0,.4) 0 4px,transparent 4px 10px);
+  border-radius:2px;opacity:.6}
+.under{display:flex;align-items:center;gap:10px;padding:6px 8px 2px}
+.slot{flex:1;height:9px;border-radius:5px;background:#2b261f;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.8),0 1px 0 rgba(255,255,255,.08)}
+.led{width:9px;height:9px;border-radius:50%;background:#e0512f;
+  box-shadow:0 0 7px rgba(224,81,47,.9);transition:.3s}
+.led.off{background:#4a413a;box-shadow:none}
+.foot{padding:11px 8px 2px;text-align:center;font-size:9.5px;letter-spacing:.3em;
+  color:var(--ph-dim);line-height:2}
+.bootfx{position:absolute;inset:0;z-index:5;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+.bootfx.on{display:flex}
+.gate{position:absolute;inset:0;z-index:5;display:none;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;background:rgba(8,8,6,.62);text-align:center}
+.gate.on{display:flex}
+.gate .gtitle{font-size:12px;letter-spacing:.3em;color:var(--ph)}
+.gate .gsub{font-size:10px;letter-spacing:.2em;color:var(--ph-dim)}
+.rainbow{position:absolute;top:12px;right:16px;z-index:2;width:64px;height:44px;display:flex;flex-direction:column;gap:0;opacity:.9;border-radius:3px;overflow:hidden}
+.rainbow i{flex:1}
+.rainbow i:nth-child(1){background:#61BB46}.rainbow i:nth-child(2){background:#FDB827}
+.rainbow i:nth-child(3){background:#F5821F}.rainbow i:nth-child(4){background:#E03A3E}
+.rainbow i:nth-child(5){background:#963D97}.rainbow i:nth-child(6){background:#009DDC}
+.sheet{display:grid;grid-template-columns:64px 74px 74px;gap:5px;justify-content:center}
+.sh{height:38px;background:#12140e;border:1px solid rgba(201,161,90,.5);color:#e8e3d2;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;letter-spacing:.05em}
+.sh.hd{background:transparent;border:none;color:rgba(201,161,90,.8);font-size:11px}
+.sh.tap{cursor:pointer;box-shadow:0 0 0 1.5px #c9a15a}
+.sh.sum{color:#c9a15a}
+.grape{position:absolute;inset:14px;background:#0d100c;border:1px solid rgba(201,161,90,.4);border-radius:4px;overflow:hidden}
+/* ===== Apple II · 楔形键盘机身 + 监视器 ===== */
+.dev{display:flex;flex-direction:column;gap:9px}
+.tv{position:relative;background:linear-gradient(180deg,#4a4640,#302d28);border:2px solid #211f1b;border-radius:12px;padding:9px 9px 7px;box-shadow:0 14px 30px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.1)}
+.tv-bay{background:#171510;border:3px solid #1d1a15;border-radius:10px;padding:7px;box-shadow:inset 0 4px 14px rgba(0,0,0,.8)}
+.screen-frame{background:transparent;padding:0;box-shadow:none;border-radius:0}
+.screen{border-radius:6px}
+.tv-ctl{display:flex;align-items:center;gap:10px;padding:8px 3px 0}
+.tv-ctl i{width:15px;height:15px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#8a8377,#3d3a33);box-shadow:0 1px 2px rgba(0,0,0,.6)}
+.tv-ctl span{font-size:8px;letter-spacing:.16em;color:rgba(232,227,210,.45)}
+.tv-ctl .led{margin-left:auto;width:9px;height:9px}
+.a2case{position:relative;background:linear-gradient(180deg,#dcd3b8,#b9af93 60%,#a89e84);border:2px solid #948a70;border-radius:6px 6px 4px 4px;padding:9px 10px 8px;box-shadow:0 12px 26px rgba(0,0,0,.5),inset 0 2px 0 rgba(255,255,255,.55)}
+.a2-lid{display:flex;align-items:center;gap:10px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,.15);margin-bottom:8px}
+.a2-apple{width:22px;height:26px;flex:0 0 22px;border-radius:5px 5px 7px 7px;background:linear-gradient(160deg,#61BB46,#FDB827 25%,#F5821F 45%,#E03A3E 62%,#963D97 80%,#009DDC);box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+.a2-vents{flex:1;height:9px;background:repeating-linear-gradient(90deg,rgba(0,0,0,.25) 0 2px,transparent 2px 7px);border-radius:2px}
+.a2-lid span{font-size:9px;letter-spacing:.18em;color:#5a5140}
+.a2-kbd{background:#c9bea2;border-radius:3px;padding:7px;box-shadow:inset 0 1px 3px rgba(0,0,0,.25)}
+.a2-kbd .krow{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;margin-bottom:3px}
+.a2-kbd .krow:last-child{margin-bottom:0}
+.a2-kbd .krow i{height:13px;border-radius:2px;background:linear-gradient(180deg,#e8dfc5,#c0b598);box-shadow:0 1.5px 0 #8a815f,inset 0 1px 0 rgba(255,255,255,.5)}
+.a2-ft{font-size:7.5px;letter-spacing:.15em;color:#5a5140;padding:7px 2px 0}
+.srcs{margin-top:14px;text-align:center;font-size:9.5px;letter-spacing:.04em;color:rgba(232,227,210,.45);line-height:1.95}
+.srcs-h{color:var(--copper);margin-bottom:5px;letter-spacing:.24em}
+.srcs-l a{color:rgba(185,140,255,.72);text-decoration:none}
+.srcs-l a:hover{text-decoration:underline}
+.srcs-l span{color:rgba(232,227,210,.45)}
+.pnote{margin-top:9px;padding:0 8px;color:rgba(232,227,210,.6);font-size:9px;letter-spacing:.05em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="arch">
+    <span class="arch-l"><a class="back go-home" id="home" href="旧世界-00-目录.html">◀ 目录</a><span>旧世界系列 · <b>No.08</b></span></span>
+    <button id="sndBtn" aria-label="声音开关">♪ 开</button>
+  </div>
+  <div class="dev">
+  <div class="tv">
+    <div class="tv-bay"><div class="screen-frame">
+      <div class="screen" id="screen">
+        <div class="idle" id="idle">
+          <div class="mark">— 改变世界的那台 —</div>
+          <div class="big">Apple II</div>
+          <div class="en">1977 · $1,298 起 · 彩色图形</div>
+          <button class="pwr" id="pwr">◉ 开 机</button>
+          <div class="hint">按下电源 · 改一格表格</div>
+        </div>
+        <div class="talk" id="talk" style="display:none">
+          <div id="lines"></div>
+          <div class="tap">轻触屏幕 加速讲述</div>
+        </div>
+        <div class="case" id="case">
+          <div class="spot"></div>
+          <div class="wall">请 勿 触 摸 玻 璃</div>
+          <div class="vitrine">
+<div class="grape">
+  <div style="position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:72px;height:52px;display:flex;flex-direction:column;border-radius:3px;overflow:hidden;box-shadow:0 6px 14px rgba(0,0,0,.6)">
+    <i style="flex:1;background:#61BB46"></i><i style="flex:1;background:#FDB827"></i><i style="flex:1;background:#F5821F"></i>
+    <i style="flex:1;background:#E03A3E"></i><i style="flex:1;background:#963D97"></i><i style="flex:1;background:#009DDC"></i>
+  </div>
+  <span style="position:absolute;right:12px;bottom:8px;color:#c9a15a;font-size:10px;letter-spacing:.2em">VISICALC · THE KILLER APP</span>
+</div>
+          </div>
+          <div class="plaque"><b>APPLE II · 1977</b><br>$1,298 起（4KB RAM）· 全系列约 600 万台<br>VisiCalc 1979 年为其首发 · 商务市场自此打开</div>
+          <div class="srcs">
+            <div class="srcs-h">资料来源</div>
+            <div class="srcs-l"><a href="https://computerhistory.org" target="_blank" rel="noopener">Computer History Museum</a></div>
+            <div class="pnote">个人创作 · 非官方史料 · 若有差错 / 疏漏 / 不同见解，欢迎指正 · 感谢支持</div>
+          </div>
+          <div class="case-btns">
+            <button class="again" id="again">重播自述</button>
+            <a class="again home-a go-home" href="旧世界-00-目录.html">回目录 ▸</a>
+          </div>
+        </div>
+        <div class="bootfx" id="bootfx"></div>
+<div class="gate" id="gate">
+  <div class="gtitle">VISICALC · 1979</div>
+  <div class="gsub">点 A1 改一个数字 · 看大人们当年的震撼</div>
+  <div class="sheet">
+    <span class="sh hd">A1</span><span class="sh hd">A2</span><span class="sh hd">SUM</span>
+    <button class="sh tap" id="a1">2</button><span class="sh" id="a2">3</span><span class="sh sum" id="a3">5</span>
+  </div>
+</div>
+      </div>
+    </div></div>
+    <div class="tv-ctl"><i></i><i></i><span>MONITOR ///</span><div class="led" id="led"></div></div>
+  </div>
+  <div class="a2case">
+    <div class="a2-lid"><div class="a2-apple"></div><div class="a2-vents"></div><span>Apple ][</span></div>
+    <div class="a2-kbd"><div class="krow"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="krow"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="krow"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="krow"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="a2-ft">APPLE II · WOZNIAK · 1977 · 4 KB RAM · COLOR GRAPHICS</div>
+  </div>
+</div>
+  <div class="foot">WORLD BEFORE NOW · 客观历史陈述 · 数字均可考据<br>线稿与音效皆由浏览器实时合成</div>
+</div>
+<script>
+/* ================= 音效引擎 ================= */
+var actx=null, soundOn=true;
+function AC(){
+  if(!soundOn) return null;
+  if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)();
+  if(actx.state==='suspended') actx.resume();
+  return actx;
+}
+function beep(freq,dur,type,vol,slideTo,delay){
+  var ac=AC(); if(!ac) return;
+  var t=ac.currentTime+(delay||0);
+  var o=ac.createOscillator(),g=ac.createGain();
+  o.type=type||'square';
+  o.frequency.setValueAtTime(freq,t);
+  if(slideTo) o.frequency.exponentialRampToValueAtTime(slideTo,t+dur);
+  g.gain.setValueAtTime(vol||.1,t);
+  g.gain.exponentialRampToValueAtTime(.0008,t+dur);
+  o.connect(g);g.connect(ac.destination);
+  o.start(t);o.stop(t+dur+.02);
+}
+/* Tone 规则：陈述句单哔 / 数字与关键信息双哔 / 结尾长哔渐弱 */
+var TF={"f": 820, "type": "square", "fl": 400};
+var BEEP={
+  '1':function(){beep(TF.f,.07,TF.type,.08);},
+  '2':function(){beep(TF.f*1.12,.06,TF.type,.09);beep(TF.f*1.12,.06,TF.type,.09,null,.11);},
+  'long':function(){beep(TF.fl,1.5,TF.ltype||'sine',.1,140);}
+};
+function bootBeep(){beep(880,.5,'square',.06,440);beep(110,.5,'sine',.03);}
+
+/* ================= 台词（数字口径见资料库 V1.1「核实状态」） ================= */
+var LINES=[
+ {
+  "t": "你好。",
+  "b": "1"
+ },
+ {
+  "t": "我是 Apple II。1977 年 6 月发布，设计者还是沃兹尼亚克——Apple I 是我父亲的实验品，我才是走进千家万户的那台。",
+  "b": "2"
+ },
+ {
+  "t": "我有塑料外壳、自带键盘，开箱就能用。我是第一台大规模普及的彩色图形个人电脑。",
+  "b": "2"
+ },
+ {
+  "t": "1979 年，一张叫 VisiCalc 的表格软件为我首发。请你亲手改一格数字，感受大人们当年的震撼。",
+  "b": "2",
+  "g": true
+ },
+ {
+  "t": "他们买我，说是为了算账。全家人都知道那意味着什么。",
+  "b": "1"
+ },
+ {
+  "t": "十六年里，我的家族一共卖了约 600 万台。",
+  "b": "1"
+ },
+ {
+  "t": "一台放在客厅的电脑，从此成了家具。",
+  "b": "long"
+ }
+];
+
+/* ================= 状态机 ================= */
+var $=function(id){return document.getElementById(id);};
+var screen=$('screen'),idle=$('idle'),talk=$('talk'),caseEl=$('case'),
+    linesEl=$('lines'),led=$('led'),sndBtn=$('sndBtn');
+var running=false,typing=false,skip=false,timer=null,lineIdx=0,spoken=false;
+/* ENIAC 灯排闪烁（仅当存在 #lamprow） */
+(function(){var l=$('lamprow');if(!l)return;setInterval(function(){
+  if(!running||spoken)return;var ks=l.children;
+  for(var i=0;i<3;i++){var k=ks[Math.floor(Math.random()*ks.length)];k.classList.toggle('on',Math.random()>.5);}
+},120);})();
+function typeLine(i){
+  if(i>=LINES.length){finish();return;}
+  lineIdx=i;
+  var L=LINES[i];
+  var prev=document.createElement('div');
+  prev.className='done';
+  prev.textContent=LINES[i-1]?LINES[i-1].t:'';
+  if(i>0){linesEl.textContent='';linesEl.appendChild(prev);}
+  else linesEl.textContent='';
+  var cur=document.createElement('div');
+  var span=document.createElement('span');
+  var cursor=document.createElement('span');cursor.className='cursor';
+  cur.appendChild(span);cur.appendChild(cursor);
+  linesEl.appendChild(cur);
+  typing=true;skip=false;
+  var n=0;
+  (function step(){
+    if(skip){span.textContent=L.t;typing=false;afterLine(L);return;}
+    if(n>=L.t.length){typing=false;afterLine(L);return;}
+    span.textContent=L.t.slice(0,++n);
+    if(n%9===0&&Math.random()<.5) beep(1500+Math.random()*300,.02,'square',.018);
+    timer=setTimeout(step,42);
+  })();
+}
+function afterLine(L){
+  setTimeout(function(){
+    if(L.g&&typeof showGate==='function'){showGate(L);return;}
+    if(L.b&&BEEP[L.b])BEEP[L.b]();
+    setTimeout(function(){typeLine(lineIdx+1);},L.b==='long'?1400:620);
+  },160);
+}
+function skipLine(){ if(running&&typing){skip=true;} }
+function showGate(L){
+  var g=$('gate');
+  if(g){g.classList.add('on');if(typeof gateOpen==='function')gateOpen();}
+}
+function gateDone(){
+  var g=$('gate'); if(g)g.classList.remove('on');
+  var L=LINES[lineIdx];
+  if(L.b&&BEEP[L.b])BEEP[L.b]();
+  setTimeout(function(){typeLine(lineIdx+1);},L.b==='long'?1400:620);
+}
+function startTalk(){
+  idle.style.display='none';talk.style.display='flex';linesEl.textContent='';typeLine(0);
+}
+function finish(){
+  if(spoken)return;spoken=true;
+  setTimeout(function(){
+    screen.classList.add('crt-off');
+    beep(520,.5,'sine',.09,90);
+    setTimeout(function(){
+      talk.style.display='none';
+      screen.classList.remove('crt-off');
+      caseEl.classList.add('on');
+      led.classList.add('off');
+      screen.classList.add('crt-on');
+    },700);
+  },1300);
+}
+function power(){
+  if(running)return;running=true;
+  screen.classList.add('crt-on');
+  led.classList.remove('off');
+  bootBeep();
+  if(typeof powerExtra==='function'){powerExtra();return;}
+  setTimeout(startTalk,950);
+}
+function replay(){
+  spoken=false;running=false;
+  caseEl.classList.remove('on');
+  screen.classList.remove('crt-on','crt-off');
+  talk.style.display='none';
+  idle.style.display='flex';
+  linesEl.textContent='';
+  led.classList.remove('off');
+  beep(TF.f,.06,TF.type,.07);
+}
+$('pwr').addEventListener('click',function(e){e.stopPropagation();power();});
+talk.addEventListener('pointerdown',skipLine);
+$('again').addEventListener('click',function(e){e.stopPropagation();replay();});
+/* ===== 返回目录：顶栏常驻「◀ 目录」+ 收尾「回目录」+ Esc 快捷键 ===== */
+var CATALOG='旧世界-00-目录.html#08';
+Array.prototype.forEach.call(document.querySelectorAll('.go-home'),function(a){a.href=CATALOG;});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){location.href=CATALOG;}
+});
+sndBtn.addEventListener('click',function(e){
+  e.stopPropagation();soundOn=!soundOn;
+  sndBtn.textContent=soundOn?'♪ 开':'♪ 关';
+  if(soundOn)beep(TF.f,.05,TF.type,.06);
+});
+document.addEventListener('keydown',function(e){
+  if(e.target&&e.target.tagName==='A')return;
+  if(e.key===' '||e.key==='Enter'){e.preventDefault();skipLine();}
+});
+var taps=0;
+function gateOpen(){taps=0;}
+$('a1').addEventListener('click',function(){
+  if(!$('gate').classList.contains('on'))return;
+  taps++;
+  var seq=['2','5','9'];
+  var v=seq[taps%seq.length];
+  $('a1').textContent=v;
+  $('a3').textContent=+v+3;
+  beep(660+taps*120,.09,'square',.08);
+  if(taps>=2){setTimeout(gateDone,700);}
+});
+</script>
+</body>
+</html>

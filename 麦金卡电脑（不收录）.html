@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Macintosh 1984 · Complete</title>
+<style>
+  :root {
+    --bg: #e0e5ec;
+    --sd: #b8bdc7;
+    --sl: #ffffff;
+    --tx: #5b6270;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html, body { height:100%; }
+  body {
+    background: var(--bg);
+    font-family: -apple-system, "PingFang SC", sans-serif;
+    color: var(--tx);
+    display:flex; align-items:center; justify-content:center;
+    padding: 8px;
+  }
+  .wrap { width: min(420px, 98vw); }
+
+  h1 { text-align:center; font-size:13px; letter-spacing:3px; margin-bottom:10px; color:#8a92a2; }
+
+  .neu-out { background:var(--bg); border-radius:16px;
+    box-shadow:5px 5px 10px var(--sd), -5px -5px 10px var(--sl); }
+
+  .mac { padding:12px 12px 10px; margin-bottom:10px; }
+
+  .screen-frame { padding:7px; border-radius:11px;
+    box-shadow:inset 3px 3px 6px var(--sd), inset -3px -3px 6px var(--sl);
+    margin-bottom:9px; }
+
+  .screen {
+    height: 240px; border-radius:7px;
+    background:#3a6ea5; position:relative; overflow:hidden;
+    box-shadow: inset 0 0 30px rgba(0,0,0,.35);
+  }
+  .screen.off { background:#15181d; }
+  .screen::after {
+    content:""; position:absolute; inset:0; pointer-events:none; z-index:5;
+    background: repeating-linear-gradient(0deg,
+      rgba(0,0,0,.07) 0 1px, transparent 1px 3px);
+  }
+
+  .menubar {
+    height:19px; background:#e8e8e8; display:flex;
+    align-items:center; justify-content:space-between;
+    padding:0 8px; font-size:10px; font-weight:700; color:#333;
+  }
+  .screen.off .menubar, .screen.off .desktop,
+  .screen.off .typed, .screen.off .demo-canvas { visibility:hidden; }
+
+  .desktop {
+    height: calc(100% - 19px);
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:5px;
+  }
+
+  .face { width:52px; height:52px; border:4px solid #fff; border-radius:50%;
+    position:relative; transition: transform .3s; }
+  .face:active { transform: scale(.92); }
+  .face .eye {
+    position:absolute; top:13px;
+    width:5px; height:11px; background:#fff; border-radius:2px;
+    transition: height .1s;
+  }
+  .face .eye.l { left:11px; }
+  .face .eye.r { left:35px; }
+  .face .mouth {
+    position:absolute; bottom:4px; left:50%;
+    transform:translateX(-50%);
+    width:24px; height:11px;
+    border:4px solid #fff; border-top:none;
+    border-radius:0 0 24px 24px;
+    border-left-color:transparent; border-right-color:transparent;
+    transition: all .25s;
+  }
+  .face.sad .mouth {
+    bottom:2px;
+    border:none; border-top:4px solid #fff;
+    border-radius: 24px 24px 0 0;
+    border-left-color:transparent; border-right-color:transparent;
+  }
+  .face.sad .eye { height:8px; top:15px; }
+  .tear {
+    position:absolute; width:5px; height:8px;
+    background:#7ec8ff; border-radius:50% 50% 60% 60%;
+    opacity:0; pointer-events:none;
+  }
+  .face.sad .tear { animation: cry 1.4s infinite; }
+  .face.sad .tear.t2 { animation-delay:.7s; }
+  @keyframes cry {
+    0%   { opacity:0; transform: translateY(0) scaleY(.6); }
+    15%  { opacity:1; }
+    100% { opacity:0; transform: translateY(36px) scaleY(1.2); }
+  }
+  .tear.t1 { left:10px; top:24px; }
+  .tear.t2 { left:37px; top:24px; }
+  .face.wink .eye.r { height:3px; top:18px; }
+  .face.tongue .mouth {
+    bottom:0; width:15px; height:9px;
+    border:4px solid #fff; border-top:none;
+    border-radius:0 0 15px 15px;
+    border-left-color:transparent; border-right-color:transparent;
+    background:#ff8a9a;
+  }
+  .face.angry .eye { transform: rotate(18deg); }
+  .face.angry .eye.r { transform: rotate(-18deg); }
+  .face.angry .mouth {
+    width:17px; height:6px; bottom:6px;
+    border:none; border-top:4px solid #fff;
+    border-radius:15px 15px 0 0;
+    border-left-color:transparent; border-right-color:transparent;
+  }
+  .face.angry { animation: shake .3s 2; }
+  @keyframes shake {
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
+  }
+
+  /* 💬 System 1 对话窗口 */
+  .dialog {
+    width: 82%;
+    background: #fff;
+    border: 2px solid #222;
+    border-radius: 6px;
+    box-shadow: 4px 4px 0 rgba(0,0,0,.4);
+    overflow: hidden;
+    animation: popin .18s cubic-bezier(.3,1.6,.6,1);
+  }
+  @keyframes popin {
+    from { transform: scale(.6); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+  .dialog .tbar {
+    height: 15px;
+    border-bottom: 2px solid #222;
+    background: repeating-linear-gradient(180deg,
+      #fff 0 2px, #222 2px 3px);
+    display: flex; align-items: center;
+    padding: 0 3px;
+    position: relative;
+  }
+  .dialog .closebox {
+    width: 10px; height: 10px;
+    background: #fff; border: 1.5px solid #222;
+    flex: 0 0 auto;
+  }
+  .dialog .ttitle {
+    position:absolute; left:50%; transform:translateX(-50%);
+    background:#fff; padding:0 5px;
+    font-size: 8px; font-weight:700; color:#222;
+    font-family:"Courier New",monospace;
+  }
+  .dialog .tbody {
+    padding: 6px 10px;
+    font-size: 11.5px;
+    color: #222;
+    font-family: "Courier New", monospace;
+    text-align: center;
+    line-height: 1.45;
+  }
+  .dialog .tbody .cur { animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50%{opacity:0;} }
+  .dialog.gone { display:none; }
+
+  /* ✅ 输入行：加大加亮 + 按键闪烁反馈 */
+  .typed {
+    position:absolute; bottom:4px; left:10px; right:10px;
+    color:#fff; font-family:"Courier New",monospace;
+    font-size:15px; font-weight:700;
+    background: rgba(0,0,0,.25);
+    border-radius:5px; padding:2px 8px;
+    white-space:nowrap; overflow:hidden;
+    transition: transform .08s;
+  }
+  .typed.flash { transform: scale(1.06); }
+
+  .demo-canvas {
+    position:absolute; top:19px; left:0;
+    width:100%; height:calc(100% - 19px);
+    display:none;
+  }
+  .demo-canvas.on { display:block; }
+  .demo-canvas.on ~ .desktop { visibility:hidden; }
+
+  .under { display:flex; align-items:center; gap:10px; padding:0 4px; }
+  .slot { flex:1; height:10px; border-radius:5px;
+    box-shadow:inset 3px 3px 5px var(--sd), inset -3px -3px 5px var(--sl); }
+  .led { width:9px; height:9px; border-radius:50%;
+    background:#37d67a; box-shadow:0 0 6px #37d67a; transition:.3s; }
+  .led.off { background:#9aa3ad; box-shadow:none; }
+
+  .prow { display:flex; align-items:center; gap:10px; margin-top:9px; padding:0 4px; }
+  .pbtn {
+    width:40px; height:40px; border:none; cursor:pointer;
+    background:var(--bg); border-radius:50%;
+    box-shadow:4px 4px 8px var(--sd), -4px -4px 8px var(--sl);
+    color:#7a8294; font-size:15px;
+  }
+  .pbtn:active { box-shadow:inset 3px 3px 6px var(--sd), inset -3px -3px 6px var(--sl); }
+  .lbl { font-size:11px; color:#8a92a2; }
+  input[type=range] { flex:1; -webkit-appearance:none; height:8px; border-radius:4px;
+    background:var(--bg);
+    box-shadow:inset 2px 2px 4px var(--sd), inset -2px -2px 4px var(--sl); }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance:none; width:18px; height:18px; border-radius:50%;
+    background:var(--bg);
+    box-shadow:2px 2px 5px var(--sd), -2px -2px 5px var(--sl); }
+
+  /* ✅ ⇧ 状态提示栏 */
+  .shiftbar {
+    display:none;
+    margin: 0 4px 8px;
+    padding: 7px 12px;
+    border-radius: 10px;
+    background: #5b7fff;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    box-shadow: 3px 3px 8px var(--sd);
+  }
+  .shiftbar.show { display:block; animation: popin .15s; }
+  .shiftbar.lock { background: #e2574c; }
+
+  /* ===== ⌨️ 完整键盘 ===== */
+  .kb { padding:8px 6px; margin-bottom:11px; }
+  .krow { display:flex; gap:3px; justify-content:center; margin-bottom:4px; }
+  .krow:last-child { margin-bottom:0; }
+  .key {
+    flex:1; min-width:0; height:31px;
+    border:none; cursor:pointer;
+    background:var(--bg); border-radius:6px;
+    box-shadow:2.5px 2.5px 5px var(--sd), -2.5px -2.5px 5px var(--sl);
+    color:#7a8294; font-family:"Courier New",monospace;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    line-height:1.1;
+    transition:box-shadow .07s, transform .07s;
+    padding:0;
+  }
+  .key .s { font-size:8.5px; opacity:.55; height:9px; transition: all .1s; }
+  .key .b { font-size:10.5px; font-weight:600; }
+  .key:active, .key.hit {
+    box-shadow:inset 2px 2px 4px var(--sd), inset -2px -2px 4px var(--sl);
+    transform:scale(.93); color:#5b7fff;
+  }
+  /* ⇧ 激活时：上档符号放大变蓝，一眼可见 */
+  .kb.shifted .key.has-shift .s {
+    opacity:1; color:#5b7fff; font-weight:700; font-size:11px;
+  }
+  .kb.shifted .key.has-shift { color:#5b7fff; }
+  .key.active { color:#e2574c !important; }
+  .key.w15 { flex:1.5; } .key.w2 { flex:2; } .key.w25 { flex:2.5; }
+  .key.space { flex:5; }
+  .key.enter .b { color:#5b7fff; }
+
+  .mrow { display:flex; justify-content:center; gap:14px; padding-bottom:2px; }
+  .mouse {
+    width:50px; height:74px; border-radius:25px; cursor:pointer;
+    box-shadow:5px 5px 10px var(--sd), -5px -5px 10px var(--sl);
+    position:relative; transition:box-shadow .1s;
+  }
+  .mouse:active { box-shadow:inset 3px 3px 6px var(--sd), inset -3px -3px 6px var(--sl); }
+  .mouse::before { content:""; position:absolute; top:8px; left:50%;
+    transform:translateX(-50%); width:25px; height:19px; border-radius:6px;
+    box-shadow:inset 2px 2px 4px var(--sd), inset -2px -2px 4px var(--sl); }
+  .sndbtn {
+    width:50px; height:50px; border:none; cursor:pointer; align-self:center;
+    background:var(--bg); border-radius:50%;
+    box-shadow:4px 4px 8px var(--sd), -4px -4px 8px var(--sl);
+    font-size:19px; color:#7a8294;
+  }
+  .sndbtn:active { box-shadow:inset 3px 3px 6px var(--sd), inset -3px -3px 6px var(--sl); }
+
+  .hint { text-align:center; font-size:10px; color:#98a0af; line-height:1.8; }
+  .cmd { color:#5b7fff; font-weight:700; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>MACINTOSH 1984</h1>
+
+  <div class="mac neu-out">
+    <div class="screen-frame">
+      <div class="screen" id="screen">
+        <div class="menubar"><span>🍏 文件 编辑 特殊</span><span id="clock">--:--</span></div>
+        <canvas class="demo-canvas" id="demo" width="330" height="220"></canvas>
+        <div class="desktop">
+          <div class="face" id="face">
+            <div class="eye l"></div>
+            <div class="eye r"></div>
+            <div class="tear t1"></div>
+            <div class="tear t2"></div>
+            <div class="mouth"></div>
+          </div>
+          <div class="dialog" id="dlg">
+            <div class="tbar"><div class="closebox"></div><div class="ttitle">Macintosh</div></div>
+            <div class="tbody" id="bubble">Hello! 说点什么吧<span class="cur">▊</span></div>
+          </div>
+        </div>
+        <div class="typed" id="typed">&gt;&nbsp;</div>
+      </div>
+    </div>
+    <div class="under"><div class="slot"></div><div class="led" id="led"></div></div>
+    <div class="prow">
+      <button class="pbtn" id="power">⏻</button>
+      <span class="lbl">电源</span>
+      <span style="flex:1"></span>
+      <span class="lbl">亮度</span>
+      <input type="range" id="bri" min="30" max="100" value="90">
+    </div>
+  </div>
+
+  <div class="shiftbar" id="shiftbar"></div>
+
+  <div class="kb neu-out" id="kb"></div>
+
+  <div class="mrow">
+    <div class="mouse" id="mouse"></div>
+    <button class="sndbtn" id="snd">🔊</button>
+  </div>
+
+  <p class="hint">
+    <b>点 ⇧ 出符号</b>（再点取消 · <b>双击 ⇧ 锁定</b>）→ 按 <b>=</b> 的上档就是 <b>+</b><br>
+    指令：<span class="cmd">SAD HAPPY WINK TONGUE ANGRY STAR RAIN DVD PONG OFF</span>
+  </p>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const screen = $('screen'), led = $('led'), typedEl = $('typed');
+const face = $('face'), dlg = $('dlg'), bubble = $('bubble'), kbEl = $('kb');
+const shiftbar = $('shiftbar');
+let isOn = true, buffer = '', mood = 'happy', soundOn = true;
+let shiftOn = false, shiftLock = false, lastShiftTap = 0;
+let capsOn = true;
+
+// ============ 🔊 音效 ============
+let actx = null;
+function audio() {
+  if (!soundOn) return null;
+  if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+  if (actx.state === 'suspended') actx.resume();
+  return actx;
+}
+function beep(freq, dur = 0.08, type = 'square', vol = 0.12, slideTo = null) {
+  const ac = audio(); if (!ac) return;
+  const o = ac.createOscillator(), g = ac.createGain();
+  o.type = type;
+  o.frequency.setValueAtTime(freq, ac.currentTime);
+  if (slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, ac.currentTime + dur);
+  g.gain.setValueAtTime(vol, ac.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur);
+  o.connect(g).connect(ac.destination);
+  o.start(); o.stop(ac.currentTime + dur);
+}
+function bootChime() {
+  [261.6, 329.6, 392.0, 523.3].forEach((f, i) =>
+    setTimeout(() => beep(f, 0.7, 'sine', 0.14), i * 60));
+}
+const SFX = {
+  key:    () => beep(1200 + Math.random()*400, 0.03, 'square', 0.05),
+  shift:  () => beep(700, 0.05, 'square', 0.08),
+  enter:  () => { beep(880, 0.06, 'square', 0.1); setTimeout(()=>beep(1320, 0.09, 'square', 0.1), 70); },
+  error:  () => { beep(220, 0.12, 'sawtooth', 0.12); setTimeout(()=>beep(180, 0.18, 'sawtooth', 0.12), 120); },
+  sad:    () => beep(520, 0.5, 'sine', 0.12, 260),
+  happy:  () => { beep(523, 0.09, 'sine', 0.1); setTimeout(()=>beep(659,0.09,'sine',0.1),90); setTimeout(()=>beep(784,0.14,'sine',0.1),180); },
+  wink:   () => beep(1568, 0.07, 'sine', 0.1),
+  tongue: () => beep(300, 0.15, 'triangle', 0.12, 180),
+  angry:  () => { beep(140, 0.2, 'sawtooth', 0.13); setTimeout(()=>beep(110,0.25,'sawtooth',0.13),150); },
+  off:    () => beep(600, 0.4, 'sine', 0.1, 120),
+};
+
+// ============ 💬 台词 ============
+const LINES = {
+  happy: ['Hello, 世界！','今天也要开心哦 ~','我是 1984 年的 Mac','敲 STAR 有惊喜 ✨',
+    '内存 128K，但我很努力','说点什么吧 >_<','我会算术哦，1+1= 试试'],
+  sad: ['呜呜呜……','为什么对我大喊大叫……','我的软盘好像坏了 (´;ω;`)',
+    '眼泪是 1 和 0 组成的','128K 内存装不下我的悲伤'],
+  wink: ['嘿嘿，看到你啦 ;)','右眼进沙子了而已','嘘——我在偷偷充电','眨一下 = 我同意'],
+  tongue: ['略略略 ~','尝起来像 3.5 英寸软盘','哈！没打到我','舌头也是外设之一'],
+  angry: ['气死我了！','再乱按我就蓝屏！','0 与 1 都在骂你！','我要罢工了！！'],
+  idle: ['……好安静啊','要不要来局 PONG？','软驱吱呀吱呀~','滴滴——系统正常','算个 9*9= 试试？']
+};
+const TYPING = ['打字挺快啊','是密电码吗？','128K 内存要满了！','你要写程序吗？','悄悄说：输入 SAD 试试'];
+
+function say(text) {
+  dlg.classList.remove('gone');
+  dlg.style.animation = 'none'; void dlg.offsetWidth; dlg.style.animation = '';
+  bubble.innerHTML = text + '<span class="cur">▊</span>';
+}
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+let idleTimer = null;
+function scheduleIdle() {
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => {
+    if (isOn && !mode) say(pick(LINES.idle));
+    scheduleIdle();
+  }, 7000 + Math.random() * 4000);
+}
+scheduleIdle();
+dlg.querySelector('.closebox').addEventListener('pointerdown', e => {
+  e.stopPropagation();
+  dlg.classList.add('gone');
+});
+
+// ============ ⌨️ 完整键盘 ============
+const ROWS = [
+  [['`','~'],['1','!'],['2','@'],['3','#'],['4','$'],['5','%'],['6','^'],['7','&'],['8','*'],['9','('],['0',')'],['-','_'],['=','+'],['⌫',null,'','back']],
+  [['Tab',null,'w15','tab'],['Q'],['W'],['E'],['R'],['T'],['Y'],['U'],['I'],['O'],['P'],['[','{'],[']','}'],['\\','|']],
+  [['Caps',null,'w15','caps'],['A'],['S'],['D'],['F'],['G'],['H'],['J'],['K'],['L'],[';',':'],["'",'"'],['⏎',null,'w15','','enter']],
+  [['⇧',null,'w2','shiftL'],['Z'],['X'],['C'],['V'],['B'],['N'],['M'],[',','<'],['.','>'],['/','?'],['⇧',null,'w2','shiftR']],
+  [['⌃',null,'','mod'],['⌥',null,'','mod'],['⌘',null,'','mod'],['space','','space','space'],['⌘',null,'','mod']]
+];
+
+const keyButtons = [];
+ROWS.forEach(r => {
+  const d = document.createElement('div'); d.className = 'krow';
+  r.forEach(k => {
+    const [base, shifted, wClass = '', act = ''] = k;
+    const b = document.createElement('button');
+    b.className = 'key' + (wClass ? ' ' + wClass : '') + (shifted ? ' has-shift' : '');
+    if (shifted) {
+      b.innerHTML = `<span class="s"></span><span class="b"></span>`;
+      b.querySelector('.s').textContent = shifted;
+      b.querySelector('.b').textContent = base;
+    } else {
+      b.innerHTML = `<span class="s"></span><span class="b"></span>`;
+      b.querySelector('.b').textContent = base === 'space' ? '' : base;
+    }
+    b.dataset.base = base;
+    b.dataset.shifted = shifted || '';
+    b.dataset.act = act;
+    b.addEventListener('pointerdown', () => pressKey(b, act, base, shifted));
+    d.appendChild(b);
+    keyButtons.push(b);
+  });
+  kbEl.appendChild(d);
+});
+
+// ✅ ⇧ 状态：明显的提示栏 + 两个 Shift 键同步高亮
+function updateShiftUI() {
+  kbEl.classList.toggle('shifted', shiftOn);
+  keyButtons.forEach(b => {
+    if (b.dataset.act === 'shiftL' || b.dataset.act === 'shiftR')
+      b.classList.toggle('active', shiftOn);
+  });
+  if (shiftOn) {
+    shiftbar.classList.add('show');
+    shiftbar.classList.toggle('lock', shiftLock);
+    shiftbar.textContent = shiftLock
+      ? '🔒 ⇧ 已锁定 — 符号模式：@ # $ + ( ) … 直接按'
+      : '⇧ 上档模式 — 下一个键输入符号（双击 ⇧ 可锁定）';
+  } else {
+    shiftbar.classList.remove('show');
+  }
+}
+
+function pressKey(btn, act, base, shifted) {
+  if (!isOn) return;
+  if (act) {
+    switch (act) {
+      case 'back':  SFX.key(); buffer = buffer.slice(0,-1); render(); return;
+      case 'tab':   SFX.key(); buffer += '  '; render(); return;
+      case 'enter': exec(); return;
+      case 'caps':
+        capsOn = !capsOn;
+        btn.classList.toggle('active', capsOn);
+        SFX.key(); refreshCase();
+        return;
+      case 'shiftL': case 'shiftR': {
+        SFX.shift();
+        const now = Date.now();
+        if (now - lastShiftTap < 350) {
+          // 双击 = 锁定/解锁
+          shiftLock = !shiftLock;
+          shiftOn = shiftLock;
+        } else {
+          if (shiftLock) { shiftLock = false; shiftOn = false; }
+          else shiftOn = !shiftOn;
+        }
+        lastShiftTap = now;
+        updateShiftUI();
+        return;
+      }
+      case 'space': SFX.key(); buffer += ' '; render(); return;
+      case 'mod':   SFX.key(); return;
+    }
+  }
+  let ch = (shiftOn && shifted) ? shifted : base;
+  if (!shifted && /^[a-z]$/i.test(base)) ch = capsOn ? base.toUpperCase() : base.toLowerCase();
+  // 用完自动弹起（锁定模式除外）
+  if (shiftOn && !shiftLock) { shiftOn = false; updateShiftUI(); }
+  SFX.key();
+  buffer += ch;
+  if (buffer.length > 28) buffer = buffer.slice(-28);
+  render();
+  if (++typedCount % 8 === 0 && Math.random() < 0.6) say(pick(TYPING));
+}
+function refreshCase() {
+  keyButtons.forEach(b => {
+    if (/^[a-z]$/i.test(b.dataset.base))
+      b.querySelector('.b').textContent = capsOn ? b.dataset.base.toUpperCase() : b.dataset.base.toLowerCase();
+  });
+}
+
+let typedCount = 0;
+function render() {
+  typedEl.textContent = '> ' + buffer;
+  // ✅ 按键闪烁反馈
+  typedEl.classList.add('flash');
+  setTimeout(() => typedEl.classList.remove('flash'), 90);
+}
+render();
+
+document.addEventListener('keydown', e => {
+  if (!isOn) return;
+  if (e.key === 'Backspace') { buffer = buffer.slice(0,-1); render(); SFX.key(); return; }
+  if (e.key === 'Enter') { exec(); return; }
+  if (e.key === ' ') { buffer += ' '; render(); SFX.key(); return; }
+  if (e.key.length === 1) {
+    buffer += e.key;
+    if (buffer.length > 28) buffer = buffer.slice(-28);
+    render(); SFX.key();
+  }
+});
+
+// ============ 表情 ============
+const MOODS = ['happy','sad','wink','tongue','angry'];
+function setMood(m, silent) {
+  mood = m;
+  MOODS.forEach(x => face.classList.remove(x));
+  if (m !== 'happy') face.classList.add(m);
+  if (!silent) {
+    say(pick(LINES[m] || LINES.happy));
+    if (SFX[m]) SFX[m]();
+  }
+}
+face.addEventListener('click', () => {
+  setMood(MOODS[(MOODS.indexOf(mood)+1) % MOODS.length]);
+});
+
+// ============ 动画 ============
+const cv = $('demo'), cx = cv.getContext('2d');
+let mode = null, raf = null;
+
+let stars = null;
+function initStars() {
+  stars = Array.from({length:90}, () => ({
+    x: Math.random()*330-165, y: Math.random()*220-110, z: Math.random()*1+0.1
+  }));
+}
+function drawStars() {
+  cx.fillStyle = '#000'; cx.fillRect(0,0,330,220);
+  cx.fillStyle = '#fff';
+  stars.forEach(s => {
+    s.z -= 0.008 * (0.5+s.z*3);
+    if (s.z <= 0.05) { s.x=Math.random()*330-165; s.y=Math.random()*220-110; s.z=1; }
+    const px = 165 + s.x/s.z*0.5, py = 110 + s.y/s.z*0.5;
+    const sz = Math.max(0.5, (1-s.z)*2.5);
+    if (px>0 && px<330 && py>0 && py<220) cx.fillRect(px, py, sz, sz);
+  });
+}
+let rain = null;
+function initRain() {
+  rain = Array.from({length:26}, (_,i) => ({ x: i*12.7+4, y: Math.random()*220, v: 2+Math.random()*3 }));
+}
+const CHARS = 'アイウエオカキクケコ01MACOS';
+function drawRain() {
+  cx.fillStyle = 'rgba(0,8,2,.18)'; cx.fillRect(0,0,330,220);
+  cx.font = '12px monospace';
+  rain.forEach(d => {
+    cx.fillStyle = '#3f6';
+    cx.fillText(CHARS[Math.floor(Math.random()*CHARS.length)], d.x, d.y);
+    cx.fillStyle = '#0a5';
+    cx.fillText(CHARS[Math.floor(Math.random()*CHARS.length)], d.x, d.y-14);
+    d.y += d.v;
+    if (d.y > 235) d.y = -10;
+  });
+}
+let dvd = null;
+const DCOLS = ['#ff5a5a','#5aff8a','#5ab8ff','#ffd45a','#d05aff','#5affd4'];
+function initDVD() { dvd = { x:60, y:60, vx:1.6, vy:1.2, c:0 }; }
+function drawDVD() {
+  cx.fillStyle = '#101018'; cx.fillRect(0,0,330,220);
+  const w=70, h=30;
+  dvd.x += dvd.vx; dvd.y += dvd.vy;
+  if (dvd.x<4 || dvd.x>326-w) { dvd.vx*=-1; dvd.c=(dvd.c+1)%6; }
+  if (dvd.y<4 || dvd.y>216-h) { dvd.vy*=-1; dvd.c=(dvd.c+1)%6; }
+  cx.fillStyle = DCOLS[dvd.c];
+  cx.font = 'bold 20px monospace';
+  cx.fillText('DVD', dvd.x+14, dvd.y+22);
+  cx.strokeStyle = DCOLS[dvd.c];
+  cx.strokeRect(dvd.x, dvd.y, w, h);
+}
+let pong = null;
+function initPong() { pong = { bx:165, by:110, vx:2.4, vy:1.8, p1:85, p2:85 }; }
+function drawPong() {
+  cx.fillStyle = '#000'; cx.fillRect(0,0,330,220);
+  cx.setLineDash([4,5]); cx.strokeStyle='#444';
+  cx.beginPath(); cx.moveTo(165,0); cx.lineTo(165,220); cx.stroke(); cx.setLineDash([]);
+  pong.p1 += Math.sign(pong.by-pong.p1-25)*1.8;
+  pong.p2 += Math.sign(pong.by-pong.p2-25)*2.1;
+  pong.p1 = Math.max(0,Math.min(150,pong.p1));
+  pong.p2 = Math.max(0,Math.min(150,pong.p2));
+  pong.bx += pong.vx; pong.by += pong.vy;
+  if (pong.by<4 || pong.by>216) pong.vy*=-1;
+  if (pong.bx<12 && pong.by>pong.p1 && pong.by<pong.p1+50) pong.vx=Math.abs(pong.vx);
+  if (pong.bx>318 && pong.by>pong.p2 && pong.by<pong.p2+50) pong.vx=-Math.abs(pong.vx);
+  if (pong.bx<0 || pong.bx>330) { pong.bx=165; pong.by=110; }
+  cx.fillStyle='#fff';
+  cx.fillRect(6, pong.p1, 6, 50);
+  cx.fillRect(318, pong.p2, 6, 50);
+  cx.fillRect(pong.bx-3, pong.by-3, 6, 6);
+  cx.font='bold 16px monospace';
+  cx.fillText('MAC', 122, 30); cx.fillText('OS', 182, 30);
+}
+function loop() {
+  if (!mode) return;
+  ({star:drawStars, rain:drawRain, dvd:drawDVD, pong:drawPong})[mode]();
+  raf = requestAnimationFrame(loop);
+}
+function setMode(m) {
+  mode = m;
+  cv.classList.toggle('on', !!m);
+  if (raf) cancelAnimationFrame(raf);
+  if (m) { ({star:initStars, rain:initRain, dvd:initDVD, pong:initPong})[m](); loop(); }
+}
+
+// ============ 🧮 数学 ============
+function tryMath(cmd) {
+  let expr = cmd.replace(/=+$/,'').replace(/×/g,'*').replace(/÷/g,'/').replace(/\s+/g,'');
+  if (!/^[\d+\-*/().]+$/.test(expr) || !/[+\-*/]/.test(expr)) return null;
+  try {
+    const r = Function('"use strict";return(' + expr + ')')();
+    if (typeof r !== 'number') return null;
+    if (!isFinite(r)) return { divByZero: true };
+    return { text: expr + ' = ' + (Math.round(r*10000)/10000) };
+  } catch (e) { return null; }
+}
+
+// ============ 执行 ============
+function exec() {
+  if (!isOn) return;
+  SFX.enter();
+  const cmd = buffer.trim().toUpperCase();
+  buffer = ''; render();
+  const moodMap = {
+    'SAD':'sad','哭':'sad','HAPPY':'happy','笑':'happy',
+    'WINK':'wink','眨眼':'wink','TONGUE':'tongue','吐舌':'tongue',
+    'ANGRY':'angry','生气':'angry'
+  };
+  const animMap = {
+    'STAR':'star','STARS':'star','星河':'star',
+    'RAIN':'rain','雨':'rain','DVD':'dvd','弹跳':'dvd',
+    'PONG':'pong','乒乓':'pong'
+  };
+  if (cmd === '') { say('你什么都没打呀 ~'); return; }
+  if (cmd === 'OFF' || cmd === 'CLOSE' || cmd === '清屏') {
+    setMode(null); say('动画关掉了，好安静……'); return;
+  }
+  if (moodMap[cmd]) { setMode(null); setMood(moodMap[cmd]); return; }
+  if (animMap[cmd]) {
+    setMode(animMap[cmd]);
+    say(pick(['哇——好酷！','画面切换中……','屏保启动！']));
+    return;
+  }
+  const math = tryMath(cmd);
+  if (math) {
+    if (math.divByZero) {
+      SFX.error();
+      say('除以 0？！你要毁灭宇宙吗！💥');
+      face.classList.add('angry');
+      setTimeout(() => face.classList.remove('angry'), 650);
+    } else {
+      beep(1568, 0.08, 'sine', 0.1); setTimeout(() => beep(2093, 0.12, 'sine', 0.1), 90);
+      say(math.text + '  我可是会数学的！');
+      setMood('wink', true);
+    }
+    return;
+  }
+  if (cmd === 'HELLO' || cmd === 'HI' || cmd === '你好') { setMood('happy'); return; }
+  SFX.error();
+  face.classList.add('angry');
+  setTimeout(() => face.classList.remove('angry'), 650);
+  say(pick(['"'+cmd+'" 是什么？听不懂 (???)','语法错误！_syntax error','这台 1984 的电脑不懂这个']));
+}
+$('mouse').addEventListener('pointerdown', exec);
+
+// ============ 开关机 ============
+function setPower(on) {
+  isOn = on;
+  screen.classList.toggle('off', !on);
+  led.classList.toggle('off', !on);
+  if (!on) { setMode(null); SFX.off(); }
+  else { bootChime(); say('叮——我醒啦！Hello!'); }
+}
+$('power').addEventListener('click', () => {
+  const next = !isOn;
+  setPower(next);
+  if (next) {
+    let n = 0;
+    const iv = setInterval(() => {
+      screen.style.filter = (n++ % 2) ? 'brightness(1.6)' : 'brightness(.6)';
+      if (n > 5) { clearInterval(iv); applyBri(); }
+    }, 90);
+  }
+});
+
+// ============ 🔊 / 亮度 / 时钟 ============
+$('snd').addEventListener('click', () => {
+  soundOn = !soundOn;
+  $('snd').textContent = soundOn ? '🔊' : '🔇';
+  if (soundOn) SFX.enter();
+});
+const bri = $('bri');
+function applyBri() {
+  screen.style.filter = isOn ? `brightness(${0.55 + bri.value/100*0.6})` : '';
+}
+bri.addEventListener('input', applyBri);
+applyBri();
+function tick() {
+  const d = new Date();
+  $('clock').textContent =
+    String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+}
+setInterval(tick, 1000); tick();
+</script>
+</body>
+</html>

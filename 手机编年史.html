@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>手机编年史 — Old World Series Vol.04</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&family=Noto+Serif+SC:wght@500;700;900&family=VT323&family=Manrope:wght@400;600;800&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--paper:#F5F1E8;--ink:#1B1710;--accent:#D8420A;--line:rgba(27,23,16,.16);--serif:'Cormorant Garamond','Noto Serif SC',serif}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:'Noto Serif SC',serif;overflow-x:hidden}
+::selection{background:var(--accent);color:#fff}
+canvas{display:block;width:100%;height:auto;image-rendering:pixelated}
+
+/* ---------- 框架（同系列） ---------- */
+.hero{min-height:100vh;background:#0D0C0A;color:#F5F1E8;display:flex;flex-direction:column;justify-content:center;position:relative;padding:90px 7vw 130px}
+.hero-term{position:absolute;top:34px;left:7vw;font-family:'VT323',monospace;color:#3DDC5A;font-size:19px;line-height:1.55;letter-spacing:.5px;opacity:.9;min-height:110px;text-shadow:0 0 6px rgba(61,220,90,.35)}
+.caret{display:inline-block;width:10px;height:17px;background:#3DDC5A;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.eyebrow{font-size:12px;letter-spacing:.42em;color:var(--accent);text-transform:uppercase;margin-bottom:26px;font-family:'Manrope',sans-serif;font-weight:600}
+.hero h1{font-family:var(--serif);font-weight:900;font-size:clamp(52px,10.5vw,148px);line-height:1.04;letter-spacing:.06em;opacity:0;transform:translateY(26px);transition:all 1.2s cubic-bezier(.2,.7,.2,1)}
+.hero.on h1{opacity:1;transform:none}
+.hero-sub{font-family:var(--serif);font-style:italic;font-size:clamp(15px,2vw,21px);color:rgba(245,241,232,.55);margin-top:20px;letter-spacing:.18em;opacity:0;transition:opacity 1.2s .35s}
+.hero.on .hero-sub{opacity:1}
+.hero-lead{max-width:560px;margin-top:38px;font-size:15.5px;line-height:2;color:rgba(245,241,232,.78);opacity:0;transition:opacity 1.2s .6s}
+.hero.on .hero-lead{opacity:1}
+.hero-lead b{color:#3DDC5A;font-weight:700}
+.tl{position:absolute;bottom:46px;left:7vw;right:7vw;height:2px;background:rgba(245,241,232,.22)}
+.tl-dot{position:absolute;top:50%;width:9px;height:9px;border-radius:50%;background:#0D0C0A;border:1.5px solid rgba(245,241,232,.6);transform:translate(-50%,-50%);cursor:pointer;transition:all .25s}
+.tl-dot:hover,.tl-dot.act{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 5px rgba(216,66,10,.25)}
+.tl-dot::after{content:attr(data-label);position:absolute;bottom:16px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:10.5px;font-family:'Manrope',sans-serif;letter-spacing:.12em;color:rgba(245,241,232,.75);opacity:0;transition:opacity .2s;pointer-events:none}
+.tl-dot:hover::after{opacity:1}
+.tl-cap{position:absolute;top:14px;font-size:11px;letter-spacing:.3em;color:rgba(245,241,232,.4);font-family:'Manrope',sans-serif}
+.scroll-hint{position:absolute;bottom:-2px;left:7vw;font-size:11px;letter-spacing:.34em;color:rgba(245,241,232,.45);font-family:'Manrope',sans-serif}
+.scroll-hint::after{content:"";display:block;width:1.5px;height:44px;background:linear-gradient(var(--accent),transparent);margin:10px 0 0 44%;animation:drop 2s ease-in-out infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}55%{transform:scaleY(1)}100%{transform:scaleY(0);transform-origin:bottom}}
+.chapter{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;justify-content:space-between;align-items:center;padding:11px 7vw;background:rgba(245,241,232,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--ink);transform:translateY(-100%);transition:transform .45s cubic-bezier(.2,.8,.2,1);font-family:'Manrope',sans-serif}
+.chapter.on{transform:none}
+#chLeft{font-size:12px;letter-spacing:.22em;font-weight:800}
+#chLeft em{font-style:normal;color:var(--accent);margin-right:10px;font-family:var(--serif);font-size:15px}
+#chRight{font-size:11px;letter-spacing:.3em;color:rgba(27,23,16,.55)}
+.dots{position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:80;display:flex;flex-direction:column;gap:9px}
+.dots a{width:8px;height:8px;border-radius:50%;background:rgba(27,23,16,.25);display:block;transition:all .25s;position:relative}
+.dots a:hover{background:var(--ink)}
+.dots a.act{background:var(--accent);box-shadow:0 0 0 4px rgba(216,66,10,.18)}
+.dots a::after{content:attr(data-label);position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:10px;font-family:'Manrope',sans-serif;letter-spacing:.14em;background:var(--ink);color:#F5F1E8;padding:3px 8px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s}
+.dots a:hover::after{opacity:1}
+.booth{padding:110px 7vw;border-top:1px solid var(--line);display:grid;grid-template-columns:340px 1fr;gap:64px;align-items:start;opacity:0;transform:translateY(46px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+.booth.visible{opacity:1;transform:none}
+.booth.rev .meta{order:2}.booth.rev .stage{order:1}
+.booth-no{font-family:'Manrope',sans-serif;font-size:11px;letter-spacing:.4em;color:var(--accent);font-weight:700;margin-bottom:8px}
+.booth-year{font-family:var(--serif);font-style:italic;font-weight:700;font-size:clamp(48px,6vw,84px);line-height:1;color:transparent;-webkit-text-stroke:1.5px rgba(27,23,16,.75);opacity:.5;transition:all .5s}
+.booth:hover .booth-year{-webkit-text-stroke-color:var(--accent);opacity:.9}
+.booth-title{font-family:var(--serif);font-weight:900;font-size:27px;margin:20px 0 6px;line-height:1.3}
+.booth-title .en{display:block;font-style:italic;font-weight:500;font-size:15px;color:rgba(27,23,16,.5);letter-spacing:.05em;margin-top:4px}
+.booth-desc{font-size:15px;line-height:2.05;color:rgba(27,23,16,.85);margin-top:16px;max-width:340px}
+.stage{display:flex;flex-direction:column;align-items:center}
+.cap{margin-top:14px;font-family:'Manrope',sans-serif;font-size:11px;letter-spacing:.14em;color:rgba(27,23,16,.5);text-align:center}
+.cap b{color:var(--accent);font-weight:700;margin-right:8px}
+.pt{font-size:12px;color:rgba(27,23,16,.6);font-family:'Manrope',sans-serif;margin-top:8px;text-align:center}
+.power{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:14px;flex-wrap:wrap}
+.pw{display:inline-flex;align-items:center;gap:9px;font-family:'Manrope',sans-serif;font-weight:600;font-size:12px;letter-spacing:.12em;cursor:pointer;padding:9px 20px;border:1px solid var(--ink);background:var(--paper);color:var(--ink)}
+.pw svg{width:13px;height:13px;flex:none}
+.led{width:9px;height:9px;border-radius:50%;background:#c94a3a;box-shadow:0 0 4px rgba(200,74,58,.6);transition:all .3s;flex:none}
+.led.on{background:#3CC24A;box-shadow:0 0 8px rgba(60,194,74,.8)}
+.demo{transition:filter .45s ease;width:100%;max-width:460px;position:relative}
+.demo.off{filter:grayscale(1) brightness(.45)}
+.demo.boot{animation:bootF .8s ease}
+@keyframes bootF{0%{filter:brightness(0)}18%{filter:brightness(2.4)}34%{filter:brightness(.5)}52%{filter:brightness(1.7)}100%{filter:brightness(1)}}
+.outro{background:#0D0C0A;color:#F5F1E8;padding:120px 7vw 90px;text-align:center}
+.outro h2{font-family:var(--serif);font-weight:900;font-size:clamp(30px,5vw,58px);line-height:1.5;letter-spacing:.05em}
+.outro h2 span{color:var(--accent)}
+.outro p{margin-top:28px;font-size:14px;line-height:2;color:rgba(245,241,232,.6);max-width:540px;margin-left:auto;margin-right:auto}
+.footer{background:#0D0C0A;color:rgba(245,241,232,.35);border-top:1px solid rgba(245,241,232,.15);padding:24px 7vw;display:flex;justify-content:space-between;font-family:'Manrope',sans-serif;font-size:10.5px;letter-spacing:.2em;flex-wrap:wrap;gap:10px}
+.top-btn{background:none;border:1px solid rgba(245,241,232,.35);color:#F5F1E8;font-family:'Manrope',sans-serif;font-size:10.5px;letter-spacing:.25em;padding:9px 22px;cursor:pointer;transition:all .25s}
+.top-btn:hover{background:var(--accent);border-color:var(--accent)}
+@media (max-width:1100px){.dots{display:none}}
+@media (max-width:920px){.booth{grid-template-columns:1fr;gap:34px;padding:84px 6vw}.booth.rev .meta{order:0}.booth-year{font-size:44px}.booth-desc{max-width:none}.tl{display:none}.hero{padding-bottom:100px}}
+
+/* ============ 1. DynaTAC 大哥大 1983 ============ */
+.d-dyna{background:linear-gradient(180deg,#b8b2a8,#8a847a 60%,#6e6862);border-radius:18px 18px 26px 26px;padding:16px 18px 22px;width:230px;margin:0 auto;box-shadow:0 12px 30px rgba(27,23,16,.3),inset 0 1px 0 rgba(255,255,255,.4)}
+.dyna-ant{width:10px;height:120px;background:linear-gradient(90deg,#555,#999 45%,#777);border-radius:5px;margin:0 0 8px 8px;position:relative}
+.dyna-ant::after{content:"";position:absolute;top:-8px;left:-2px;width:14px;height:14px;border-radius:50%;background:#555}
+.dyna-lcd{background:#0a1a0a;border:3px solid #444;border-radius:6px;padding:8px 10px;font-family:'VT323',monospace;color:#7CE87C;font-size:24px;letter-spacing:2px;min-height:44px;text-shadow:0 0 6px rgba(124,232,124,.5);margin:6px 0 12px}
+.dyna-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.dk{background:linear-gradient(180deg,#3a3a3e,#1c1c20);border:1px solid #000;border-radius:4px;color:#8CE88C;font-family:'VT323',monospace;font-size:17px;padding:9px 0;cursor:pointer;text-shadow:0 0 5px rgba(140,232,140,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 2px 3px rgba(0,0,0,.4)}
+.dk:active{box-shadow:inset 0 2px 4px rgba(0,0,0,.8);transform:translateY(1px)}
+.dk small{display:block;font-size:8px;color:#5a9a5a;letter-spacing:1px}
+.dk.send{background:linear-gradient(180deg,#8a4a2a,#6e3018);color:#ffd8a8;grid-column:span 2}
+
+/* ============ 2. StarTAC 翻盖 1996 ============ */
+.d-startac{width:170px;margin:0 auto;perspective:900px}
+.st-hinge{height:8px;background:linear-gradient(90deg,#555,#888 50%,#555);border-radius:4px;margin:0 10px}
+.st-top{background:linear-gradient(180deg,#2a2a2e,#1a1a1e);border-radius:10px 10px 4px 4px;padding:14px 12px;transform-origin:50% 100%;transition:transform .45s cubic-bezier(.3,.7,.3,1);box-shadow:inset 0 1px 0 rgba(255,255,255,.15)}
+.d-startac.open .st-top{transform:rotateX(-118deg)}
+.st-olcd{background:#0a0a1a;border:2px solid #333;border-radius:4px;font-family:'VT323',monospace;color:#7CB8E8;font-size:19px;text-align:center;padding:5px 0;text-shadow:0 0 5px rgba(124,184,232,.5)}
+.st-bot{background:linear-gradient(180deg,#2a2a2e,#141418);border-radius:4px 4px 12px 12px;padding:12px 10px 16px}
+.st-mlcd{background:#C8D8B0;border:2px solid #556;border-radius:3px;font-family:'VT323',monospace;color:#1a2a10;font-size:18px;padding:7px 9px;min-height:52px}
+.st-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:10px}
+.stk{background:linear-gradient(180deg,#4a4a52,#2a2a32);border:1px solid #000;border-radius:3px;color:#ccc;font-family:'VT323',monospace;font-size:14px;padding:7px 0;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+.stk:active{box-shadow:inset 0 2px 4px rgba(0,0,0,.8)}
+.st-ant{width:6px;height:64px;background:linear-gradient(90deg,#555,#999 45%,#777);border-radius:3px;margin:0 0 0 130px;position:relative;top:-6px}
+
+/* ============ 3. Nokia 5110 贪吃蛇 1998 ============ */
+.d-nk{width:210px;margin:0 auto;border-radius:16px;padding:0 14px 18px;box-shadow:0 10px 26px rgba(27,23,16,.28);transition:background .4s,box-shadow .4s;border:2px solid rgba(27,23,16,.25)}
+.nk-sh{background:linear-gradient(180deg,#3a5a8a,#2a466e);border-radius:14px 14px 0 0;height:54px;margin:0 -14px;position:relative}
+.nk-ear{width:44px;height:8px;background:#111;border-radius:4px;margin:10px auto 0}
+.nk-lcd{background:#9BBC0F;border:3px solid #223;border-radius:4px;padding:6px;margin:10px 0 12px;box-shadow:inset 0 2px 6px rgba(0,0,0,.35)}
+.nk-pad{display:grid;grid-template-columns:34px 1fr 34px;grid-template-rows:34px 34px;gap:6px;align-items:center}
+.nk-d{background:#26262c;border:1px solid #000;border-radius:6px;color:#9aa;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation}
+.nk-d:active{box-shadow:inset 0 2px 4px #000}
+.nk-ok{background:linear-gradient(180deg,#5a8a5a,#3a6a3a);border:1px solid #000;border-radius:8px;color:#fff;font-size:12px;font-family:'Manrope',sans-serif;font-weight:700;padding:9px 0;cursor:pointer;grid-column:2}
+.nk-c{background:#7a3a3a;color:#fff;border:1px solid #000;border-radius:6px;padding:9px 0;cursor:pointer;font-size:12px;font-family:'Manrope',sans-serif}
+.nk-c:active{box-shadow:inset 0 2px 4px #000}
+.shellbtn{margin-top:12px;font-family:'Manrope',sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;padding:7px 16px;cursor:pointer;border:1px solid var(--ink);background:var(--paper)}
+
+/* ============ 4. Nokia 3210 T9 1999 ============ */
+.d-3210{width:216px;margin:0 auto;border-radius:22px 22px 26px 26px;background:linear-gradient(180deg,#6a7a8a,#4a5a6a 60%,#3a4a58);padding:14px 12px 20px;box-shadow:0 10px 26px rgba(27,23,16,.3),inset 0 1px 0 rgba(255,255,255,.3)}
+.n3-lcd{background:#C8D8B0;border:3px solid #334;border-radius:4px;padding:8px 10px;font-family:'VT323',monospace;color:#1a2a10;font-size:17px;min-height:86px;line-height:1.35;word-break:break-all}
+.n3-lcd .sms-tag{color:#4a5a2a;font-size:13px;letter-spacing:1px}
+.n3-lcd .caret2{display:inline-block;width:8px;height:14px;background:#1a2a10;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+.n3-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
+.n3k{background:linear-gradient(180deg,#4a5a6a,#2a3a4a);border:1px solid #000;border-radius:18px;color:#e8f0f8;font-family:'VT323',monospace;font-size:15px;padding:8px 0;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 2px 3px rgba(0,0,0,.4)}
+.n3k:active{box-shadow:inset 0 2px 5px rgba(0,0,0,.7);transform:translateY(1px)}
+.n3k small{display:block;font-size:8px;color:#a8c8e8;letter-spacing:1px}
+
+/* ============ 5. BlackBerry 全键盘 2003 ============ */
+.d-bb{width:250px;margin:0 auto;background:linear-gradient(180deg,#2a2a32,#101018);border-radius:10px 10px 16px 16px;padding:12px 12px 16px;box-shadow:0 10px 26px rgba(27,23,16,.35),inset 0 1px 0 rgba(255,255,255,.15)}
+.bb-lcd{background:linear-gradient(180deg,#d8e4f0,#b8c8dc);border:2px solid #333;border-radius:4px;padding:9px 10px;font-family:'Manrope',sans-serif;font-size:11px;color:#1a2030;min-height:74px;line-height:1.6}
+.bb-lcd .to{font-weight:800;letter-spacing:.06em;border-bottom:1px solid rgba(27,32,48,.3);margin-bottom:5px;padding-bottom:3px}
+.bb-lcd .msg{word-break:break-word}
+.bb-kb{margin-top:10px}
+.bb-row{display:flex;gap:3px;justify-content:center;margin-bottom:3px}
+.bbk{flex:1;max-width:30px;background:linear-gradient(180deg,#3a3a44,#1a1a24);border:1px solid #000;border-radius:5px;color:#8ab0e8;font-family:'Manrope',sans-serif;font-size:9px;font-weight:600;padding:6px 0 5px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+.bbk:active{box-shadow:inset 0 2px 4px #000}
+.bbk.sp{flex:2.6;max-width:none;color:#aab}
+
+/* ============ 6. RAZR V3 2004 ============ */
+.d-razr{width:180px;margin:0 auto;perspective:800px}
+.rz-top{background:linear-gradient(180deg,#c8ccd4,#8a8e96 70%,#6a6e76);border-radius:10px 10px 3px 3px;padding:16px 14px 10px;transform-origin:50% 100%;transition:transform .4s cubic-bezier(.3,.7,.3,1);box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
+.d-razr.open .rz-top{transform:rotateX(-115deg)}
+.rz-olcd{background:radial-gradient(circle at 50% 40%,#1a2a4a,#050515);border:1px solid #333;border-radius:4px;font-family:'VT323',monospace;color:#5AC8E8;font-size:16px;text-align:center;padding:4px 0;text-shadow:0 0 6px rgba(90,200,232,.5)}
+.rz-hinge{height:6px;background:linear-gradient(90deg,#555,#aaa 50%,#555)}
+.rz-bot{background:linear-gradient(180deg,#a8acb4,#787c84 60%,#5a5e66);border-radius:3px 3px 12px 12px;padding:14px 12px 18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+.rz-mlcd{background:#050515;border:2px solid #333;border-radius:4px;font-family:'VT323',monospace;color:#5AC8E8;font-size:16px;padding:8px 9px;min-height:56px;text-shadow:0 0 6px rgba(90,200,232,.5)}
+.rz-pad{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:12px}
+.rzk{background:linear-gradient(180deg,#3a3a40,#14141a);border:none;border-radius:8px;color:#9aa8c8;font-family:'VT323',monospace;font-size:13px;padding:7px 0;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 1px 2px rgba(0,0,0,.5)}
+.rzk:active{box-shadow:inset 0 2px 5px #000}
+.rzk.fire{background:linear-gradient(180deg,#6a8a5a,#2a4a1a);color:#cfe8b8}
+
+/* ============ 7. 滑盖 2005 ============ */
+.d-slider{width:200px;margin:0 auto;position:relative;height:430px}
+.sl-top{position:absolute;top:0;left:0;right:0;background:linear-gradient(180deg,#c8c8d0,#8a8a92 70%,#6a6a72);border-radius:14px 14px 4px 4px;padding:16px 12px 14px;z-index:2;transition:transform .5s cubic-bezier(.2,.9,.3,1.25);box-shadow:0 6px 18px rgba(27,23,16,.35),inset 0 1px 0 rgba(255,255,255,.7)}
+.d-slider.open .sl-top{transform:translateY(130px)}
+.sl-lcd{background:#050515;border:2px solid #333;border-radius:4px;font-family:'VT323',monospace;color:#7CE87C;font-size:17px;padding:9px 10px;min-height:64px;text-shadow:0 0 6px rgba(124,232,124,.4)}
+.sl-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:12px}
+.slk{background:linear-gradient(180deg,#3a3a40,#14141a);border:none;border-radius:8px;color:#8ac89a;font-family:'VT323',monospace;font-size:13px;padding:8px 0;cursor:pointer}
+.slk:active{box-shadow:inset 0 2px 5px #000}
+.sl-bot{position:absolute;top:118px;left:0;right:0;background:linear-gradient(180deg,#585860,#282830);border-radius:4px;padding:118px 12px 16px;z-index:1}
+.sl-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.sl-bot .slk{color:#c8c8d0}
+
+/* ============ 8. iPhone 初代 2007 ============ */
+.d-iphone{width:224px;margin:0 auto;background:linear-gradient(90deg,#3a3a3e,#1a1a1e 40%,#0a0a0e 60%,#2a2a2e);border-radius:28px;padding:10px 8px;box-shadow:0 14px 34px rgba(27,23,16,.4),inset 0 0 0 1px #555,inset 0 0 0 3px #000}
+.iph-screen{background:#000;border-radius:18px;overflow:hidden;position:relative;height:340px;touch-action:none;user-select:none}
+.iph-status{display:flex;justify-content:space-between;color:#fff;font-family:'Manrope',sans-serif;font-size:10px;padding:8px 14px 0;font-weight:600}
+.iph-lock{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;background:radial-gradient(ellipse at 50% 30%,#1e3a5e,#050510);padding-bottom:26px;transition:opacity .4s,transform .4s}
+.iph-lock .clock{position:absolute;top:86px;color:#fff;font-family:'Manrope',sans-serif;font-weight:200;text-align:center;pointer-events:none}
+.iph-lock .clock b{display:block;font-size:44px;font-weight:200}
+.iph-lock .clock span{font-size:13px;font-weight:400;opacity:.8;margin-top:4px}
+.iph-lock.hide{opacity:0;transform:translateY(-30px);pointer-events:none}
+.iph-slide{width:180px;cursor:grab}
+.iph-slide .track{height:40px;border-radius:20px;background:rgba(255,255,255,.14);position:relative}
+.iph-slide .track::after{content:"slide to unlock";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Manrope',sans-serif;font-size:12px;letter-spacing:.12em;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+.iph-slide .knob{position:absolute;top:3px;left:3px;width:34px;height:34px;border-radius:17px;background:radial-gradient(circle at 35% 30%,#f8f8f8,#b8b8c0 70%,#888);box-shadow:0 2px 4px rgba(0,0,0,.5);cursor:grab;display:flex;align-items:center;justify-content:center;color:#555;font-size:14px}
+.iph-home{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,#141820,#000);padding:20px 18px;display:flex;flex-direction:column;opacity:0;transform:scale(.94);transition:all .45s cubic-bezier(.2,.8,.3,1.2);pointer-events:none}
+.iph-home.show{opacity:1;transform:none;pointer-events:auto}
+.iph-icons{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:8px}
+.iph-ic{aspect-ratio:1;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;transition:transform .15s;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 3px 8px rgba(0,0,0,.5)}
+.iph-ic:active{transform:scale(.85)}
+.iph-ic:nth-child(1){background:linear-gradient(180deg,#5a8ad8,#2a5a9a)}
+.iph-ic:nth-child(2){background:linear-gradient(180deg,#68c86a,#2a8a2e)}
+.iph-ic:nth-child(3){background:linear-gradient(180deg,#e8a05a,#c86a1a)}
+.iph-ic:nth-child(4){background:linear-gradient(180deg,#d8d8dc,#8a8a94)}
+.iph-ic:nth-child(5){background:linear-gradient(180deg,#5a5ad8,#2a2a9a)}
+.iph-ic:nth-child(6){background:linear-gradient(180deg,#e85a8a,#9a2a4a)}
+.iph-ic:nth-child(7){background:linear-gradient(180deg,#5ad8d8,#2a8a8a)}
+.iph-ic:nth-child(8){background:linear-gradient(180deg,#c8c85a,#8a8a2a)}
+.iph-dock{margin-top:auto;background:rgba(255,255,255,.12);border-radius:14px;padding:10px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.iph-dock .iph-ic{box-shadow:0 3px 8px rgba(0,0,0,.4)}
+
+/* ============ 9. 全面屏 2017 ============ */
+.d-full{width:230px;margin:0 auto;background:linear-gradient(90deg,#2a2a2e,#111 40%,#000 60%,#222226);border-radius:26px;padding:6px 5px;box-shadow:0 14px 34px rgba(27,23,16,.4),inset 0 0 0 1px #444}
+.fl-screen{background:#000;border-radius:20px;overflow:hidden;position:relative;height:400px;cursor:pointer}
+.fl-notch{position:absolute;top:6px;left:50%;transform:translateX(-50%);width:88px;height:16px;background:#000;border-radius:0 0 10px 10px;z-index:3}
+.fl-scan{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 40%,#1a2a4e,#000);z-index:2;opacity:0;transition:opacity .4s}
+.fl-screen.scan .fl-scan{opacity:1}
+.fl-scan svg{width:56px;height:56px}
+.fl-scan .ray{animation:rayS 1.8s ease-in-out infinite}
+@keyframes rayS{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(6px);opacity:1}}
+.fl-face{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;padding:30px 16px 18px;color:#fff;font-family:'Manrope',sans-serif}
+.fl-face .big{font-size:38px;font-weight:200;margin:auto 0;text-align:center}
+.fl-face .dt{font-size:12px;opacity:.7;text-align:center;margin-bottom:4px}
+.fl-glass{position:absolute;top:0;bottom:0;right:0;width:44px;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.08) 50%,transparent 70%);pointer-events:none}
+
+/* ============ 10. 折叠屏 2026 ============ */
+.d-fold{width:300px;margin:0 auto;perspective:1200px}
+.fd-wrap{display:flex;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.3,.8,.3,1);border-radius:12px;overflow:visible}
+.d-fold.folded .fd-wrap{transform:rotateY(-178deg)}
+.fd-half{width:50%;height:300px;background:#000;border:2px solid #333;overflow:hidden;position:relative}
+.fd-half.l{border-radius:12px 0 0 12px}
+.fd-half.r{border-radius:0 12px 12px 0;transform-origin:0% 50%;transform:rotateY(0deg);transition:transform .8s cubic-bezier(.3,.8,.3,1)}
+.d-fold.folded .fd-half.r{transform:rotateY(-178deg)}
+.fd-crease{position:absolute;top:0;bottom:0;left:50%;width:14px;margin-left:-7px;background:linear-gradient(90deg,transparent,rgba(0,0,0,.45),transparent);z-index:4;pointer-events:none}
+.fd-in{position:absolute;inset:0;display:flex;flex-direction:column;padding:18px 14px;color:#e8f0f8;font-family:'Manrope',sans-serif}
+.fd-in h5{font-size:11px;letter-spacing:.24em;color:#7a8a9a;font-weight:600}
+.fd-in .art{flex:1;margin:12px 0;border-radius:10px;background:linear-gradient(140deg,#2a3a5e,#101828);display:flex;align-items:center;justify-content:center;font-size:34px}
+.fd-half.r .fd-in{align-items:flex-end;text-align:right}
+.fd-hinge-note{margin-top:14px;text-align:center;font-family:'Manrope',sans-serif;font-size:11px;letter-spacing:.18em;color:rgba(27,23,16,.5)}
+</style>
+</head>
+<body>
+
+<section class="hero" id="hero">
+  <div class="hero-term" id="term"></div>
+  <div class="eyebrow">Old World Series · Vol. 04</div>
+  <h1>手机编年史</h1>
+  <p class="hero-sub">FROM BRICK TO FOLD · 1983 — 2026</p>
+  <p class="hero-lead">从需要双手托住的"大哥大"，到能对折塞进衬衣口袋——四十多年里，手机换了十副身体，但每一台都在等你<b>按 ⏻ 开机</b>。这一卷能玩的：拨号、翻盖、贪吃蛇、T9 打短信、全键盘敲字、滑盖弹出、滑动解锁、人脸识别、对折。</p>
+  <div class="tl" id="tl"><span class="tl-cap" style="left:0">1983</span><span class="tl-cap" style="right:0">2026</span></div>
+  <div class="scroll-hint">向下滚动</div>
+</section>
+
+<div class="chapter" id="chapter">
+  <span id="chLeft"><em>1983</em>摩托罗拉 DynaTAC</span>
+  <span id="chRight">No. 01 / 10</span>
+</div>
+
+<nav class="dots" id="dots"></nav>
+
+<svg style="display:none"><symbol id="pwic" viewBox="0 0 24 24"><path d="M12 2.5v8" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M7 5.8a7.5 7.5 0 1 0 10 0" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round"/></symbol></svg>
+
+<main>
+<!-- 1 DynaTAC -->
+<section class="booth" id="b1" data-year="1983" data-name="摩托罗拉 DynaTAC">
+  <div class="meta">
+    <div class="booth-no">No. 01</div><div class="booth-year">1983</div>
+    <h2 class="booth-title">大哥大<span class="en">Motorola DynaTAC 8000X</span></h2>
+    <p class="booth-desc">三斤重的"砖头"，充电十小时通话三十分钟，售价相当于一辆摩托车——但从此电话不再需要电线。</p>
+  </div>
+  <div class="stage">
+    <div class="demo d-dyna off" id="demo1" data-era="dyna">
+      <div class="dyna-ant"></div>
+      <div class="dyna-lcd" id="dynaLcd">&gt; READY_</div>
+      <div class="dyna-pad" id="dynaPad"></div>
+    </div>
+    <div class="power">
+      <button class="pw" data-power="demo1"><svg><use href="#pwic"/></svg><span>开机</span></button>
+      <span class="led"></span>
+      <span class="pt">点键盘拨号 · SEND 呼出 · CLR 清空</span>
+    </div>
+  </div>
+</section>
+
+<!-- 2 StarTAC -->
+<section class="booth rev" id="b2" data-year="1996" data-name="摩托罗拉 StarTAC">
+  <div class="meta">
+    <div class="booth-no">No. 02</div><div class="booth-year">1996</div>
+    <h2 class="booth-title">翻盖鼻祖<span class="en">Motorola StarTAC</span></h2>
+    <p class="booth-desc">世界上最小的翻盖手机，开合之间完成了"接听/挂断"——这个机械动作统治了十年。</p>
+  </div>
+  <div class="stage">
+    <div class="demo d-startac off" id="demo2" data-era="startac">
+      <div class="st-top"><div class="st-olcd" id="stOlcd">12:04</div></div>
+      <div class="st-hinge"></div>
+      <div class="st-bot">
+        <div class="st-ant"></div>
+        <div class="st-mlcd" id="stMlcd">MOTOROLA<br>翻开接听</div>
+        <div class="st-pad" id="stPad"></div>
+      </div>
+    </div>
+    <div class="power">
+      <button class="pw" data-power="demo2"><svg><use href="#pwic"/></svg><span>开机</span></button>
+      <span class="led"></span>
+      <span class="pt">点击屏幕或手机本体 → 翻盖开合</span>
+    </div>
+  </div>
+</section>
+
+<!-- 3 Nokia 5110 -->
+<section class="booth" id="b3" data-year="1998" data-name="诺基亚 5110">
+  <div class="meta">
+    <div class="booth-no">No. 03</div><div class="booth-year">1998</div>
+    <h2 class="booth-title">贪吃蛇与换壳<span class="en">Nokia 5110</span></h2>
+    <p class="booth-desc">可更换的 Xpress-On 彩壳，和预装在每台机器里的贪吃蛇——手机第一次成为"我的"。</p>
+  </div>
+  <div class="stage">
+    <div class="demo d-nk off" id="demo3" data-era="nk">
+      <div class="nk-sh"><div class="nk-ear"></div></div>
+      <div class="nk-lcd"><canvas id="nkCv" width="180" height="130"></canvas></div>
+      <div class="nk-pad">
+        <button class="nk-d" data-d="L">◀</button>
+        <button class="nk-d" data-d="U" style="grid-column:2;grid-row:1">▲</button>
+        <button class="nk-d" data-d="R" style="grid-column:3">▶</button>
+        <button class="nk-d" data-d="D" style="grid-column:2;grid-row:2">▼</button>
+        <button class="nk-c" id="nkC" style="grid-column:1;grid-row:2">C</button>
+        <span style="grid-column:3;grid-row:2"></span>
+      </div>
+    </div>
+    <div class="power">
+      <button class="pw" data-power="demo3"><svg><use href="#pwic"/></svg><span>开机</span></button>
+      <span class="led"></span>
+      <button class="shellbtn" id="nkShell">换壳 ↻</button>
+      <span class="pt">方向键 / 键盘方向键 控制贪吃蛇</span>
+    </div>
+  </div>
+</section>
+
+<!-- 4 Nokia 3210 T9 -->
+<section class="booth rev" id="b4" data-year="1999" data-name="诺基亚 3210 · T9">
+  <div class="meta">
+    <div class="booth-no">No. 04</div><div class="booth-year">1999</div>
+    <h2 class="booth-title">一指禅 T9<span class="en">Nokia 3210 · Predictive SMS</span></h2>
+    <p class="booth-desc">九个键打出全部字母，一指按到底——那代人把"多击选字"练成了肌肉记忆。</p>
+  </div>
+  <div class="stage">
+    <div class="demo d-3210 off" id="demo4" data-era="t9">
+      <div class="n3-lcd" id="n3Lcd">
+        <div class="sms-tag">短信：新信息</div>
+        <span id="n3Msg"></span><span class="caret2"></span>
+      </div>
+      <div class="n3-pad" id="n3Pad"></div>
+    </div>
+    <div class="power">
+      <button class="pw" data-power="demo4"><svg><use href="#pwic"/></svg><span>开机</span></button>
+      <span class="led"></span>
+      <span class="pt">连续按同一个键选字母 · 1 标点 · 0 空格 · C 删除 · 屏幕会闪烁候选</span>
+    </div>
+  </div>
+</section>
+
+<!-- 5 BlackBerry -->
+<section class="booth" id="b5" data-year="2003" data-name="黑莓全键盘">
+  <div class="meta">
+    <div class="booth-no">No. 05</div><div class="booth-year">2003</div>
+    <h2 class="booth-title">黑莓掌上邮局<span class="en">BlackBerry 5810</span></h2>
+    <p class="booch-title-desc desc">三十五颗微缩按键，把收件箱钉在每个商务人士的拇指上。</p>
+    <p class="booth-desc">三十五颗微缩按键，把收件箱钉在每个商务人士的拇指上。</p>
+  </div>
+  <div class="stage">
+    <div class="demo d-bb off" id="demo5" data-era="bb">
+      <div class="bb-lcd">
+        <div class="to">收件人：GLM</div>
+        <div class="msg" id="bbMsg"></div>
+      </div>
+      <div class="bb-kb" id="bbKb"></div>
+    </div>
+    <div class="power">
+      <button class="pw" data-power="demo5"><svg><use href="#pwic"/></svg><span>开机</span></button>
+      <span class="led"></span>
+      <span class="pt">点键盘敲字（也支持电脑键盘直接打）· 电脑退格删除</span>
+    </div>
+  </div>
+</section>
+
+<!-- 6 RAZR V3 -->
+<section class="booth rev" id="b6" data-year="2004" data-name="摩托罗拉 RAZR V3">
+  <div class="meta">
+    <div class="booth-no">No. 06</div><div class="booth-year">2004</div>
+    <h2 class="booth-title">刀锋<span class="en">Motorola RAZR V3</span></h2>
+    <p class="booth-desc">航空铝材削到 13.9 毫米——激光蚀刻的平键盘与金属翻盖，卖了 1.3 亿部。</p>
+  </div>
+  <div class="stage">
+    <div class="demo d-razr off" id="demo6" data-era="razr">
+      <div class="rz-top"><div class="rz-olcd">RAZR · 1 missed</div></div>
+      <div class="rz-hinge"></div>
+      <div class="rz-bot">
+        <div class="rz-mlcd" id="rzLcd">MOTO RAZR V3<br>点击翻盖</div>
+        <div class="rz-pad">
+          <button class="rzk">1</button><button class="rzk">2</button><button class="rzk">3</button><button class="rzk">◄</button>
+          <button class="rzk">4</button><button class="rzk">5</button><button class="rzk">6</button><button class="rzk">▲</button>
+          <button class="rzk">7</button><button class="rzk">8</button><button class="rzk">9</button><button class="rzk">▼</button>
+          <button class="rzk">*</button><button class="rzk">0</button><button class="rzk">#</button><button class="rzk fire">●</button>
+        </div>
+      </div>
+    </div>
+    <div class="power">
+      <button class="pw" data-power="demo6"><svg><use href="#pwic"/></svg><span>开机</span></button>
+      <span class="led"></span>
+      <span class="pt">点击手机本体 → 金属翻盖开合 · 按键有激光键盘音</span>
+    </div>
+  </div>
+</section>
+
+<!-- 7 滑盖 -->
+<section class="booth" id="b7" data-year="2005" data-name="滑盖手机">
+  <div class="meta">
+    <div class="booth-no">No. 07</div><div class="booth-year">2005</div>
+    <h2 class="booth-title">滑盖<span class="en">The Slider Era</span></h2>
+    <p class="booth-desc">推开即接、滑合即锁——弹簧滑轨给了"机械快感"最后一次高潮。</p>
+  </div>
+  <div class="stage">
+    <div class="demo d-slider off" id="demo7" data-era="slider">
+      <div class="sl-top">
+        <div class="sl-lcd" id="slLcd">SLIDE ME ▼<br>下滑滑盖露出键盘</div>
+        <div class="sl-nav">
+          <button class="slk">MENU</button><button class="slk">◄</button><button class="slk">OK</button>
+        </div>
+      </div>
+      <div class="sl-bot">
+        <div class="sl-pad" id="slPad"></div>
+      </div>
+    </div>
+    <div class="power">
+      <button class="pw" data-power="demo7"><svg><use href="#pwic"/></svg><span>开机</span></button>
+      <span class="led"></span>
+      <span class="pt">点击手机 → 弹簧滑盖下滑 · 露出数字键盘</span>
+    </div>
+  </div>
+</section>
+
+<!-- 8 iPhone -->
+<section class="booth rev" id="b8" data-year="2007" data-name="初代 iPhone">
+  <div class="meta">
+    <div class="booth-no">No. 08</div><div class="booth-year">2007</div>
+    <h2 class="booth-title">一块玻璃<span class="en">The Original iPhone</span></h2>
+    <p class="booth-desc">所有机械消失，只剩一块玻璃——"滑动解锁"成为历史上被演示最多的手势。</p>
+  </div>
+  <div class="stage">
+    <div class="demo d-iphone off" id="demo8" data-era="iphone">
+      <div class="iph-screen" id="iphScreen">
+        <div class="iph-lock" id="iphLock">
+          <div class="clock"><b id="iphClock">9:41</b><span>1月9日 星期二</span></div>
+          <div class="iph-slide" id="iphSlide"><div class="track"><div class="knob" id="iphKnob">➜</div></div></div>
+        </div>
+        <div class="iph-home" id="iphHome">
+          <div class="iph-icons">
+            <div class="iph-ic">💬</div><div class="iph-ic">📷</div><div class="iph-ic">📅</div><div class="iph-ic">📷</div>
+            <div class="iph-ic">📊</div><div class="iph-ic">⏰</div><div class="iph-ic">🗺️</div><div class="iph-ic">📼</div>
+          </div>
+          <div class="iph-dock">
+            <div class="iph-ic">📞</div><div class="iph-ic">✉️</div><div class="iph-ic">🌐</div><div class="iph-ic">🎵</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="power">
+      <button class="pw" data-power="demo8"><svg><use href="#pwic"/></svg><span>开机</span></button>
+      <span class="led"></span>
+      <span class="pt">按住滑块 → 拖到底解锁 · 点图标会缩放 · 点击状态栏可重新锁定</span>
+    </div>
+  </div>
+</section>
+
+<!-- 9 全面屏 -->
+<section class="booth" id="b9" data-year="2017" data-name="全面屏 · 人脸解锁">
+  <div class="meta">
+    <div class="booth-no">No. 09</div><div class="booth-year">2017</div>
+    <h2 class="booth-title">全面屏与刷脸<span class="en">Notch &amp; Face Unlock</span></h2>
+    <p class="booth-desc">Home 键退场，刘海登基——从此解锁只需"看它一眼"。</p>
+  </div>
+  <div class="stage">
+    <div class="demo d-full off" id="demo9" data-era="face">
+      <div class="fl-screen" id="flScreen">
+        <div class="fl-face">
+          <div class="dt" id="flDate">11月3日 星期二</div>
+          <div class="big" id="flTime">18:04</div>
+          <div style="text-align:center;font-size:11px;opacity:.6;margin-bottom:20px">点击屏幕 · 看一眼解锁</div>
+        </div>
+        <div class="fl-scan">
+          <svg viewBox="0 0 60 60" fill="none" stroke="#7CE87C" stroke-width="2.4" stroke-linecap="round">
+            <path d="M14 22V14h8M46 14h8v8M54 38v8h-8M22 54h-8v-8"/>
+            <g class="ray"><path d="M30 22v4M30 34v4M22 30h4M34 30h4M24 24l2.8 2.8M35.2 33.2 38 36M38 24l-2.8 2.8M26.8 33.2 24 36"/></g>
+          </svg>
+          <div style="color:#7CE87C;font-family:'Manrope',sans-serif;font-size:11px;letter-spacing:.3em;margin-top:12px">正在扫描面部…</div>
+        </div>
+        <div class="fl-notch"></div>
+        <div class="fl-glass"></div>
+      </div>
+    </div>
+    <div class="power">
+      <button class="pw" data-power="demo9"><svg><use href="#pwic"/></svg><span>开机</span></button>
+      <span class="led"></span>
+      <span class="pt">点击屏幕 → Face ID 扫描 → 时钟翻面</span>
+    </div>
+  </div>
+</section>
+
+<!-- 10 折叠屏 -->
+<section class="booth rev" id="b10" data-year="2026" data-name="折叠屏">
+  <div class="meta">
+    <div class="booth-no">No. 10</div><div class="booth-year">2026</div>
+    <h2 class="booth-title">对折<span class="en">The Foldable Decade</span></h2>
+    <p class="booth-desc">铰链回来了——机械手感以折叠屏的形式复活。历史绕了一圈，口袋里的机械仍未散场。</p>
+  </div>
+  <div class="stage">
+    <div class="demo d-fold off" id="demo10" data-era="fold">
+      <div class="fd-wrap" id="fdWrap">
+        <div class="fd-half l"><div class="fd-in"><h5>左屏 · 阅读面</h5><div class="art">📖</div><div style="font-size:10px;opacity:.7">三毫米铰链 · 无折痕</div></div></div>
+        <div class="fd-half r"><div class="fd-in"><h5>右屏 · 输入面</h5><div class="art">⌨️</div><div style="font-size:10px;opacity:.7">AI 转写 · 一手折叠</div></div></div>
+      </div>
+      <div class="fd-crease"></div>
+    </div>
+    <div class="power">
+      <button class="pw" data-power="demo10"><svg><use href="#pwic"/></svg><span>开机</span></button>
+      <span class="led"></span>
+      <span class="pt">点击手机 → 沿铰链对折 / 展开（听合盖声）</span>
+    </div>
+  </div>
+</section>
+</main>
+
+<section class="outro">
+  <h2>机械一次次消失，<br><span>又一次次回来。</span></h2>
+  <p>键盘被玻璃吃掉，铰链又从玻璃里长出来——四十年的手机史，其实是一部"机械的退场与返场"。Vol.05 想好做什么了吗？旧网站、旧电视、旧相机、旧音响……编年史永远写不完。</p>
+</section>
+
+<footer class="footer">
+  <span>OLD WORLD SERIES · VOL.04 · MOBILE PHONES · 1983—2026</span>
+  <button class="top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">回到 1983</button>
+</footer>
+
+<script>
+(function(){
+'use strict';
+function $(id){ return document.getElementById(id); }
+function on(el,ev,fn){ if(el) el.addEventListener(ev,fn); }
+function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+var booths=[].slice.call(document.querySelectorAll('.booth'));
+var total=booths.length;
+var M={};
+[].forEach.call(document.querySelectorAll('.demo'),function(el){
+  M[el.id]={el:el,era:el.getAttribute('data-era')||'',on:false,booting:false};
+});
+var G={focus:null};
+
+/* ============ 音频 ============ */
+var AC=null,master=null,nbuf=null;
+function aInit(){
+  try{
+    if(!AC){
+      var A=window.AudioContext||window.webkitAudioContext;
+      if(!A) return false;
+      AC=new A(); master=AC.createGain(); master.gain.value=.4; master.connect(AC.destination);
+      var len=AC.sampleRate,b=AC.createBuffer(1,len,AC.sampleRate),d=b.getChannelData(0);
+      for(var i=0;i<len;i++) d[i]=Math.random()*2-1;
+      nbuf=b;
+    }
+    if(AC.state==='suspended') AC.resume();
+    return true;
+  }catch(e){ return false; }
+}
+function T(f,dur,type,g,slide){
+  if(!aInit()) return;
+  try{
+    var t=AC.currentTime,o=AC.createOscillator(),gn=AC.createGain();
+    o.type=type||'square'; o.frequency.setValueAtTime(Math.max(20,f),t);
+    if(slide){ try{o.frequency.exponentialRampToValueAtTime(Math.max(20,slide),t+dur*.8)}catch(e){} }
+    gn.gain.setValueAtTime(.0001,t);
+    try{gn.gain.exponentialRampToValueAtTime(g||.07,t+.01)}catch(e){}
+    try{gn.gain.exponentialRampToValueAtTime(.0001,t+dur)}catch(e){}
+    o.connect(gn); gn.connect(master); o.start(t); o.stop(t+dur+.05);
+  }catch(e){}
+}
+function dual(f1,f2,dur,g){ /* DTMF 双音 */
+  if(!aInit()) return;
+  T(f1,dur,'sine',g); T(f2,dur,'sine',g);
+}
+function NZ(dur,vol,fc,ft,f2){
+  if(!aInit()||!nbuf) return;
+  try{
+    var t=AC.currentTime,s=AC.createBufferSource(); s.buffer=nbuf; s.loop=true;
+    var f=AC.createBiquadFilter(); f.type=ft||'highpass'; f.frequency.value=fc||2000;
+    if(f2){ try{ f.frequency.exponentialRampToValueAtTime(f2,t+dur); }catch(e){} }
+    var g=AC.createGain(); g.gain.setValueAtTime(vol,t);
+    try{g.gain.exponentialRampToValueAtTime(.0005,t+dur)}catch(e){}
+    s.connect(f); f.connect(g); g.connect(master); s.start(t); s.stop(t+dur+.05);
+  }catch(e){}
+}
+var sfx={
+  key:function(){ dual(1209,697,.06,.05); },
+  dtmf:function(n){
+    var F=[[697,770,852,941],[1209,1336,1477]];
+    if(n==='#'){ dual(941,1209,.07,.05); return; }
+    var m=/^(\d)(\d?)$/.exec(n);
+    if(m){ var r=+m[1]-1, c=+m[2]-1;
+      if(r>=0&&r<3&&c>=0&&c<3){ dual(F[1][c],F[0][r],.07,.05); return; } }
+    dual(1209,697,.07,.05);
+  },
+  flipOpen:function(){ NZ(.05,.16,1200,'bandpass'); T(700,.04,'square',.05); },
+  flipClose:function(){ NZ(.04,.2,900,'bandpass'); T(240,.08,'square',.09,90); },
+  snakeEat:function(){ T(660,.05,'square',.07); T(880,.06,'square',.07); },
+  snakeDie:function(){ T(300,.4,'sawtooth',.09,70); },
+  slide:function(){ NZ(.14,.14,600,'bandpass',2400); T(500,.1,'triangle',.06,900); },
+  unlock:function(){ T(880,.07,'sine',.09); T(1320,.1,'sine',.09); },
+  icon:function(){ T(1000,.04,'sine',.06); },
+  beep:function(){ T(1400,.05,'sine',.07); },
+  bbKey:function(){ T(2400,.02,'square',.035); T(1200,.03,'triangle',.04); },
+  dial:function(){ T(350,.5,'sine',.06); },
+  scan:function(){ T(600,.9,'sine',.04,1400); },
+  fold:function(){ NZ(.12,.12,500,'bandpass'); T(180,.1,'square',.08,80); }
+};
+
+/* ============ 1. DynaTAC 拨号 ============ */
+var dyna={num:'',calling:false,callT:null,secs:0};
+(function(){
+  var pad=$('dynaPad'),lcd=$('dynaLcd');
+  if(!pad) return;
+  var keys=['1','2','3','4','5','6','7','8','9','*','0','#'];
+  keys.forEach(function(k){
+    var b=document.createElement('button');
+    b.className='dk'; b.textContent=k;
+    if(k==='*') b.innerHTML='*<small>CLR</small>';
+    on(b,'pointerdown',function(e){
+      e.preventDefault();
+      if(!(M.demo1&&M.demo1.on)||dyna.calling) return;
+      if(k==='*'){ dyna.num=''; }
+      else if(dyna.num.length<12) dyna.num+=k;
+      sfx.dtmf(k==='*'?1:k);
+      lcd.textContent='> '+dyna.num+'_';
+    });
+    pad.appendChild(b);
+  });
+  var send=document.createElement('button');
+  send.className='dk send'; send.textContent='SEND ▶';
+  on(send,'pointerdown',function(e){
+    e.preventDefault();
+    if(!(M.demo1&&M.demo1.on)||dyna.calling) return;
+    if(!dyna.num){ lcd.textContent='> NUM?_'; return; }
+    dyna.calling=true; dyna.secs=0; sfx.dial();
+    lcd.textContent='> CALLING '+dyna.num+'…';
+    setTimeout(function(){
+      if(!dyna.calling) return;
+      lcd.textContent='> IN CALL 00:00';
+      dyna.callT=setInterval(function(){
+        if(!dyna.calling){ clearInterval(dyna.callT); return; }
+        dyna.secs++;
+        var m=('0'+Math.floor(dyna.secs/60)).slice(-2),s=('0'+dyna.secs%60).slice(-2);
+        lcd.textContent='> IN CALL '+m+':'+s;
+      },1000);
+    },1600);
+  });
+  pad.appendChild(send);
+})();
+
+/* ============ 2. StarTAC 翻盖 ============ */
+var st={open:false};
+(function(){
+  var demo=$('demo2');
+  if(!demo) return;
+  on(demo,'click',function(e){
+    if(e.target.closest('.pw')||e.target.closest('[data-power]')) return;
+    if(!(M.demo2&&M.demo2.on)) return;
+    st.open=!st.open;
+    st.open?demo.classList.add('open'):demo.classList.remove('open');
+    st.open?sfx.flipOpen():sfx.flipClose();
+    $('stMlcd').innerHTML=st.open?'STAR TAC<br>READY ▲':'MOTOROLA<br>翻开接听';
+  });
+  var pad=$('stPad');
+  var keys=['1','2','3','4','5','6','7','8','9','*','0','#'];
+  keys.forEach(function(k){
+    var b=document.createElement('button');
+    b.className='stk'; b.textContent=k;
+    on(b,'pointerdown',function(e){
+      e.preventDefault(); e.stopPropagation();
+      if(!(M.demo2&&M.demo2.on)) return;
+      sfx.dtmf(k==='*'?1:k);
+      $('stMlcd').innerHTML='DIAL:<br>'+k;
+    });
+    if(pad) pad.appendChild(b);
+  });
+})();
+
+/* ============ 3. Nokia 5110 贪吃蛇 + 换壳 ============ */
+var nkC=null,frame=0;
+var nk={on:false,dead:false,snake:[[9,6],[8,6],[7,6]],dir:[1,0],nd:[1,0],food:[14,6],score:0};
+function nkReset(){ nk.snake=[[9,6],[8,6],[7,6]]; nk.dir=[1,0]; nk.nd=[1,0]; nk.food=[14,6]; nk.score=0; nk.dead=false; }
+function nkSpawn(){
+  var ok=false;
+  while(!ok){
+    nk.food=[Math.floor(Math.random()*22),Math.floor(Math.random()*14)];
+    ok=!nk.snake.some(function(s){ return s[0]===nk.food[0]&&s[1]===nk.food[1]; });
+  }
+}
+function nkDraw(){
+  if(!nkC) return;
+  nkC.fillStyle='#9BBC0F'; nkC.fillRect(0,0,180,130);
+  nkC.fillStyle='#0F380F'; nkC.font='9px monospace';
+  nkC.fillText('SNAKE II  '+nk.score,5,10);
+  if(frame%16<8) nkC.fillRect(nk.food[0]*8+1,14+nk.food[1]*8+1,6,6);
+  nk.snake.forEach(function(s){ nkC.fillRect(s[0]*8+1,14+s[1]*8+1,6,6); });
+  if(nk.dead){
+    nkC.fillStyle='#306230'; nkC.fillRect(24,50,132,28);
+    nkC.fillStyle='#9BBC0F'; nkC.font='11px monospace'; nkC.textAlign='center';
+    nkC.fillText('GAME OVER',90,63); nkC.fillText('REBOOT ⏻',90,73); nkC.textAlign='left';
+  }
+}
+function nkDir(d){
+  if(!nk.on||nk.dead) return;
+  if(d[0]===-nk.dir[0]&&d[1]===-nk.dir[1]) return;
+  nk.nd=d;
+}
+(function(){
+  var cv=$('nkCv'); if(!cv) return;
+  nkC=cv.getContext('2d'); nkDraw();
+  var map={U:[0,-1],D:[0,1],L:[-1,0],R:[1,0]};
+  [].forEach.call(document.querySelectorAll('.nk-d'),function(b){
+    on(b,'pointerdown',function(e){ e.preventDefault(); nkDir(map[b.getAttribute('data-d')]); });
+  });
+  on($('nkC'),'pointerdown',function(e){ e.preventDefault(); nkReset(); nkDraw(); });
+  /* 换壳 */
+  var shells=[
+    ['#3a5a8a','#2a466e','深蓝'],
+    ['#a83a3a','#8a2222','樱桃红'],
+    ['#3a8a4a','#2a6a2e','丛林绿'],
+    ['#c8a83a','#a8882a','芥末黄'],
+    ['#5a3a8a','#42226a','葡萄紫']
+  ];
+  var si=0;
+  on($('nkShell'),'click',function(){
+    si=(si+1)%shells.length;
+    var sh=document.querySelector('#demo3 .nk-sh');
+    sh.style.background='linear-gradient(180deg,'+shells[si][0]+','+shells[si][1]+')';
+    this.textContent='换壳 ↻ '+shells[si][2];
+    sfx.beep();
+  });
+})();
+
+/* ============ 4. T9 短信 ============ */
+var T9MAP={'2':'ABC','3':'DEF','4':'GHI','5':'JKL','6':'MNO','7':'PQRS','8':'TUV','9':'WXYZ'};
+var t9={msg:'',key:null,idx:0,timer:null,cand:null};
+function t9Render(showCand){
+  var el=$('n3Msg'); if(!el) return;
+  var txt=t9.msg;
+  if(t9.key&&showCand){
+    var set=T9MAP[t9.key];
+    if(set) txt+=set[t9.idx%set.length];
+  }
+  el.textContent=txt;
+}
+function t9Press(k){
+  if(!(M.demo4&&M.demo4.on)) return;
+  if(k==='C'){ t9.msg=t9.msg.slice(0,-1); t9.key=null; t9Render(false); sfx.beep(); return; }
+  if(k==='0'){ t9.commit(); t9.msg+=' '; t9Render(false); sfx.beep(); return; }
+  if(k==='1'){ t9.commit(); t9.msg+='.'; t9Render(false); sfx.beep(); return; }
+  if(!T9MAP[k]){ sfx.beep(); return; }
+  if(t9.key!==k){ t9.commit(); t9.key=k; t9.idx=0; }
+  else t9.idx++;
+  t9Render(true);
+  sfx.dtmf(k);
+  if(t9.timer) clearTimeout(t9.timer);
+  t9.timer=setTimeout(function(){ t9.commit(); t9Render(false); },900);
+}
+t9.commit=function(){
+  if(!t9.key) return;
+  var set=T9MAP[t9.key];
+  if(set) t9.msg+=set[t9.idx%set.length];
+  t9.key=null;
+};
+(function(){
+  var pad=$('n3Pad'); if(!pad) return;
+  var keys=['1','2','3','4','5','6','7','8','9','*','0','C'];
+  keys.forEach(function(k){
+    var b=document.createElement('button');
+    b.className='n3k';
+    var sub=k==='C'?'清除':(T9MAP[k]||{1:'·?!',0:'␣'}[k]||'');
+    b.innerHTML=k+'<small>'+sub+'</small>';
+    on(b,'pointerdown',function(e){ e.preventDefault(); t9Press(k); });
+    pad.appendChild(b);
+  });
+})();
+
+/* ============ 5. BlackBerry ============ */
+var bb={msg:''};
+function bbRender(){
+  var el=$('bbMsg'); if(el) el.textContent=bb.msg;
+}
+(function(){
+  var kb=$('bbKb'); if(!kb) return;
+  var rows=[
+    ['Q','W','E','R','T','Y','U','I','O','P'],
+    ['A','S','D','F','G','H','J','K','L'],
+    ['Z','X','C','V','B','N','M','⌫'],
+    ['SYM','ALT','SPACE','ENTER']
+  ];
+  rows.forEach(function(row){
+    var r=document.createElement('div'); r.className='bb-row';
+    row.forEach(function(k){
+      var b=document.createElement('button');
+      b.className='bbk'+(k.length>1?' sp':''); b.textContent=k;
+      on(b,'pointerdown',function(e){
+        e.preventDefault();
+        if(!(M.demo5&&M.demo5.on)) return;
+        if(k==='⌫'){ bb.msg=bb.msg.slice(0,-1); }
+        else if(k==='SPACE'){ bb.msg+=' '; }
+        else if(k==='ENTER'){ bb.msg+='\n'; }
+        else if(k.length===1){ bb.msg+=k; }
+        bbRender(); sfx.bbKey();
+      });
+      r.appendChild(b);
+    });
+    kb.appendChild(r);
+  });
+})();
+
+/* ============ 6. RAZR ============ */
+(function(){
+  var demo=$('demo6');
+  if(!demo) return;
+  on(demo,'click',function(e){
+    if(e.target.closest('[data-power]')) return;
+    if(!(M.demo6&&M.demo6.on)) return;
+    var open=demo.classList.toggle('open');
+    open?sfx.flipOpen():sfx.flipClose();
+    $('rzLcd').innerHTML=open?'RAZR V3<br>ALLOY BODY · 13.9mm':'MOTO RAZR V3<br>点击翻盖';
+  });
+  [].forEach.call(demo.querySelectorAll('.rzk'),function(b){
+    on(b,'pointerdown',function(e){
+      e.preventDefault(); e.stopPropagation();
+      if(!(M.demo6&&M.demo6.on)) return;
+      var k=b.textContent.trim();
+      if(/^\d$/.test(k)||k==='*'||k==='#') sfx.dtmf(k);
+      else sfx.beep();
+    });
+  });
+})();
+
+/* ============ 7. 滑盖 ============ */
+var slOpen=false;
+(function(){
+  var demo=$('demo7');
+  if(!demo) return;
+  on(demo,'click',function(e){
+    if(e.target.closest('[data-power]')) return;
+    if(!(M.demo7&&M.demo7.on)) return;
+    slOpen=!slOpen;
+    slOpen?demo.classList.add('open'):demo.classList.remove('open');
+    sfx.slide();
+    $('slLcd').innerHTML=slOpen?'KEYBOARD OUT<br>READY ✓':'SLIDE ME ▼<br>下滑滑盖露出键盘';
+  });
+  var pad=$('slPad');
+  var keys=['1','2','3','4','5','6','7','8','9','*','0','#'];
+  keys.forEach(function(k){
+    var b=document.createElement('button');
+    b.className='slk'; b.textContent=k;
+    on(b,'pointerdown',function(e){
+      e.preventDefault(); e.stopPropagation();
+      if(!(M.demo7&&M.demo7.on)||!slOpen) return;
+      sfx.dtmf(k==='*'?1:k);
+    });
+    if(pad) pad.appendChild(b);
+  });
+})();
+
+/* ============ 8. iPhone 滑动解锁 ============ */
+(function(){
+  var knob=$('iphKnob'),lock=$('iphLock'),home=$('iphHome'),slide=$('iphSlide'),screen=$('iphScreen');
+  if(!knob) return;
+  var drag=false,startX=0,x=0;
+  function setX(v){
+    x=clamp(v,0,141);
+    knob.style.left=(3+x)+'px';
+  }
+  on(knob,'pointerdown',function(e){
+    if(!(M.demo8&&M.demo8.on)) return;
+    e.preventDefault(); drag=true; startX=e.clientX-x;
+    try{ knob.setPointerCapture(e.pointerId); }catch(err){}
+  });
+  on(screen,'pointermove',function(e){
+    if(!drag) return;
+    setX(e.clientX-startX);
+  });
+  on(window,'pointerup',function(){
+    if(!drag) return; drag=false;
+    if(x>115){
+      sfx.unlock();
+      lock.classList.add('hide');
+      setTimeout(function(){ home.classList.add('show'); },200);
+    }
+    setX(0);
+  });
+  on(screen,'click',function(e){
+    if(e.target.closest('.iph-slide')) return;
+    if(home.classList.contains('show')&&!(e.target.closest('.iph-ic'))){
+      home.classList.remove('show'); lock.classList.remove('hide'); setX(0); sfx.beep();
+    }
+  });
+  [].forEach.call(home.querySelectorAll('.iph-ic'),function(ic){
+    on(ic,'click',function(){
+      if(!(M.demo8&&M.demo8.on)) return;
+      sfx.icon();
+    });
+  });
+})();
+
+/* ============ 9. 全面屏 ============ */
+(function(){
+  var scr=$('flScreen');
+  if(!scr) return;
+  var scanned=false;
+  on(scr,'click',function(){
+    if(!(M.demo9&&M.demo9.on)) return;
+    if(!scanned){
+      scanned=true; sfx.scan();
+      scr.classList.add('scan');
+      setTimeout(function(){
+        scr.classList.remove('scan');
+        $('flTime').textContent='18:0'+(1+Math.floor(Math.random()*8));
+        sfx.unlock();
+      },1900);
+      setTimeout(function(){ scanned=false; },4000);
+    }
+  });
+})();
+
+/* ============ 10. 折叠屏 ============ */
+(function(){
+  var demo=$('demo10');
+  if(!demo) return;
+  on(demo,'click',function(e){
+    if(e.target.closest('[data-power]')) return;
+    if(!(M.demo10&&M.demo10.on)) return;
+    demo.classList.toggle('folded');
+    sfx.fold();
+  });
+})();
+
+/* ============ 电源总控 ============ */
+function startEra(m){
+  if(m.era==='nk'){ nkReset(); nk.on=true; G.focus=m; }
+  else if(m.era==='dyna'||m.era==='t9'||m.era==='bb') G.focus=m;
+}
+function stopEra(m){
+  if(G.focus===m) G.focus=null;
+  if(m.era==='nk'){ nk.on=false; }
+  if(m.era==='dyna'){
+    dyna.calling=false; dyna.num='';
+    if(dyna.callT) clearInterval(dyna.callT);
+    var lcd=$('dynaLcd'); if(lcd) lcd.textContent='> READY_';
+  }
+  if(m.era==='startac'){ st.open=false; m.el.classList.remove('open'); }
+  if(m.era==='iphone'){
+    var lock=$('iphLock'),home=$('iphHome');
+    if(lock) lock.classList.remove('hide');
+    if(home) home.classList.remove('show');
+  }
+}
+[].forEach.call(document.querySelectorAll('[data-power]'),function(btn){
+  on(btn,'click',function(){
+    var m=M[btn.getAttribute('data-power')];
+    if(!m||m.booting) return;
+    var lab=btn.querySelector('span'),led=btn.parentElement?btn.parentElement.querySelector('.led'):null;
+    if(!m.on){
+      m.booting=true;
+      m.el.classList.remove('off'); m.el.classList.add('boot');
+      if(lab) lab.textContent='启动中';
+      setTimeout(function(){
+        m.booting=false; m.on=true;
+        m.el.classList.remove('boot'); m.el.classList.add('playing');
+        if(lab) lab.textContent='关机';
+        if(led) led.classList.add('on');
+        try{ startEra(m); }catch(e){}
+      },820);
+    } else {
+      m.on=false;
+      m.el.classList.remove('playing'); m.el.classList.add('off');
+      if(lab) lab.textContent='开机';
+      if(led) led.classList.remove('on');
+      try{ stopEra(m); }catch(e){}
+    }
+  });
+});
+
+/* ============ 主循环 ============ */
+(function loop(){
+  requestAnimationFrame(loop); frame++;
+  try{
+    if(nk.on&&nkC){
+      if(frame%9===0&&!nk.dead){
+        nk.dir=nk.nd;
+        var h=[nk.snake[0][0]+nk.dir[0],nk.snake[0][1]+nk.dir[1]];
+        if(h[0]<0||h[0]>21||h[1]<0||h[1]>12||nk.snake.some(function(s){return s[0]===h[0]&&s[1]===h[1]})){
+          nk.dead=true; sfx.snakeDie();
+        } else {
+          nk.snake.unshift(h);
+          if(h[0]===nk.food[0]&&h[1]===nk.food[1]){ nk.score++; sfx.snakeEat(); nkSpawn(); }
+          else nk.snake.pop();
+        }
+      }
+      nkDraw();
+    }
+  }catch(e){}
+  /* iPhone 时钟 */
+  if(frame%600===0){
+    var t=new Date();
+    var c=$('iphClock');
+    if(c) c.textContent=t.getHours()+':'+('0'+t.getMinutes()).slice(-2);
+  }
+})();
+
+/* ============ 键盘路由 ============ */
+document.addEventListener('keydown',function(e){
+  var f=G.focus;
+  var gm={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]};
+  if(f&&f.on&&f.era==='nk'){
+    if(gm[e.key]){ e.preventDefault(); nkDir(gm[e.key]); }
+    return;
+  }
+  if(f&&f.on&&f.era==='bb'){
+    if(e.key.length===1&&/[a-zA-Z0-9 ]/.test(e.key)){ bb.msg+=e.key; bbRender(); sfx.bbKey(); }
+    if(e.key==='Backspace'){ bb.msg=bb.msg.slice(0,-1); bbRender(); }
+    return;
+  }
+  if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight') return;
+  var cur=-1;
+  booths.forEach(function(b,i){ if(b.getBoundingClientRect().top<=120) cur=i; });
+  if(cur<0) return;
+  if(e.key==='ArrowRight'&&cur<total-1) booths[cur+1].scrollIntoView({behavior:'smooth'});
+  if(e.key==='ArrowLeft'&&cur>0) booths[cur-1].scrollIntoView({behavior:'smooth'});
+});
+
+/* ============ 框架 ============ */
+var term=$('term');
+if(term){
+  var lines=['> load --history phones/1983..2026','> 10 devices found','> linking hinges, keypads, sliders ... done','> press ⏫ to boot'];
+  var li=0,ci=0,out='';
+  (function type(){
+    if(li>=lines.length){ term.innerHTML=out.replace(/\n$/,'')+'<br>&gt; <span class="caret"></span>'; return; }
+    out+=lines[li][ci]; ci++;
+    if(ci>=lines[li].length){ out+='\n'; li++; ci=0; setTimeout(type,260); }
+    else setTimeout(type,26);
+    term.innerHTML=out.replace(/\n/g,'<br>');
+  })();
+  setTimeout(function(){ var h=$('hero'); if(h) h.classList.add('on'); },1500);
+}
+var io=new IntersectionObserver(function(es){
+  es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+},{threshold:.1});
+booths.forEach(function(b){ io.observe(b); });
+var tl=$('tl'),dots=$('dots');
+var heroH=$('hero')?$('hero').offsetHeight:600;
+booths.forEach(function(b,i){
+  var d=document.createElement('span');
+  d.className='tl-dot'; d.style.left=((i+.5)/total*100)+'%';
+  d.setAttribute('data-label',b.dataset.year+' '+b.dataset.name.split('·')[0].trim());
+  on(d,'click',function(){ b.scrollIntoView({behavior:'smooth',block:'start'}); });
+  if(tl) tl.appendChild(d);
+  var a=document.createElement('a');
+  a.href='#'+b.id; a.setAttribute('data-label',b.dataset.year);
+  on(a,'click',function(ev){ ev.preventDefault(); b.scrollIntoView({behavior:'smooth'}); });
+  if(dots) dots.appendChild(a);
+});
+var tlDots=[].slice.call(document.querySelectorAll('.tl-dot'));
+var dotLinks=dots?[].slice.call(dots.children):[];
+var chapter=$('chapter'),chL=$('chLeft'),chR=$('chRight');
+var ticking=false;
+function onScroll(){
+  if(ticking) return; ticking=true;
+  requestAnimationFrame(function(){
+    ticking=false;
+    var y=window.scrollY,cur=-1;
+    booths.forEach(function(b,i){ if(b.getBoundingClientRect().top<=120) cur=i; });
+    if(chapter) chapter.classList.toggle('on',y>heroH-80);
+    if(cur>=0){
+      var b=booths[cur];
+      if(chL) chL.innerHTML='<em>'+b.dataset.year+'</em>'+b.dataset.name;
+      if(chR) chR.textContent='No. '+('0'+(cur+1)).slice(-2)+' / '+total;
+      dotLinks.forEach(function(a,i){ a.classList.toggle('act',i===cur); });
+      tlDots.forEach(function(d,i){ d.classList.toggle('act',i===cur); });
+    }
+  });
+}
+window.addEventListener('scroll',onScroll,{passive:true});
+onScroll();
+})();
+</script>
+</body>
+</html>
