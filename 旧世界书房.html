@@ -322,15 +322,16 @@ body{
 .sf-leg.r{right:38px;transform:rotate(-4deg)}
 
 /* 烛台（壁炉架上三枝黄铜烛） */
-.candel{position:absolute;left:50%;top:-48px;width:120px;margin-left:-60px;height:34px;display:flex;justify-content:center;align-items:flex-end;gap:12px}
-.candel .cn-base{position:absolute;bottom:0;left:50%;width:88px;height:9px;margin-left:-44px;border-radius:50%;background:linear-gradient(180deg,#D8B84A,#6E5218);box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
-.candel .cn-stem{position:absolute;bottom:-8px;left:50%;width:10px;height:12px;margin-left:-5px;border-radius:2px;background:linear-gradient(90deg,#8A6D1A,#D8B84A 45%,#8A6D1A)}
-.candel .cn-cup{position:absolute;bottom:6px;left:50%;width:16px;height:4px;margin-left:-8px;border-radius:50%;background:linear-gradient(180deg,#D8B84A,#8A6D1A)}
-.cn{position:relative;width:12px;z-index:1}
-.cn .wax{width:10px;height:24px;margin:0 auto;border-radius:3px 3px 1px 1px;background:linear-gradient(90deg,#B8A37E,#EFE3C0 45%,#9C8760)}
-.cn .flame{width:6px;height:11px;margin:0 auto -3px;border-radius:50% 50% 45% 45%/62% 62% 38% 38%;background:radial-gradient(ellipse at 50% 78%,#FFF7DC,#F2C14E 55%,rgba(226,120,30,.9) 85%);box-shadow:0 0 12px 4px rgba(232,180,90,.4);transform-origin:50% 100%;animation:flick 2.2s ease-in-out infinite}
+.candel{position:absolute;left:50%;top:-78px;width:140px;margin-left:-70px;height:64px;display:flex;justify-content:center;align-items:flex-end;gap:8px;z-index:2}
+.candel .cn-base{position:absolute;bottom:0;left:50%;width:112px;height:14px;margin-left:-56px;border-radius:50%;background:linear-gradient(180deg,#E4C65E 0%,#B8902E 45%,#6E5218 100%);box-shadow:inset 0 2px 2px rgba(255,255,255,.5),0 3px 5px rgba(0,0,0,.55)}
+.cn{position:relative;width:14px;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+.cn .cn-stem{position:absolute;bottom:-14px;left:50%;width:9px;height:14px;margin-left:-4.5px;border-radius:2px;background:linear-gradient(90deg,#8A6D1A,#E4C65E 45%,#8A6D1A);box-shadow:inset 0 0 1px rgba(255,255,255,.4)}
+.cn .cn-cup{position:absolute;bottom:-4px;left:50%;width:17px;height:6px;margin-left:-8.5px;border-radius:50%;background:linear-gradient(180deg,#E4C65E,#8A6D1A);box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
+.cn .wax{position:relative;z-index:2;width:10px;height:24px;margin:0 auto;border-radius:3px 3px 1px 1px;background:linear-gradient(90deg,#B8A37E,#EFE3C0 45%,#9C8760)}
+.cn:nth-child(2) .wax{height:32px}
+.cn:nth-child(1) .wax,.cn:nth-child(3) .wax{height:20px}
+.cn .flame{position:relative;z-index:3;width:6px;height:11px;margin:0 auto -3px;border-radius:50% 50% 45% 45%/62% 62% 38% 38%;background:radial-gradient(ellipse at 50% 78%,#FFF7DC,#F2C14E 55%,rgba(226,120,30,.9) 85%);box-shadow:0 0 12px 4px rgba(232,180,90,.4);transform-origin:50% 100%;animation:flick 2.2s ease-in-out infinite}
 .cn:nth-child(2) .flame{animation-delay:-.8s}
-.cn:nth-child(4) .flame{animation-delay:-1.5s}
 /* 史莱姆精灵 */
 .slime{position:absolute;left:788px;bottom:157px;width:86px;height:88px;cursor:pointer;z-index:5;overflow:visible}
 .slime svg{width:100%;height:100%;filter:drop-shadow(0 6px 10px rgba(0,0,0,.4));transform-origin:50% 100%;animation:sqIdle 3.2s ease-in-out infinite}
@@ -351,8 +352,8 @@ body{
 @keyframes ppop{0%{transform:translateY(0)}35%{transform:translateY(-14px) scale(1.06,.94)}100%{transform:translateY(0)}}
 .slime.act-sway svg{animation:swy 1s ease-in-out 2}
 @keyframes swy{0%,100%{transform:rotate(0)}30%{transform:rotate(-7deg)}70%{transform:rotate(7deg)}}
-.slime.act-spin svg{animation:spn .9s ease-in-out 1}
-@keyframes spn{0%{transform:rotate(0) translateY(0)}40%{transform:rotate(180deg) translateY(-16px)}100%{transform:rotate(360deg) translateY(0)}}
+.slime.act-spin svg{animation:spn 1.1s ease-in-out 1}
+@keyframes spn{0%,100%{transform:rotate(0)}20%{transform:rotate(-20deg)}50%{transform:rotate(0)}80%{transform:rotate(20deg)}}
 .slime.act-sleep svg{animation:slp 2.8s ease-in-out infinite}
 @keyframes slp{0%,100%{transform:scale(1,1)}50%{transform:scale(1.04,.93)}}
 .slime.act-nibble svg{animation:nbl .5s ease-in-out 5}
@@ -375,9 +376,10 @@ body{
  .fireplace{left:4px;bottom:116px;width:96px;height:160px}
  .fp-box{left:10px;right:10px;height:72px}
  .fp-mantel{left:-4px;right:-4px}
- .candel{top:-46px;width:80px;margin-left:-40px}
- .candel .cn .wax{height:14px}
- .candel .cn .flame{width:5px;height:8px}
+.candel{top:-64px;width:84px;margin-left:-42px}
+.candel .cn .wax{height:16px}
+.candel .cn:nth-child(2) .wax{height:21px}
+.candel .cn .flame{width:5px;height:8px}
  .bookcase{left:104px;bottom:116px;width:96px;height:196px}
  .bc-hint{font-size:8.5px;letter-spacing:.14em;top:-26px;white-space:normal;width:120px;margin-left:-30px}
  .bc-glass{left:7px;right:7px;top:9px;bottom:9px;gap:6px;padding:6px 4px}
@@ -427,6 +429,24 @@ body{
 .book.b-ink .spine{font-family:"Ma Shan Zheng",cursive;font-weight:400;font-size:14.5px;letter-spacing:.12em}
 .book.b-ink .seal{position:absolute;top:9px;right:4px;width:9px;height:9px;border-radius:1px;background:#8E1F2F;opacity:.85;writing-mode:horizontal-tb}
 .book.b-ink::after{display:none}
+/* ---------- 古乐 BGM 控件 ---------- */
+.ow-music{position:fixed;right:16px;bottom:16px;z-index:50;
+ background:linear-gradient(180deg,rgba(58,47,36,.94),rgba(36,27,18,.96));
+ border:1px solid rgba(201,162,39,.5);border-radius:10px;
+ box-shadow:0 8px 28px rgba(0,0,0,.55),inset 0 0 0 1px rgba(216,201,168,.06);
+ padding:10px 12px;display:flex;flex-direction:column;gap:8px;align-items:flex-end;
+ font-family:"Noto Serif SC",serif;color:#E8DCC0;max-width:210px;user-select:none}
+.ow-music .owm-name{font-size:12.5px;letter-spacing:.12em;color:#E8B45A;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:186px;transition:color .3s}
+.ow-music .owm-ctrls{display:flex;gap:8px}
+.ow-music button{width:34px;height:34px;border-radius:8px;cursor:pointer;
+ border:1px solid rgba(201,162,39,.45);
+ background:linear-gradient(180deg,#4A3B2A,#2A1F14);color:#E8DCC0;font-size:14px;
+ display:flex;align-items:center;justify-content:center;transition:.2s;font-family:"Noto Serif SC",serif}
+.ow-music button:hover{border-color:#C9A227;color:#fff;box-shadow:0 0 10px rgba(232,180,90,.3)}
+.ow-music.playing .owm-name{color:#F0E2C2}
+@media(max-width:560px){.ow-music{right:10px;bottom:10px;padding:8px 9px}.ow-music button{width:30px;height:30px}}
+.ow-counter{position:fixed;left:12px;bottom:10px;z-index:50;font-size:10.5px;letter-spacing:.05em;color:rgba(232,180,90,.6);background:rgba(20,16,12,.32);padding:3px 9px;border-radius:10px;font-family:"Noto Serif SC",serif;pointer-events:none;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
 </style>
 </head>
 <body>
@@ -453,10 +473,9 @@ body{
     <div class="fp-flames"><i></i><i></i><i></i></div>
    </div>
    <div class="candel" aria-hidden="true">
-    <div class="cn"><div class="flame"></div><div class="wax"></div><div class="cn-cup"></div></div>
-    <div class="cn"><div class="flame"></div><div class="wax"></div><div class="cn-cup"></div></div>
-    <div class="cn"><div class="flame"></div><div class="wax"></div><div class="cn-cup"></div></div>
-    <div class="cn-stem"></div>
+    <div class="cn"><div class="flame"></div><div class="wax"></div><div class="cn-cup"></div><div class="cn-stem"></div></div>
+    <div class="cn"><div class="flame"></div><div class="wax"></div><div class="cn-cup"></div><div class="cn-stem"></div></div>
+    <div class="cn"><div class="flame"></div><div class="wax"></div><div class="cn-cup"></div><div class="cn-stem"></div></div>
     <div class="cn-base"></div>
    </div>
   </div>
@@ -746,9 +765,10 @@ function openBook(b,el){
 document.getElementById('goBtn').addEventListener('click',function(){
  if(!cur)return;
  setRead(cur.file);
- var el=document.querySelector('#goBtn');
- /* 记签后转场 */
- try{location.href=cur.file}catch(e){}
+ var sc=new URLSearchParams(location.search).get('sharecode');
+ var url=cur.file+(sc?('?sharecode='+encodeURIComponent(sc)):'');
+ /* 记签后转场，携带分享码以便跨页访问 */
+ try{location.href=url}catch(e){}
 });
 document.getElementById('shelveBtn').addEventListener('click',function(){veil.classList.remove('show');cur=null});
 veil.addEventListener('click',function(e){if(e.target===veil){veil.classList.remove('show');cur=null}});
@@ -865,7 +885,7 @@ document.getElementById('sndBtn').addEventListener('click',function(){
   {id:'sing',face:'f-sing',anim:'act-sway',dur:3200,b:'♪～ 跟着留声机哼两句香颂 ～♪'},
   {id:'shy',face:'f-shy',anim:'act-shy',dur:2200,b:'被你一直盯着看……人家会害羞的啦。'},
   {id:'wow',face:'f-wow',anim:'act-pop',dur:1300,b:'哇！刚才那页书自己翻了一下！'},
-  {id:'spin',face:'f-dizzy',anim:'act-spin',dur:1100,b:'转晕了……帽尖的星星还在打转。'},
+  {id:'spin',face:'f-idle',anim:'act-spin',dur:1100,b:'转过来……转过去……你在翻哪一本呀？'},
   {id:'read',face:'f-read',anim:'act-read',dur:3600,b:'嘘——我在替你查下一卷的目录。'},
   {id:'wink',face:'f-wink',anim:'act-wink',dur:1500,b:'选书的秘密，就藏在书脊的颜色里哦。'}
  ];
@@ -925,3 +945,123 @@ document.getElementById('sndBtn').addEventListener('click',function(){
  });
 })();
 </script>
+
+<!-- 旧世界 · 古乐 BGM 系统（20 首中西混搭，Web Audio 合成，零音频文件）-->
+<div id="musicBox" class="ow-music" role="group" aria-label="古乐背景乐">
+  <div class="owm-name">♪ <span id="owmName">轻触开启古乐</span></div>
+  <div class="owm-ctrls">
+    <button id="owmPrev" type="button" title="上一首">‹</button>
+    <button id="owmPlay" type="button" title="播放 / 暂停">播</button>
+    <button id="owmNext" type="button" title="下一首">›</button>
+    <button id="owmMute" type="button" title="静音 / 取消静音">声</button>
+  </div>
+</div>
+<script>
+(function(){
+ if(typeof ensureAC!=='function')return;
+ var box=document.getElementById('musicBox'),nameEl=document.getElementById('owmName'),
+     playBtn=document.getElementById('owmPlay'),muteBtn=document.getElementById('owmMute'),
+     prevBtn=document.getElementById('owmPrev'),nextBtn=document.getElementById('owmNext');
+ if(!box||!playBtn)return;
+ var mGain=null,playing=false,muted=false,timer=null,songIdx=0,ON=0.85;
+ function ctx(){ensureAC();if(!mGain&&AC){mGain=AC.createGain();mGain.gain.value=0;mGain.connect(AC.destination);}return AC;}
+ function rampGain(v){if(!mGain||!AC)return;var t=AC.currentTime;mGain.gain.cancelScheduledValues(t);mGain.gain.setValueAtTime(Math.max(0.0001,mGain.gain.value),t);mGain.gain.linearRampToValueAtTime(v,t+0.4);}
+ function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+ function pluck(freq,t,dur,amp,decay){
+  var a=ctx();if(!a)return;
+  var N=Math.max(2,Math.round(a.sampleRate/freq));
+  var buf=a.createBuffer(1,N,a.sampleRate),d=buf.getChannelData(0);
+  for(var i=0;i<N;i++)d[i]=Math.random()*2-1;
+  var src=a.createBufferSource();src.buffer=buf;src.loop=true;
+  var lp=a.createBiquadFilter();lp.type='lowpass';lp.frequency.value=freq*6;
+  var dly=a.createDelay();dly.delayTime.value=1/freq;
+  var fb=a.createGain();fb.gain.value=decay!=null?decay:0.97;
+  var g=a.createGain();g.connect(mGain);
+  src.connect(lp);lp.connect(dly);dly.connect(fb);fb.connect(dly);dly.connect(g);
+  src.start(t);src.stop(t+dur);
+  g.gain.setValueAtTime(amp||0.2,t);g.gain.exponentialRampToValueAtTime(0.0008,t+dur);
+ }
+ function bell(freq,t,dur,amp){
+  var a=ctx();if(!a)return;
+  var parts=[1,2.76,5.40,8.93],amps=[1,0.55,0.35,0.2],g=a.createGain();g.connect(mGain);
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(amp||0.16,t+0.005);g.gain.exponentialRampToValueAtTime(0.0006,t+dur);
+  for(var i=0;i<parts.length;i++){var o=a.createOscillator();o.type='sine';o.frequency.value=freq*parts[i];var og=a.createGain();og.gain.value=amps[i];o.connect(og);og.connect(g);o.start(t);o.stop(t+dur);}
+ }
+ function pad(freq,t,dur,amp){
+  var a=ctx();if(!a)return;
+  var o=a.createOscillator();o.type='triangle';o.frequency.value=freq;
+  var o2=a.createOscillator();o2.type='sine';o2.frequency.value=freq*2.001;
+  var lp=a.createBiquadFilter();lp.type='lowpass';lp.frequency.value=freq*3;
+  var g=a.createGain();g.connect(mGain);
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(amp||0.05,t+Math.min(1.2,dur*0.3));g.gain.linearRampToValueAtTime(0.0005,t+dur);
+  o.connect(lp);o2.connect(lp);lp.connect(g);o.start(t);o2.start(t);o.stop(t+dur+0.1);o2.stop(t+dur+0.1);
+ }
+ var SCALES={pentaG:[0,2,4,7,9],pentaY:[0,3,5,7,10],dorian:[0,2,3,5,7,9,10],phrygian:[0,1,3,5,7,8,10],lydian:[0,2,4,6,7,9,11],mixolydian:[0,2,4,5,7,9,10]};
+ var VOICE={zither:{amp:0.20,decay:0.975},lute:{amp:0.22,decay:0.96},harp:{amp:0.18,decay:0.985}};
+ var SONGS=[
+  {name:'墨池夜泛',scale:'pentaG',root:220,tempo:60,bars:8,voice:'zither',pad:true,seed:101},
+  {name:'编钟初响',scale:'pentaG',root:196,tempo:52,bars:8,voice:'zither',pad:true,bell:true,seed:202},
+  {name:'鲁特暮歌',scale:'dorian',root:220,tempo:72,bars:8,voice:'lute',seed:303},
+  {name:'月下松风',scale:'pentaY',root:196,tempo:54,bars:8,voice:'zither',pad:true,seed:404},
+  {name:'廊前竖琴',scale:'lydian',root:233,tempo:66,bars:8,voice:'harp',seed:505},
+  {name:'烛影摇红',scale:'pentaG',root:247,tempo:64,bars:8,voice:'zither',seed:606},
+  {name:'古堡晨祷',scale:'dorian',root:220,tempo:58,bars:8,voice:'lute',pad:true,bell:true,seed:707},
+  {name:'砚边听雨',scale:'pentaY',root:174,tempo:50,bars:8,voice:'zither',pad:true,seed:808},
+  {name:'多利亚之舞',scale:'dorian',root:262,tempo:84,bars:8,voice:'lute',seed:909},
+  {name:'云外钟声',scale:'pentaG',root:262,tempo:46,bars:8,voice:'zither',pad:true,bell:true,seed:111},
+  {name:'残卷寻踪',scale:'phrygian',root:220,tempo:70,bars:8,voice:'lute',seed:121},
+  {name:'青瓷小唱',scale:'pentaG',root:294,tempo:76,bars:8,voice:'zither',seed:131},
+  {name:'玫瑰经颂',scale:'lydian',root:233,tempo:60,bars:8,voice:'harp',pad:true,seed:141},
+  {name:'竹里馆',scale:'pentaY',root:220,tempo:56,bars:8,voice:'zither',pad:true,seed:151},
+  {name:'镜厅回响',scale:'lydian',root:262,tempo:68,bars:8,voice:'harp',bell:true,seed:161},
+  {name:'烟雨江南',scale:'pentaG',root:196,tempo:58,bars:8,voice:'zither',pad:true,seed:171},
+  {name:'游吟者谣',scale:'mixolydian',root:247,tempo:78,bars:8,voice:'lute',seed:181},
+  {name:'玉磬清音',scale:'pentaG',root:330,tempo:50,bars:8,voice:'zither',bell:true,seed:191},
+  {name:'星夜叙事',scale:'dorian',root:220,tempo:62,bars:8,voice:'harp',pad:true,seed:202},
+  {name:'万卷归藏',scale:'pentaY',root:174,tempo:56,bars:8,voice:'zither',pad:true,bell:true,seed:212}
+ ];
+ function genMelody(scale,bars,beats,seed){
+  var rng=mulberry32(seed),notes=[],deg=Math.floor(rng()*scale.length);
+  for(var b=0;b<bars;b++)for(var p=0;p<beats;p++){
+   if(rng()<0.26){notes.push(null);continue;}
+   var s=rng();
+   if(s<0.16)deg+=2;else if(s<0.32)deg-=2;else if(s<0.66)deg+=1;else deg-=1;
+   deg=((deg%scale.length)+scale.length)%scale.length;
+   var oct=(rng()<0.12)?1:0;
+   notes.push({deg:deg,oct:oct});
+  }
+  return notes;
+ }
+ function scheduleSong(i){
+  if(!playing)return;
+  var s=SONGS[i];nameEl.textContent=s.name;
+  var a=ctx();if(!a)return;
+  var scale=SCALES[s.scale],v=VOICE[s.voice]||VOICE.zither,beat=60/s.tempo,beats=4,total=s.bars*beats;
+  var t0=a.currentTime+0.2,mel=genMelody(scale,s.bars,beats,s.seed);
+  for(var b=0;b<s.bars;b++)for(var p=0;p<beats;p++){
+   var ev=mel[b*beats+p];if(!ev)continue;
+   var semis=scale[ev.deg]+12*ev.oct,f=s.root*Math.pow(2,semis/12),t=t0+(b*beats+p)*beat;
+   pluck(f,t,beat*2.4,v.amp,v.decay);
+  }
+  if(s.pad)for(var bb=0;bb<s.bars;bb++){pad(s.root/2,t0+bb*beats*beat,beats*beat*0.92,0.05);}
+  if(s.bell){bell(s.root*2,t0,2.6,0.15);if(s.bars>4)bell(s.root*1.5,t0+s.bars*0.5*beats*beat,2.0,0.12);}
+  var dur=total*beat+1.6;
+  timer=setTimeout(function(){if(!playing)return;songIdx=(i+1)%SONGS.length;scheduleSong(songIdx);},dur*1000);
+ }
+ function startMusic(){if(playing)return;playing=true;box.classList.add('playing');playBtn.textContent='停';rampGain(ON);scheduleSong(songIdx);}
+ function pauseMusic(){if(!playing)return;playing=false;box.classList.remove('playing');playBtn.textContent='播';clearTimeout(timer);rampGain(0);}
+ playBtn.addEventListener('click',function(){ensureAC();if(playing)pauseMusic();else startMusic();});
+ muteBtn.addEventListener('click',function(){ensureAC();muted=!muted;muteBtn.textContent=muted?'默':'声';rampGain(muted?0:(playing?ON:0));});
+ function select(i){
+  songIdx=((i%SONGS.length)+SONGS.length)%SONGS.length;
+  nameEl.textContent=SONGS[songIdx].name;
+  if(playing){clearTimeout(timer);scheduleSong(songIdx);}
+ }
+ prevBtn.addEventListener('click',function(){ensureAC();select(songIdx-1);});
+ nextBtn.addEventListener('click',function(){ensureAC();select(songIdx+1);});
+})();
+</script>
+<div class="ow-counter" aria-hidden="true"><span id="busuanzi_container_site_pv">书房已被翻阅 <span id="busuanzi_value_site_pv">0</span> 次</span></div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

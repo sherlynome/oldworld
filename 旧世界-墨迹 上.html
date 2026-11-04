@@ -956,5 +956,22 @@ function makeRubber(canvas,text,fontSize){
   });
 })();
 </script>
+
+<!-- OW_BACK_HOME -->
+<a id="owBackHome" href="旧世界书房.html" style="position:fixed;right:18px;bottom:18px;z-index:99999;padding:10px 16px;border-radius:999px;background:rgba(20,16,12,.82);color:#c9a96a;border:1px solid rgba(201,169,106,.5);font-family:'Noto Serif SC',serif;font-size:14px;text-decoration:none;letter-spacing:.12em;box-shadow:0 4px 18px rgba(0,0,0,.45);">◄ 返回书房</a>
+<script>
+(function(){
+ var sc=new URLSearchParams(location.search).get('sharecode');
+ if(!sc)return;
+ var links=document.querySelectorAll('a[href]');
+ for(var i=0;i<links.length;i++){
+  var a=links[i];var h=a.getAttribute('href');
+  if(!h)continue;
+  if(h.indexOf('://')>=0)continue;
+  if(h.indexOf('sharecode=')>=0)continue;
+  try{var u=new URL(h,location.href);if(u.origin!==location.origin)continue;u.searchParams.set('sharecode',sc);a.setAttribute('href',u.pathname+u.search+u.hash);}catch(e){}
+ }
+})();
+</script>
 </body>
 </html>
